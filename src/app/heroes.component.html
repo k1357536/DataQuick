@@ -1,0 +1,36 @@
+<h2>My Heroes</h2>
+<div>
+  <form class="form-group row">
+      <label class="col-md-2 col-form-label" for="heroName">Hero name</label>
+    <div class="col-md-8">
+      <input #heroName class="form-control" name="neroName" />
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary" (click)="add(heroName.value); heroName.value=''">
+        Add
+      </button>
+    </div>
+  </form>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let hero of heroes" [class.table-active]="hero === selectedHero">
+      <th>{{hero.id}}</th>
+      <td (click)="onSelect(hero)">{{hero.name}}</td>
+      <td><button class="btn btn-light" (click)="delete(hero); $event.stopPropagation();">x</button></td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="selectedHero" class="mt-4">
+  <h2>
+    {{selectedHero.name | uppercase}} is my hero
+  </h2>
+  <button class="btn" (click)="gotoDetail()">View Details</button>
+</div>

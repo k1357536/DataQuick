@@ -1,0 +1,43 @@
+{
+  "name": "DataQuick",
+  "version": "0.0.1",
+  "description": "DataQuick",
+  "scripts": {
+    "build": "tsc -p src/",
+    "build:watch": "tsc -p src/ -w",
+    "serve": "lite-server -c=bs-config.json",
+    "prestart": "npm run build",
+    "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
+    "lint": "tslint ./src/**/*.ts -t verbose"
+  },
+  "keywords": [],
+  "author": "Michael Hansal",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@angular/common": "^4.4.0-RC.0",
+    "@angular/compiler": "^4.4.0-RC.0",
+    "@angular/core": "^4.4.0-RC.0",
+    "@angular/forms": "^4.4.0-RC.0",
+    "@angular/http": "^4.4.0-RC.0",
+    "@angular/platform-browser": "^4.4.0-RC.0",
+    "@angular/platform-browser-dynamic": "^4.4.0-RC.0",
+    "@angular/router": "^4.4.0-RC.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.4",
+    "angular-in-memory-web-api": "^0.3.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.0.1",
+    "systemjs": "^0.19.40",
+    "zone.js": "^0.8.4"
+  },
+  "devDependencies": {
+    "concurrently": "^3.2.0",
+    "lite-server": "^2.2.2",
+    "typescript": "~2.1.0",
+    "canonical-path": "0.0.2",
+    "tslint": "^3.15.1",
+    "lodash": "^4.16.4",
+    "rimraf": "^2.5.4",
+    "@types/node": "^6.0.46"
+  },
+  "repository": {}
+}
