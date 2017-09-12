@@ -1,23 +1,6 @@
 import { Component } from '@angular/core';
 
-class ColumnType {
-  id: number;
-  name: string;
-  SQL: string;
-}
-
-const AUTO: ColumnType = { id: 0, name: "Auto Increment", SQL: "INT AUTO INCREMENT" },
-  NUMBER: ColumnType = { id: 1, name: "Number", SQL: "INT" },
-  STRING: ColumnType = { id: 2, name: "Text", SQL: "STRING" },
-  DATE: ColumnType = { id: 3, name: "Date", SQL: "DATE" },
-  BOOL: ColumnType = { id: 4, name: "Yes/No", SQL: "BOOLEAN" };
-
-class Column {
-  name: string = "";
-  type: ColumnType = STRING;
-  readonly: boolean = false;
-  key: boolean = false;
-}
+import { Table, Column, ColumnType } from '../shared/metadata.model'
 
 @Component({
   selector: 'table-editor',
@@ -25,46 +8,31 @@ class Column {
 })
 
 export class TableEditorComponent {
-  tableName: string = "Table 1";
+  readonly columnTypes = ColumnType.ALL_TYPES;
+
+  readonly table: Table = Table.createDefault("Table 1");
   tableSQL: string = "";
 
-  columnTypes: ColumnType[] = [
-    AUTO,
-    NUMBER,
-    STRING,
-    DATE,
-    BOOL
-  ];
-
-  columns: Column[] = [{
-    name: "Id",
-    type: AUTO,
-    readonly: true,
-    key: true,
-  }];
-
   add(): void {
-    let c = new Column();
-    this.columns.push(c);
+    this.table.columns.push(new Column("", ColumnType.STRING, false, false));
   }
 
-  changeType(col: Column, type: number) {
-    col.type = this.columnTypes[type];
-    console.log(col);
+  changeType(col: Column, typeId: number): void {
+    col.type = ColumnType.getById(typeId);
   }
 
   save(): void {
-    this.tableSQL = "CEATE TABLE \"" + this.tableName + "\" (";
+    this.tableSQL = 'CEATE TABLE "' + this.table.name + '" (';
     let b = false;
-    for (let col of this.columns) {
+    for (let col of this.table.columns) {
       if (b)
         this.tableSQL += ", ";
 
-      this.tableSQL += col.name + " ";
+      this.tableSQL += '"' + col.sqlName + '" ';
       if (col.key)
         this.tableSQL += "PRIMARY KEY ";
 
-      this.tableSQL += col.type.SQL;
+      this.tableSQL += col.type.sqlName;
 
       b = true;
     }

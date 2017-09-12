@@ -4,7 +4,7 @@
   <div class="form-group row">
     <label for="tableName" class="col-md-2 col-form-label">Table Name</label>
     <div class="col-md-10">
-      <input type="text" class="form-control" id="tableName" [(value)]="tableName" required>
+      <input type="text" class="form-control" id="tableName" [(value)]="table.name" required>
     </div>
   </div>
 </form>
@@ -18,21 +18,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let col of columns; let i=index; trackBy:trackByIndex">
+    <tr *ngFor="let col of table.columns; let i=index; trackBy:trackByIndex">
       <td>
         <div class="input-group" *ngIf="col.key">
           <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-          <input type="text" [(value)]="columns[i].name" class="form-control" [(disabled)]="columns[i].readonly" required>
+          <input type="text" [(value)]="table.columns[i].name" class="form-control" [(disabled)]="table.columns[i].readonly" required>
         </div>
-        <input type="text" *ngIf="!columns[i].key" [(ngModel)]="columns[i].name" class="form-control" [(disabled)]="columns[i].readonly" required>
+        <input type="text" *ngIf="!table.columns[i].key" [(ngModel)]="table.columns[i].name" class="form-control" [(disabled)]="table.columns[i].readonly" required>
       </td>
       <td>
-        <select class="form-control" (change)="changeType(columns[i], $event.target.value)" required [(disabled)]="columns[i].readonly">
-          <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t == columns[i].type">{{t.name}}</option>
+        <select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required [(disabled)]="table.columns[i].readonly">
+          <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t == table.columns[i].type">{{t.name}}</option>
         </select>
       </td>
-      <td *ngIf="columns[i].type.id == 0"></td>
-      <td *ngIf="columns[i].type.id == 1">
+      <td *ngIf="table.columns[i].type.id == 0"></td>
+      <td *ngIf="table.columns[i].type.id == 1">
         <div class="form-group row">
           <label class="col-sm-3">Min</label>
           <input type="number" class="form-control col-sm-9" />
@@ -42,7 +42,7 @@
           <input type="number" class="form-control col-sm-9" />
         </div>
       </td>
-      <td *ngIf="columns[i].type.id == 2">
+      <td *ngIf="table.columns[i].type.id == 2">
         <div class="form-group row">
           <label class="col-sm-3">Min Length</label>
           <input type="number" class="form-control col-sm-9" />
@@ -52,7 +52,7 @@
           <input type="number" class="form-control col-sm-9" />
         </div>
       </td>
-      <td *ngIf="columns[i].type.id == 3">
+      <td *ngIf="table.columns[i].type.id == 3">
         <div class="form-group row">
           <label class="col-sm-3">Min</label>
           <input type="date" class="form-control col-sm-9" value="1970-01-01" />
@@ -62,7 +62,7 @@
           <input type="date" class="form-control col-sm-9" value="2099-12-31" />
         </div>
       </td>
-      <td *ngIf="columns[i].type.id == 4">
+      <td *ngIf="table.columns[i].type.id == 4">
         <div class="form-group">
           <div class="form-check">
             <label class="form-check-label">

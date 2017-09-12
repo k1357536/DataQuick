@@ -13,6 +13,7 @@
       // our app is within the app folder
       'app': 'app',
       'editor': 'editor',
+      'shared': 'shared',
 
       // angular bundles
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
@@ -41,6 +42,14 @@
         }
       },
       editor: {
+        defaultExtension: 'js',
+        meta: {
+          './*.js': {
+            loader: 'systemjs-angular-loader.js'
+          }
+        }
+      },
+      shared: {
         defaultExtension: 'js',
         meta: {
           './*.js': {
