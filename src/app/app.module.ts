@@ -11,12 +11,15 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
 import { AppComponent } from './app.component';
+import { AppNavComponent } from './app-nav.component';
 import { DashboardComponent } from './dashboard.component';
 import { HeroesComponent } from './heroes.component';
 import { HeroDetailComponent } from './hero-detail.component';
 import { HeroSearchComponent } from './hero-search.component';
 
 import { HeroService } from './hero.service';
+
+import { EditorModule } from '../editor/editor.module';
 
 @NgModule({
   imports: [
@@ -25,10 +28,12 @@ import { HeroService } from './hero.service';
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    EditorModule
   ],
   declarations: [
     AppComponent,
+    AppNavComponent,
     DashboardComponent,
     HeroesComponent,
     HeroDetailComponent,

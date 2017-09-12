@@ -2,9 +2,14 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  templateUrl: './app.component.html'
+  template: `
+    <app-nav title="{{title}}"></app-nav>
+    <div class="container pt-4">
+      <router-outlet></router-outlet>
+    </div>
+  `
 })
 
 export class AppComponent {
-  title = 'Tour of Heroes';
+  title = 'DataQuick';
 }
