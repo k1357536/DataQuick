@@ -1,7 +1,13 @@
 # build results
-src/**/*.map
-src/*/*.js
-src/main.js
+**/*.map
+
+client/main.js
+client/app/*.js
+client/editor/*.js
+
+shared/*.js
+
+*.log
 
 # Dependency directories
 node_modules/

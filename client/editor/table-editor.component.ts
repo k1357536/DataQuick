@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Table, Column, ColumnType } from '../shared/metadata.model'
+import { Table, Column, ColumnType } from '../../shared/metadata.model'
 
 @Component({
   selector: 'table-editor',
