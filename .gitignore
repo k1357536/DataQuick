@@ -1,6 +1,6 @@
 # build results
 src/**/*.map
-src/app/*.js
+src/*/*.js
 src/main.js
 
 # Dependency directories
