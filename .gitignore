@@ -1,19 +1,6 @@
-# build results
-**/*.map
-
-client/main.js
-client/app/*.js
-client/editor/*.js
-
-shared/*.js
+*.js
+*.js.map
 
 *.log
 
-# Dependency directories
 node_modules/
-
-# Optional npm cache directory
-.npm
-
-# Output of 'npm pack'
-*.tgz

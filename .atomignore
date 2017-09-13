@@ -1,3 +1,2 @@
-/src/*/*.js
-/src/main.js
+*.js
 *.js.map

@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "description": "DataQuick",
   "scripts": {
-    "build": "tsc -p src/",
-    "build:watch": "tsc -p src/ -w",
-    "serve": "lite-server -c=bs-config.json",
+    "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
+    "build:watch": "concurrently \"npm run build:client:watch\" \"npm run build:server:watch\"",
+    "build:client": "tsc -p client/",
+    "build:server": "tsc -p server/",
+    "build:client:watch": "tsc -p client/ -w",
+    "build:server:watch": "tsc -p server/ -w",
+    "serve": "nodemon server/server.js -watch server -watch client",
     "prestart": "npm run build",
     "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
     "lint": "tslint ./src/**/*.ts -t verbose"
@@ -25,19 +29,21 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.4",
     "angular-in-memory-web-api": "^0.3.0",
     "core-js": "^2.4.1",
+    "express": "^4.15.4",
+    "morgan": "^1.8.2",
     "rxjs": "^5.0.1",
     "systemjs": "^0.19.40",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@types/express": "^4.0.37",
+    "@types/morgan": "^1.7.32",
+    "@types/node": "^6.0.46",
+    "@types/systemjs": "^0.20.5",
     "concurrently": "^3.2.0",
-    "lite-server": "^2.2.2",
-    "typescript": "~2.1.0",
-    "canonical-path": "0.0.2",
+    "nodemon": "^1.12.0",
     "tslint": "^3.15.1",
-    "lodash": "^4.16.4",
-    "rimraf": "^2.5.4",
-    "@types/node": "^6.0.46"
+    "typescript": "~2.1.0"
   },
   "repository": {}
 }
