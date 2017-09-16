@@ -1,6 +1,8 @@
-*.js
+*/**/*.js
 *.js.map
 
 *.log
 
 node_modules/
+
+dbCredentials.json
