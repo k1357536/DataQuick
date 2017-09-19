@@ -34,21 +34,21 @@ export class MetadataService {
       .catch(this.handleError);
   }
 
-  addTable(p: TableProposal): Promise<Table> {
+  addTable(p: TableProposal): Promise<any> {
     return this.http.post(this.url,
       JSON.stringify(p),
       { headers: this.headers })
       .toPromise()
-      .then(response => response.json() as Table)
+      .then(response => null)
       .catch(this.handleError);
   }
 
-  updateTable(table: Table): Promise<Table> {
+  updateTable(table: Table): Promise<any> {
     return this.http.put(this.url + table.id,
       JSON.stringify(table),
       { headers: this.headers })
       .toPromise()
-      .then(response => response.json() as Table)
+      .then(response => null)
       .catch(this.handleError);
   }
 

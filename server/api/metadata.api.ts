@@ -4,57 +4,70 @@ import { RequestHandler } from 'express';
 
 import { TableProposal, Table, Column } from '../../shared/metadata.model';
 
-let metadata = express.Router();
+import { MetadataDriver } from '../drivers/metadata.driver'
 
-let dummy: Table[] = [
-  new Table('99ea308a-4fc9-4daa-90ae-6138ca47e62c', 'Employees', [Column.createIdColumn()]),
-  new Table('6a29a500-ef83-4eb5-b76a-d580a26613d4', 'Products', [Column.createIdColumn()])
-];
+let metadata = express.Router();
+let driver = new MetadataDriver();
 
 metadata.get('/', (req, res) => {
-  res.json(dummy);
+  try {
+    res.json(driver.getAll());
+  } catch (e) {
+    if (Number(e) !== NaN)
+      res.sendStatus(Number(e));
+    else
+      res.sendStatus(500);
+  }
 });
 
 metadata.get('/:id', (req, res) => {
-  let table = dummy.find(t => t.id === req.params.id);
-  if (!table)
-    res.sendStatus(404);
-  else
-    res.json(table);
+  try {
+    res.json(driver.get(req.params.id));
+  } catch (e) {
+    if (Number(e) !== NaN)
+      res.sendStatus(Number(e));
+    else
+      res.sendStatus(500);
+  }
 });
 
 metadata.post('/', (req, res) => {
-  let p = req.body as TableProposal;
-  let t = Table.createDefault(p.name);
-  dummy.push(t);
-  res.json(t);
+  try {
+    driver.add(req.body as TableProposal);
+    res.sendStatus(200);
+  } catch (e) {
+    if (Number(e) !== NaN)
+      res.sendStatus(Number(e));
+    else
+      res.sendStatus(500);
+  }
 });
 
 metadata.put('/:id', (req, res) => {
   let table = Table.sanitize(req.body as Table);
-  if (!table)
+  if (!table || table.id != req.params.id)
     res.sendStatus(400);
-  else if (table.id != req.params.id)
-    res.sendStatus(400);
-  else {
-    let index = dummy.findIndex(t => t.id === table.id);
-    if (index == -1)
-      res.sendStatus(404);
-    else {
-      dummy[index] = table;
-      res.json(table);
-    }
+
+  try {
+    driver.update(table);
+    res.sendStatus(200);
+  } catch (e) {
+    if (Number(e) !== NaN)
+      res.sendStatus(Number(e));
+    else
+      res.sendStatus(500);
   }
 });
 
 metadata.delete('/:id', (req, res) => {
-  let index = dummy.findIndex(t => t.id === req.params.id);
-
-  if (index == -1)
-    res.sendStatus(404);
-  else {
-    dummy.splice(index, 1);
+  try {
+    driver.delete(req.params.id);
     res.sendStatus(200);
+  } catch (e) {
+    if (Number(e) !== NaN)
+      res.sendStatus(Number(e));
+    else
+      res.sendStatus(500);
   }
 });
 
