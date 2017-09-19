@@ -1,44 +1,70 @@
-import { Client, QueryResult } from 'pg';
+import { Pool, Client, QueryResult } from 'pg';
 
 import { TableProposal, Table, Column } from '../../shared/metadata.model';
 
-let dummy: Table[] = [
-  new Table('99ea308a-4fc9-4daa-90ae-6138ca47e62c', 'Employees', [Column.createIdColumn()]),
-  new Table('6a29a500-ef83-4eb5-b76a-d580a26613d4', 'Products', [Column.createIdColumn()])
-];
+const GETALL_STMT = "SELECT id, name, columns FROM metadata.lists;";
+const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
+const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, columns = $3 WHERE id = $1;";
+const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, '[]');";
+const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
+
+let credentials = require('../../dbCredentials.json');
+let pool = new Pool(credentials);
+
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err)
+  process.exit(-1)
+})
+
+pool.connect().catch(e => {
+  console.log(e);
+  process.exit(-1);
+});
 
 export class MetadataDriver {
-
-  getAll(): Table[] {
-    return dummy;
+  getAll(): Promise<Table[]> {
+    return pool.query(GETALL_STMT).then(qr => qr.rows as Table[]);
   }
 
-  get(uuid: string): Table {
-    let t = dummy.find(t => t.id === uuid);
-    if (!t)
-      throw 404;
-    return t;
+  get(uuid: string): Promise<Table> {
+    return pool.query(GET_STMT, [uuid])
+      .then(qr => qr.rows as Table[])
+      .then((tables): Promise<Table> => {
+        if (tables.length < 1)
+          return Promise.reject(404);
+        else
+          return Promise.resolve(tables[0]);
+      })
   }
 
-  add(tp: TableProposal): void {
-    let t = Table.createDefault(tp.name);
-    dummy.push(t);
+  add(tp: TableProposal): Promise<any> {
+    let id = Table.generateUUID();
+    return pool.query(INSERT_STMT, [id, tp.name])
+      .then(qr => {
+        if (qr.rowCount < 1)
+          return Promise.reject(400);
+        else
+          return Promise.resolve(null);
+      });
   }
 
-  update(table: Table): void {
-    let index = dummy.findIndex(t => t.id === table.id);
-    if (index == -1)
-      throw 404;
-    else
-      dummy[index] = table;
+  update(table: Table): Promise<any> {
+    return pool.query(UPDATE_STMT, [table.id, table.name, JSON.stringify(table.columns)])
+      .then(qr => {
+        if (qr.rowCount < 1)
+          return Promise.reject(404);
+        else
+          return Promise.resolve(null);
+      });
   }
 
-  delete(uuid: string): void {
-    let index = dummy.findIndex(t => t.id === uuid);
-
-    if (index == -1)
-      throw 404;
-    else
-      dummy.splice(index, 1);
+  delete(uuid: string): Promise<any> {
+    return pool.query(DELETE_STMT, [uuid])
+      .then(qr => {
+        if (qr.rowCount < 1)
+          return Promise.reject(404);
+        else
+          return Promise.resolve(null);
+      });
   }
 }

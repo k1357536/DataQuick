@@ -38,8 +38,6 @@ export class Column {
   public static sanitize(col: Column): Column {
     const nameRegEx = /^[\w ]+$/;
 
-    console.log([col.name, ColumnType.getById(col.type)]);
-
     if (col.name != null
       && col.name.length > 0
       && nameRegEx.test(col.name)
@@ -66,18 +64,6 @@ export class Table {
   constructor(public id: string = '',
     public name: string = '',
     public columns: Column[] = []) { }
-
-  public static createDefault(name?: string, uuid?: string): Table {
-    let tbl = new Table();
-    if (name != null)
-      tbl.name = name;
-    if (uuid != null)
-      tbl.id = uuid;
-    else
-      tbl.id = Table.generateUUID();
-    tbl.columns.push(Column.createIdColumn());
-    return tbl;
-  }
 
   // TODO
   public toSQL(): string {
@@ -124,7 +110,7 @@ export class Table {
       return null;
   }
 
-  private static generateUUID(): string { // Public Domain/MIT
+  public static generateUUID(): string { // Public Domain/MIT
     let d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
       d += performance.now(); //use high-precision timer if available

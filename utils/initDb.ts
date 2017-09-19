@@ -16,17 +16,18 @@ client.connect().then(() => {
     client.query('CREATE SCHEMA metadata AUTHORIZATION "' + credentials.user + '";')
   ])
 }).then(qr => {
-  console.log("create tables");
+  console.log("create table lists");
   return client.query('CREATE TABLE metadata.lists ('
-    + 'sqlName uuid PRIMARY KEY, '
-    + 'prettyName varchar(20) NOT NULL, '
+    + 'id uuid PRIMARY KEY, '
+    + 'name varchar(20) NOT NULL, '
     + 'columns jsonb NOT NULL, '
-    + 'UNIQUE(prettyName))');
+    + 'UNIQUE(name))');
 }).then(qr => {
+  console.log("create table dependencies");
   return client.query('CREATE TABLE metadata.dependencies ('
-    + 'pk uuid REFERENCES metadata.lists(sqlName) ON DELETE RESTRICT, '
-    + 'fk uuid REFERENCES metadata.lists(sqlName) ON DELETE CASCADE, '
-    + 'PRIMARY KEY(pk, fk))');
+    + 'reference uuid REFERENCES metadata.lists(id) ON DELETE CASCADE, '
+    + 'tgt uuid REFERENCES metadata.lists(id) ON DELETE RESTRICT, '
+    + 'PRIMARY KEY(reference, tgt))');
 }).then(qr => {
   console.log("done");
   process.exit()
