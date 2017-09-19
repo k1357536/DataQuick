@@ -1,41 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { Table, Column, ColumnType } from '../../shared/metadata.model'
+import { ActivatedRoute, ParamMap } from '@angular/router';
+
+import { Location } from '@angular/common';
+
+import { Table, Column, ColumnType } from '../../shared/metadata.model';
+import { MetadataService } from '../services/metadata.service';
+
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/of';
 
 @Component({
-  selector: 'table-editor',
   templateUrl: './table-editor.component.html'
 })
 
-export class TableEditorComponent {
+export class TableEditorComponent implements OnInit {
   readonly columnTypes = ColumnType.ALL_TYPES;
 
-  readonly table: Table = Table.createDefault("Table 1");
+  @Input() table: Table;
   tableSQL: string = "";
 
+  constructor(
+    private metadataService: MetadataService,
+    private location: Location,
+    private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.route.paramMap
+      .switchMap((params: ParamMap) => Observable.of(params.get('id')))
+      .switchMap((p: string) => this.metadataService.getTable(p))
+      .subscribe(table => this.table = table);
+  }
+
   add(): void {
-    this.table.columns.push(new Column("", ColumnType.STRING, false, false));
+    this.table.columns.push(new Column("", ColumnType.STRING.id, false, false));
   }
 
   changeType(col: Column, typeId: number): void {
-    col.type = ColumnType.getById(typeId);
+    col.type = typeId;
   }
 
   save(): void {
-    this.tableSQL = 'CEATE TABLE "' + this.table.name + '" (';
-    let b = false;
-    for (let col of this.table.columns) {
-      if (b)
-        this.tableSQL += ", ";
+    this.metadataService
+      .updateTable(this.table)
+      .then(() => this.goBack()).catch(e => this.tableSQL = e);
+  }
 
-      this.tableSQL += '"' + col.sqlName + '" ';
-      if (col.key)
-        this.tableSQL += "PRIMARY KEY ";
-
-      this.tableSQL += col.type.sqlName;
-
-      b = true;
-    }
-    this.tableSQL += ");";
+  goBack(): void {
+    this.location.back();
   }
 }

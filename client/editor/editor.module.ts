@@ -7,22 +7,26 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 
+import { TableListComponent } from './table-list.component';
 import { TableEditorComponent } from './table-editor.component';
+
+import { MetadataService } from '../services/metadata.service';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    InMemoryWebApiModule,
     NgbModule
   ],
   declarations: [
+    TableListComponent,
     TableEditorComponent
   ],
   bootstrap: [
   ],
   providers: [
+    MetadataService
   ],
   exports: [
     TableEditorComponent

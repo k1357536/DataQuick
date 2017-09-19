@@ -1,0 +1,43 @@
+<h1>Table&nbsp;<small class="text-muted">List</small></h1>
+
+<div class="display-2" *ngIf="!tables">
+  Loading...
+</div>
+<table class="table" *ngIf="tables">
+  <thead>
+    <tr class="d-sm-none">
+      <th>Name</th>
+      <th colspan="2">Columns</th>
+    </tr>
+    <tr>
+      <th class="d-none d-sm-table-cell">Id</th>
+      <th class="d-none d-sm-table-cell">Name</th>
+      <th class="d-none d-sm-table-cell" colspan="2">Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let table of tables; trackBy: trackById">
+      <tr class="d-sm-none">
+        <td (click)="onSelect(table.id)">{{table.name}}</td>
+        <td>{{table.columns.length}}</td>
+        <td><button class="btn btn-light" (click)="delete(table); $event.stopPropagation();">x</button></td>
+      </tr>
+      <tr>
+        <td class="d-none d-sm-table-cell"><small><code>{{table.id}}</code></small></td>
+        <td class="d-none d-sm-table-cell" (click)="onSelect(table.id)">{{table.name}}</td>
+        <td class="d-none d-sm-table-cell">{{table.columns.length}}</td>
+        <td class="d-none d-sm-table-cell"><button class="btn btn-light" (click)="delete(table); $event.stopPropagation();">x</button></td>
+      </tr>
+    </ng-container>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>
+        <input type="text" class="form-control" [(ngModel)]="newName">
+      </th>
+      <th colspan="3">
+        <button class="btn" (click)="add();">Add</button>
+      </th>
+    </tr>
+  </tfoot>
+</table>
