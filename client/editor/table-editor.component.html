@@ -1,8 +1,13 @@
 <h1>Table&nbsp;<small class="text-muted">Edit</small></h1>
 
-<div *ngIf="!table" class="display-2">
+<div *ngIf="!table && !errorMsg" class="alert alert-info">
   Loading...
 </div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
 <div *ngIf="table">
   <div class="form-group row">
     <label for="tableName" class="col-md-2 col-form-label">Table Name</label>
@@ -88,5 +93,4 @@
         </th>
     </tfoot>
   </table>
-  <span>{{tableSQL}}</span>
 </div>

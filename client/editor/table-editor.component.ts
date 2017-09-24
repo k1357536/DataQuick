@@ -20,7 +20,7 @@ export class TableEditorComponent implements OnInit {
   readonly columnTypes = ColumnType.ALL_TYPES;
 
   @Input() table: Table;
-  tableSQL: string = "";
+  errorMsg: string = null;
 
   constructor(
     private metadataService: MetadataService,
@@ -31,7 +31,7 @@ export class TableEditorComponent implements OnInit {
     this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
       .switchMap((p: string) => this.metadataService.getTable(p))
-      .subscribe(table => this.table = table);
+      .subscribe(table => this.table = table, e => this.errorMsg = e);
   }
 
   add(): void {
@@ -42,10 +42,14 @@ export class TableEditorComponent implements OnInit {
     col.type = typeId;
   }
 
-  save(): void {
-    this.metadataService
-      .updateTable(this.table)
-      .then(() => this.goBack()).catch(e => this.tableSQL = e);
+  async save(): Promise<void> {
+    if (this.table)
+      try {
+        await this.metadataService.updateTable(this.table);
+        this.goBack();
+      } catch (e) {
+        this.errorMsg = e;
+      }
   }
 
   goBack(): void {

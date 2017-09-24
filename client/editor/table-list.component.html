@@ -1,8 +1,13 @@
 <h1>Table&nbsp;<small class="text-muted">List</small></h1>
 
-<div class="display-2" *ngIf="!tables">
+<div *ngIf="!tables && !errorMsg" class="alert alert-info">
   Loading...
 </div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
 <table class="table" *ngIf="tables">
   <thead>
     <tr class="d-sm-none">

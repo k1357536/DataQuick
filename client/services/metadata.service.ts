@@ -20,47 +20,25 @@ export class MetadataService {
       .map(response => response.json().data as Table[]);
   }*/
 
-  getTable(uuid: string): Promise<Table> {
-    return this.http.get(this.url + uuid)
-      .toPromise()
-      .then(response => response.json() as Table)
-      .catch(this.handleError);
+  async getTable(uuid: string): Promise<Table> {
+    const response = await this.http.get(this.url + uuid).toPromise();
+    return response.json() as Table;
   }
 
-  getTables(): Promise<Table[]> {
-    return this.http.get(this.url)
-      .toPromise()
-      .then(response => response.json() as Table[])
-      .catch(this.handleError);
+  async getTables(): Promise<Table[]> {
+    const response = await this.http.get(this.url).toPromise();
+    return response.json() as Table[];
   }
 
-  addTable(p: TableProposal): Promise<any> {
-    return this.http.post(this.url,
-      JSON.stringify(p),
-      { headers: this.headers })
-      .toPromise()
-      .then(response => null)
-      .catch(this.handleError);
+  async addTable(p: TableProposal): Promise<void> {
+    await this.http.post(this.url, JSON.stringify(p), { headers: this.headers }).toPromise();
   }
 
-  updateTable(table: Table): Promise<any> {
-    return this.http.put(this.url + table.id,
-      JSON.stringify(table),
-      { headers: this.headers })
-      .toPromise()
-      .then(response => null)
-      .catch(this.handleError);
+  async updateTable(table: Table): Promise<void> {
+    await this.http.put(this.url + table.id, JSON.stringify(table), { headers: this.headers }).toPromise();
   }
 
-  deleteTable(table: Table): Promise<any> {
-    return this.http.delete(this.url + table.id)
-      .toPromise()
-      .then(response => null)
-      .catch(this.handleError);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+  async deleteTable(table: Table): Promise<void> {
+    await this.http.delete(this.url + table.id).toPromise();
   }
 }

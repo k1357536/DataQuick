@@ -12,36 +12,50 @@ import { MetadataService } from '../services/metadata.service';
 export class TableListComponent implements OnInit {
   tables: Table[];
   newName: string;
+  errorMsg: string = null;
 
   constructor(
     private router: Router,
     private metadataService: MetadataService) { }
 
-  ngOnInit(): void {
-    this.getTables();
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.getTables();
+    } catch (e) {
+      this.errorMsg = e;
+    }
   }
 
   onSelect(id: string): void {
     this.router.navigate(['/editor/editor', id]);
   }
 
-  add(): void {
-    this.metadataService
-      .addTable(new TableProposal(this.newName))
-      .then(t => this.getTables());
+  async add(): Promise<void> {
+    try {
+      await this.metadataService.addTable(new TableProposal(this.newName));
+      await this.getTables();
+      this.newName = "";
+    }
+    catch (e) {
+      this.errorMsg = e;
+    }
   }
 
-  delete(tbl: Table): void {
-    this.metadataService
-      .deleteTable(tbl)
-      .then(t => this.getTables());
+  async delete(tbl: Table): Promise<void> {
+    try {
+      await this.metadataService.deleteTable(tbl);
+      await this.getTables();
+    }
+    catch (e) {
+      this.errorMsg = e;
+    }
   }
 
   trackById(index: number, table: Table): number {
     return index; // TODO
   }
 
-  private getTables(): void {
-    this.metadataService.getTables().then(tables => this.tables = tables);
+  private async getTables(): Promise<void> {
+    this.tables = await this.metadataService.getTables();
   }
 }

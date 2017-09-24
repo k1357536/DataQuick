@@ -5,7 +5,7 @@ import * as path from 'path';
 
 import * as  metadataApi from './api/metadata.api';
 
-let app = express();
+const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
