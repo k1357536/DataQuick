@@ -94,3 +94,13 @@
     </tfoot>
   </table>
 </div>
+
+<div *ngIf="msgs" class="alert alert-success">
+  <h4 class="alert-heading">Data:</h4>
+  <hr />
+  <ol>
+    <li *ngFor="let m of msgs; let i=index; trackBy:trackByIndex">
+      {{m}}
+    </li>
+  </ol>
+</div>

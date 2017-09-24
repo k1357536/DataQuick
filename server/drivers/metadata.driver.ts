@@ -37,13 +37,15 @@ export class MetadataDriver {
     return tables[0];
   }
 
-  async add(tp: TableProposal): Promise<void> {
+  async add(tp: TableProposal): Promise<Table> {
     const id = Table.generateUUID();
     const cols = [Column.createIdColumn()];
     const { rowCount } = await pool.query(INSERT_STMT, [id, tp.name, JSON.stringify(cols)]);
 
     if (rowCount < 1)
       throw 400;
+
+    return await this.get(id);
   }
 
   async update(table: Table): Promise<void> {

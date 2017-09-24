@@ -5,7 +5,9 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Table, Column, ColumnType } from '../../shared/metadata.model';
+
 import { MetadataService } from '../services/metadata.service';
+import { DataService } from '../services/data.service';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -21,8 +23,10 @@ export class TableEditorComponent implements OnInit {
 
   @Input() table: Table;
   errorMsg: string = null;
+  msgs: string[] = null;
 
   constructor(
+    private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
     private route: ActivatedRoute) { }
@@ -30,8 +34,13 @@ export class TableEditorComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
-      .switchMap((p: string) => this.metadataService.getTable(p))
-      .subscribe(table => this.table = table, e => this.errorMsg = e);
+      .subscribe(id => this.load(id), e => this.errorMsg = e);
+  }
+
+  async load(id: string): Promise<void> {
+    const table = await this.metadataService.getTable(id);
+    this.table = table;
+    this.dataService.getAll(table).then(d => this.msgs = d.map(l => JSON.stringify(l)));
   }
 
   add(): void {

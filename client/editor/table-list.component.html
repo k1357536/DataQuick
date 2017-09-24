@@ -17,7 +17,8 @@
     <tr>
       <th class="d-none d-sm-table-cell">Id</th>
       <th class="d-none d-sm-table-cell">Name</th>
-      <th class="d-none d-sm-table-cell" colspan="2">Columns</th>
+      <th class="d-none d-sm-table-cell">Columns</th>
+      <th class="d-none d-sm-table-cell" colspan="2">Rows</th>
     </tr>
   </thead>
   <tbody>
@@ -30,7 +31,8 @@
       <tr>
         <td class="d-none d-sm-table-cell"><small><code>{{table.id}}</code></small></td>
         <td class="d-none d-sm-table-cell" (click)="onSelect(table.id)">{{table.name}}</td>
-        <td class="d-none d-sm-table-cell">{{table.columns.length}}</td>
+        <td class="d-none d-sm-table-cell text-right">{{table.columns.length}}</td>
+        <td class="d-none d-sm-table-cell text-right">{{table.rows}}</td>
         <td class="d-none d-sm-table-cell"><button class="btn btn-light" (click)="delete(table); $event.stopPropagation();">x</button></td>
       </tr>
     </ng-container>
@@ -40,7 +42,7 @@
       <th>
         <input type="text" class="form-control" [(ngModel)]="newName">
       </th>
-      <th colspan="3">
+      <th colspan="4">
         <button class="btn" (click)="add();">Add</button>
       </th>
     </tr>

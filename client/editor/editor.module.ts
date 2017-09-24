@@ -11,6 +11,7 @@ import { TableListComponent } from './table-list.component';
 import { TableEditorComponent } from './table-editor.component';
 
 import { MetadataService } from '../services/metadata.service';
+import { DataService } from '../services/data.service';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { MetadataService } from '../services/metadata.service';
   bootstrap: [
   ],
   providers: [
-    MetadataService
+    MetadataService,
+    DataService
   ],
   exports: [
     TableEditorComponent
