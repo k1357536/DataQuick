@@ -1,6 +1,7 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { TableProposal, Table, Column } from '../../shared/metadata.model';
+import { Table, Column, Columns } from '../../shared/metadata.model';
+import { Utils } from '../utils';
 
 const GETALL_STMT = "SELECT id, name, columns FROM metadata.lists;";
 const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
@@ -24,23 +25,22 @@ pool.connect().catch(e => {
 export class MetadataDriver {
   async getAll(): Promise<Table[]> {
     const { rows } = await pool.query(GETALL_STMT);
-    return rows as Table[];
+    return rows;
   }
 
   async get(uuid: string): Promise<Table> {
     const { rows } = await pool.query(GET_STMT, [uuid]);
-    const tables = rows as Table[];
 
-    if (tables.length < 1)
+    if (rows.length < 1)
       throw 404;
 
-    return tables[0];
+    return rows[0];
   }
 
-  async add(tp: TableProposal): Promise<Table> {
-    const id = Table.generateUUID();
-    const cols = [Column.createIdColumn()];
-    const { rowCount } = await pool.query(INSERT_STMT, [id, tp.name, JSON.stringify(cols)]);
+  async add(name: string): Promise<Table> {
+    const id = Utils.generateUUID();
+    const cols = [Columns.createIdColumn()];
+    const { rowCount } = await pool.query(INSERT_STMT, [id, name, JSON.stringify(cols)]);
 
     if (rowCount < 1)
       throw 400;

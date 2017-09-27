@@ -9,7 +9,8 @@ interface LoadData {
 }
 
 module.exports.translate = function(load: LoadData) {
-  if (load.source.indexOf('moduleId') != -1) return load;
+  if (load.source.indexOf('moduleId') !== -1)
+    return load;
 
   let url = document.createElement('a');
   url.href = load.address;
@@ -45,7 +46,7 @@ module.exports.translate = function(load: LoadData) {
       urlMatch = stringRegex.exec(relativeUrls);
     }
 
-    return "styleUrls: [" + urls.join(', ') + "]";
+    return 'styleUrls: [' + urls.join(', ') + ']';
   });
 
   return load;

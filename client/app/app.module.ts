@@ -7,8 +7,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-
 import { AppComponent } from './app.component';
 import { AppNavComponent } from './app-nav.component';
 import { DashboardComponent } from './dashboard.component';
@@ -20,7 +18,6 @@ import { EditorModule } from '../editor/editor.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    //InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
     NgbModule.forRoot(),
     EditorModule

@@ -18,7 +18,7 @@ app.use('/api/data', DataApi());
 app.use('/api/metadata', MetadataApi());
 
 app.get('*', (req, res, next) => {
-  if (req.accepts().find(m => m == 'text/html')) {
+  if (req.accepts().find(m => m === 'text/html')) {
     res.sendFile(path.join(__dirname, '../client/index.html'));
   } else
     res.send(404);

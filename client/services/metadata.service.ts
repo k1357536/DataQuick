@@ -30,7 +30,8 @@ export class MetadataService {
     return response.json() as Table[];
   }
 
-  async addTable(p: TableProposal): Promise<void> {
+  async addTable(name: string): Promise<void> {
+    const p: TableProposal = { name };
     await this.http.post(this.url, JSON.stringify(p), { headers: this.headers }).toPromise();
   }
 

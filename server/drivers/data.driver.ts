@@ -30,7 +30,6 @@ export class DataDriver {
 
   private static toTableName(id: string): string {
     const name = 't' + id.replace(/\-/g, '_');
-    console.log(name);
     return name;
   }
 

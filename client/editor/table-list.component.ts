@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { TableProposal, Table, Column, ColumnType } from '../../shared/metadata.model';
+import { TableProposal, Table, Column, ColumnType, ColumnTypes } from '../../shared/metadata.model';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
@@ -38,7 +38,7 @@ export class TableListComponent implements OnInit {
 
   async add(): Promise<void> {
     try {
-      await this.metadataService.addTable(new TableProposal(this.newName));
+      await this.metadataService.addTable(this.newName);
       await this.getTables();
       this.newName = "";
     }

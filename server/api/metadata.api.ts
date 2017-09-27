@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Router, Response } from 'express';
 
 import { TableProposal, Table, Column } from '../../shared/metadata.model';
+import { Utils } from '../utils';
 
 import { MetadataDriver } from '../drivers/metadata.driver';
 import { DataDriver } from '../drivers/data.driver';
@@ -38,7 +39,11 @@ export function MetadataApi(): Router {
 
   metadata.post('/', async (req, res) => {
     try {
-      const newTable = await driver.add(req.body as TableProposal);
+      const p: TableProposal = req.body;
+      if (!p.name || typeof p.name !== 'string')
+        throw 400;
+
+      const newTable = await driver.add(p.name);
       await dataDriver.create(newTable);
       res.sendStatus(200);
     }
@@ -49,7 +54,7 @@ export function MetadataApi(): Router {
 
   metadata.put('/:id', async (req, res) => {
     try {
-      const table = Table.sanitize(req.body as Table);
+      const table = Utils.sanitizeTable(req.body);
       if (!table || table.id != req.params.id)
         res.sendStatus(400);
 

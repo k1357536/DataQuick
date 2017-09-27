@@ -1,9 +1,7 @@
 {
+  "extends": "../base.tsconfig.json",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "noImplicitAny": true
+    "target": "ES2016",
+    "lib": ["ES2016"]
   }
 }

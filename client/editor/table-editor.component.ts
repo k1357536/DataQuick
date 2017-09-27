@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { Table, Column, ColumnType } from '../../shared/metadata.model';
+import { Table, Column, Columns, ColumnType, ColumnTypes } from '../../shared/metadata.model';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
@@ -19,7 +19,7 @@ import 'rxjs/add/observable/of';
 })
 
 export class TableEditorComponent implements OnInit {
-  readonly columnTypes = ColumnType.ALL_TYPES;
+  readonly columnTypes = ColumnTypes.ALL;
 
   @Input() table: Table;
   errorMsg: string = null;
@@ -44,7 +44,7 @@ export class TableEditorComponent implements OnInit {
   }
 
   add(): void {
-    this.table.columns.push(new Column("", ColumnType.STRING.id, false, false));
+    this.table.columns.push(Columns.create(""));
   }
 
   changeType(col: Column, typeId: number): void {

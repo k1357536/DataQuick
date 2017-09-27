@@ -1,124 +1,54 @@
-export class ColumnType {
-  constructor(
-    public readonly id: number,
-    public readonly name: string,
-    public readonly sqlName: string) { }
+export enum ColumnType {
+  AUTO = 0,
+  NUMBER = 1,
+  STRING = 2,
+  DATE = 3,
+  BOOL = 4
+}
 
-  public static readonly AUTO: ColumnType = new ColumnType(0, 'Auto Increment', 'INT AUTO INCREMENT');
-  public static readonly NUMBER: ColumnType = new ColumnType(1, 'Number', 'INT');
-  public static readonly STRING: ColumnType = new ColumnType(2, 'Text', 'STRING');
-  public static readonly DATE: ColumnType = new ColumnType(3, 'Date', 'DATE');
-  public static readonly BOOL: ColumnType = new ColumnType(4, 'Yes/No', 'BOOLEAN');
+export module ColumnTypes {
+  export interface ColumnDescription {
+    id: ColumnType;
+    name: string;
+    sqlName: string;
+  }
 
-  public static readonly ALL_TYPES: ColumnType[] = [
-    ColumnType.AUTO,
-    ColumnType.NUMBER,
-    ColumnType.STRING,
-    ColumnType.DATE,
-    ColumnType.BOOL
+  export const ALL: ColumnDescription[] = [
+    { id: ColumnType.AUTO, name: 'Auto Increment', sqlName: 'INT AUTO INCREMENT' },
+    { id: ColumnType.NUMBER, name: 'Number', sqlName: 'INT' },
+    { id: ColumnType.STRING, name: 'Text', sqlName: 'STRING' },
+    { id: ColumnType.DATE, name: 'Date', sqlName: 'DATE' },
+    { id: ColumnType.BOOL, name: 'Yes/No', sqlName: 'BOOLEAN' },
   ];
 
-  public static getById(id: number): ColumnType {
-    return ColumnType.ALL_TYPES.find((t) => t.id == id);
+  export function get(id: ColumnType): ColumnDescription {
+    return ColumnTypes.ALL.find((t) => t.id === id);
   }
 }
 
-export class Column {
-  constructor(
-    public name: string,
-    public type: number,
-    public readonly: boolean,
-    public key: boolean) { }
+export interface Column {
+  name: string;
+  type: number;
+  readonly: boolean;
+  key: boolean;
+}
 
-  public get sqlName(): string {
-    return this.name.replace(' ', '_');
+export module Columns {
+  export function createIdColumn(): Column {
+    return { name: 'Id', type: ColumnTypes.get(ColumnType.AUTO).id, readonly: true, key: true };
   }
 
-  // TODO
-  public static sanitize(col: Column): Column {
-    const nameRegEx = /^[\w ]+$/;
-
-    if (col.name != null
-      && col.name.length > 0
-      && nameRegEx.test(col.name)
-      && col.type != null
-      && Number(col.type) !== NaN
-      && ColumnType.getById(col.type) != null
-      && col.readonly != null
-      && col.key != null)
-      return new Column(col.name, Number(col.type), col.readonly, col.key);
-    else
-      return null;
-  }
-
-  public static createIdColumn(): Column {
-    return new Column('Id', ColumnType.AUTO.id, true, true);
+  export function create(name: string): Column {
+    return { name, type: ColumnType.STRING, key: false, readonly: false }
   }
 }
 
-export class TableProposal {
-  constructor(public name: string = '') { }
+export interface TableProposal {
+  name: string;
 }
 
-export class Table {
-  constructor(public id: string = '',
-    public name: string = '',
-    public columns: Column[] = []) { }
-
-  // TODO
-  public toSQL(): string {
-    let tableSQL = 'CEATE TABLE "' + this.name + '" (';
-    let b = false;
-    for (let col of this.columns) {
-      if (b)
-        tableSQL += ", ";
-
-      tableSQL += '"' + col.sqlName + '" ';
-      if (col.key)
-        tableSQL += "PRIMARY KEY ";
-
-      let t = ColumnType.getById(col.type);
-      if (t)
-        tableSQL += t.sqlName;
-      else
-        tableSQL += ColumnType.NUMBER.sqlName; // TODO
-
-      b = true;
-    }
-    tableSQL += ");";
-    return tableSQL;
-  }
-
-  public static sanitize(tbl: Table): Table {
-    const nameRegEx = /^[\w ]+$/;
-    const idRegEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-
-    if (tbl.name
-      && tbl.name.length > 0
-      && nameRegEx.test(tbl.name)
-      && tbl.id
-      && idRegEx.test(tbl.id)
-      && tbl.columns
-      && tbl.columns instanceof Array) {
-      let t = new Table(tbl.id, tbl.name);
-      t.columns = tbl.columns.map(c => Column.sanitize(c));
-      if (t.columns.filter(c => c === null).length > 0)
-        return null;
-      else
-        return t;
-    } else
-      return null;
-  }
-
-  public static generateUUID(): string { // Public Domain/MIT
-    let d = new Date().getTime();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
-      d += performance.now(); //use high-precision timer if available
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      let r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-  }
+export interface Table {
+  id: string;
+  name: string;
+  columns: Column[];
 }

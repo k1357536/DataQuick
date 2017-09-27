@@ -5,8 +5,6 @@ import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-
 import { TableListComponent } from './table-list.component';
 import { TableEditorComponent } from './table-editor.component';
 
