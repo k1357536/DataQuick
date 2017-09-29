@@ -1,6 +1,7 @@
 import { Client } from 'pg';
 
 (async () => {
+  try {
   let credentials = require('../dbCredentials.json');
   let client = new Client(credentials);
   await client.connect();
@@ -29,4 +30,7 @@ import { Client } from 'pg';
 
   console.log('done');
   await client.end();
+  } catch(e) {
+    console.log(e);
+  }
 })();

@@ -1,0 +1,7 @@
+#!/bin/bash
+$USR = `whoami`
+sudo su postgres
+initdb -D /var/lib/postgresql/DataQuick
+pg_ctl -D /var/lib/postgresql/DataQuick -l logfile start
+createuser $USR
+createdb -O $USR $USR
