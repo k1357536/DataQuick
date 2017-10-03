@@ -16,7 +16,6 @@
     "clean:js": "rimraf 'client/**/*.js' 'server/**/*.js' 'shared/**/*.js' 'utils/**/*.js'",
     "clean:map": "rimraf 'client/**/*.js.map' 'server/**/*.js.map' 'shared/**/*.js.map' 'utils/**/*.js.map'",
     "serve": "nodemon server/server.js -watch server -watch client",
-    "prestart": "npm run build",
     "start": "concurrently \"npm run build:watch\" \"npm run serve\"",
     "lint": "tslint ./**/*.ts -t verbose",
     "setup": "node utils/initDb.js"
