@@ -26,14 +26,14 @@
       <tr class="d-sm-none">
         <td (click)="onSelect(table.id)">{{table.name}}</td>
         <td>{{table.columns.length}}</td>
-        <td><button class="btn btn-light" (click)="delete(table); $event.stopPropagation();">x</button></td>
+        <td><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>
       </tr>
       <tr>
         <td class="d-none d-sm-table-cell"><small><code>{{table.id}}</code></small></td>
         <td class="d-none d-sm-table-cell" (click)="onSelect(table.id)">{{table.name}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.columns.length}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.rows}}</td>
-        <td class="d-none d-sm-table-cell"><button class="btn btn-light" (click)="delete(table); $event.stopPropagation();">x</button></td>
+        <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>
       </tr>
     </ng-container>
   </tbody>
@@ -43,7 +43,7 @@
         <input type="text" class="form-control" [(ngModel)]="newName">
       </th>
       <th colspan="4">
-        <button class="btn" (click)="add();">Add</button>
+        <button class="btn btn-outline-dark" (click)="add();">Add</button>
       </th>
     </tr>
   </tfoot>

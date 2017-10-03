@@ -25,36 +25,33 @@ export class TableListComponent implements OnInit {
     private metadataService: MetadataService) { }
 
   async ngOnInit(): Promise<void> {
-    try {
-      await this.getTables();
-    } catch (e) {
-      this.errorMsg = e;
-    }
+    await this.getTables();
   }
 
   onSelect(id: string): void {
-    this.router.navigate(['/manager/editor', id]);
+    this.router.navigate(['/manager', id]);
   }
 
   async add(): Promise<void> {
     try {
       await this.metadataService.addTable(this.newName);
-      await this.getTables();
-      this.newName = "";
     }
     catch (e) {
       this.errorMsg = e;
+    } finally {
+      this.newName = "";
     }
+    await this.getTables();
   }
 
   async delete(tbl: Table): Promise<void> {
     try {
       await this.metadataService.deleteTable(tbl);
-      await this.getTables();
     }
     catch (e) {
       this.errorMsg = e;
     }
+    await this.getTables();
   }
 
   trackById(index: number, table: Table): number {
@@ -62,10 +59,15 @@ export class TableListComponent implements OnInit {
   }
 
   private async getTables(): Promise<void> {
-    this.tables = await this.metadataService.getTables() as TableEx[];
-    this.tables.forEach(async tbl => {
-      const rows = await this.dataService.countRows(tbl);
-      tbl.rows = rows;
-    });
+    try {
+      this.tables = await this.metadataService.getTables() as TableEx[];
+      this.tables.forEach(async tbl => {
+        const rows = await this.dataService.countRows(tbl);
+        tbl.rows = rows;
+      });
+    }
+    catch (e) {
+      this.errorMsg = e;
+    }
   }
 }
