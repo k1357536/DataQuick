@@ -32,4 +32,4 @@ import { DataService } from '../services/data.service';
     TableEditorComponent
   ]
 })
-export class EditorModule { }
+export class ManagerModule { }

@@ -42,7 +42,7 @@
           }
         }
       },
-      editor: {
+      manager: {
         defaultExtension: 'js',
         meta: {
           './*.js': {

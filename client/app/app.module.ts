@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { AppNavComponent } from './app-nav.component';
 import { DashboardComponent } from './dashboard.component';
 
-import { EditorModule } from '../editor/editor.module';
+import { ManagerModule } from '../manager/manager.module';
 
 @NgModule({
   imports: [
@@ -20,7 +20,7 @@ import { EditorModule } from '../editor/editor.module';
     HttpModule,
     AppRoutingModule,
     NgbModule.forRoot(),
-    EditorModule
+    ManagerModule
   ],
   declarations: [
     AppComponent,

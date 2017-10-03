@@ -8,15 +8,23 @@
   <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-
       </li>
-      <li ngbDropdown class="nav-item dropdown">
+      <!--li ngbDropdown class="nav-item dropdown">
         <span ngbDropdownToggle class="nav-link dropdown-toggle" id="navBarEditorDropdown">
           Editor
         </span>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navBarEditorDropdown">
           <a class="dropdown-item" routerLink="/editor/list" routerLinkActive="active">Table List</a>
         </div>
+      </li-->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/data" routerLinkActive="active">Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/manager/list" routerLinkActive="active">Manage</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/setup" routerLinkActive="active">Setup</a>
       </li>
     </ul>
   </div>
