@@ -23,7 +23,6 @@ export class TableEditorComponent implements OnInit {
 
   @Input() table: Table;
   errorMsg: string = null;
-  msgs: string[] = null;
 
   constructor(
     private dataService: DataService,
@@ -40,7 +39,6 @@ export class TableEditorComponent implements OnInit {
   async load(id: string): Promise<void> {
     const table = await this.metadataService.getTable(id);
     this.table = table;
-    this.dataService.getAll(table).then(d => this.msgs = d.map(l => JSON.stringify(l)));
   }
 
   add(): void {
