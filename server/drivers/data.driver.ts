@@ -1,12 +1,14 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { TableProposal, Table, Column } from '../../shared/metadata.model';
+import { TableProposal, Table, Column, Columns, ColumnTypes } from '../../shared/metadata.model';
 
-const COUNT_STMT = "SELECT COUNT(*) FROM data.";
-const GETALL_STMT = "SELECT * FROM data.";
+const SCHEMA = "data";
 
-const CREATE_STMT = "CREATE TABLE data.";
-const DROP_STMT = "DROP TABLE data.";
+const COUNT_STMT = "SELECT COUNT(*) FROM ";
+const GETALL_STMT = "SELECT * FROM ";
+
+const CREATE_STMT = "CREATE TABLE ";
+const DROP_STMT = "DROP TABLE ";
 // const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
 // const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, columns = $3 WHERE id = $1;";
 // const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, $3);";
@@ -29,7 +31,7 @@ export class DataDriver {
   private static readonly idRegEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
   private static toTableName(id: string): string {
-    const name = 't' + id.replace(/\-/g, '_');
+    const name = SCHEMA + '."t' + id.replace(/\-/g, '_') + '"';
     return name;
   }
 
@@ -58,7 +60,9 @@ export class DataDriver {
       throw 400;
 
     try {
-      const qr = await pool.query(CREATE_STMT + DataDriver.toTableName(table.id) + "(Id SERIAL PRIMARY KEY, A TEXT);");
+      let sql = this.toSQL(table);
+      console.log("SQL:" + sql);
+      const qr = await pool.query(sql);
     } catch (e) {
       throw 500;
     }
@@ -69,9 +73,22 @@ export class DataDriver {
       throw 400;
 
     try {
-      const qr = await pool.query(DROP_STMT + DataDriver.toTableName(id) + ";");
+      let sql = DROP_STMT + DataDriver.toTableName(id) + ";";
+      console.log("SQL:" + sql);
+      const qr = await pool.query(sql);
     } catch (e) {
       throw 500;
     }
+  }
+
+  toSQL(table: Table): string {
+    return CREATE_STMT
+      + DataDriver.toTableName(table.id)
+      + ' ('
+      + table.columns.map(col => {
+        let s = Columns.apiName(col) + ' ';
+        return s + ColumnTypes.get(col.type).sqlName;
+      }).join(', ')
+      + ');';
   }
 }

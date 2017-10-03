@@ -14,9 +14,9 @@ export module ColumnTypes {
   }
 
   export const ALL: ColumnDescription[] = [
-    { id: ColumnType.AUTO, name: 'Auto Increment', sqlName: 'INT AUTO INCREMENT' },
+    { id: ColumnType.AUTO, name: 'Auto Increment', sqlName: 'SERIAL' },
     { id: ColumnType.NUMBER, name: 'Number', sqlName: 'INT' },
-    { id: ColumnType.STRING, name: 'Text', sqlName: 'STRING' },
+    { id: ColumnType.STRING, name: 'Text', sqlName: 'TEXT' },
     { id: ColumnType.DATE, name: 'Date', sqlName: 'DATE' },
     { id: ColumnType.BOOL, name: 'Yes/No', sqlName: 'BOOLEAN' },
   ];
@@ -40,6 +40,10 @@ export module Columns {
 
   export function create(name: string): Column {
     return { name, type: ColumnType.STRING, key: false, readonly: false }
+  }
+
+  export function apiName(col: Column): string {
+    return col.name.toLowerCase().replace(/ /g, '_');
   }
 }
 

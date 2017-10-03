@@ -55,10 +55,14 @@ export function MetadataApi(): Router {
   metadata.put('/:id', async (req, res) => {
     try {
       const table = Utils.sanitizeTable(req.body);
-      if (!table || table.id != req.params.id)
+      if (!table || table.id != req.params.id) {
+        console.log("Column JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
+      }
 
-      await driver.update(table)
+      await driver.update(table);
+      await dataDriver.drop(table.id);
+      await dataDriver.create(table);
       res.sendStatus(200);
     }
     catch (e) {
