@@ -1,0 +1,30 @@
+<h1>Table&nbsp;<small class="text-muted">List</small></h1>
+
+<div *ngIf="!tables && !errorMsg" class="alert alert-info">
+  Loading...
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<table class="table" *ngIf="tables">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-right">Entries</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let table of tables">
+      <td (click)="onSelect(table.id)">{{table.name}}</td>
+      <td class="text-right">{{table.rows}}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Number of Tables</th>
+      <th class="text-right">{{tables.length}}</th>
+    </tr>
+  </tfoot>
+</table>

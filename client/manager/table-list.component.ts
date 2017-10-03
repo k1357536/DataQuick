@@ -33,7 +33,7 @@ export class TableListComponent implements OnInit {
   }
 
   onSelect(id: string): void {
-    this.router.navigate(['/editor/editor', id]);
+    this.router.navigate(['/manager/editor', id]);
   }
 
   async add(): Promise<void> {

@@ -12,6 +12,8 @@ import { AppNavComponent } from './app-nav.component';
 import { DashboardComponent } from './dashboard.component';
 
 import { ManagerModule } from '../manager/manager.module';
+import { DataModule } from '../data/data.module';
+import { SetupModule } from '../setup/setup.module';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { ManagerModule } from '../manager/manager.module';
     HttpModule,
     AppRoutingModule,
     NgbModule.forRoot(),
-    ManagerModule
+    ManagerModule,
+    DataModule,
+    SetupModule
   ],
   declarations: [
     AppComponent,

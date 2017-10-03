@@ -6,6 +6,8 @@ import { DashboardComponent } from './dashboard.component';
 import { TableListComponent } from '../manager/table-list.component';
 import { TableEditorComponent } from '../manager/table-editor.component';
 
+import { TablesComponent } from '../data/tables.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
@@ -14,6 +16,12 @@ const routes: Routes = [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: TableListComponent },
       { path: 'editor/:id', component: TableEditorComponent }]
+  },
+  {
+    path: 'data', children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: TablesComponent }]
+      //{ path: 'editor/:id', component: TableEditorComponent }]
   }
 ];
 

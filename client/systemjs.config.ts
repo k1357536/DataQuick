@@ -66,6 +66,22 @@
           }
         }
       },
+      setup: {
+        defaultExtension: 'js',
+        meta: {
+          './*.js': {
+            loader: 'systemjs-angular-loader.js'
+          }
+        }
+      },
+      data: {
+        defaultExtension: 'js',
+        meta: {
+          './*.js': {
+            loader: 'systemjs-angular-loader.js'
+          }
+        }
+      },
       rxjs: {
         defaultExtension: 'js'
       }
