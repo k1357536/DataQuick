@@ -25,22 +25,22 @@ export class TablesComponent implements OnInit {
     private metadataService: MetadataService) { }
 
   async ngOnInit(): Promise<void> {
-    try {
-      await this.getTables();
-    } catch (e) {
-      this.errorMsg = e;
-    }
+    await this.getTables();
   }
 
   onSelect(id: string): void {
-    this.router.navigate(['/data/table', id]);
+    this.router.navigate(['/data', id]);
   }
 
   private async getTables(): Promise<void> {
-    this.tables = await this.metadataService.getTables() as TableEx[];
-    this.tables.forEach(async tbl => {
-      const rows = await this.dataService.countRows(tbl);
-      tbl.rows = rows;
-    });
+    try {
+      this.tables = await this.metadataService.getTables() as TableEx[];
+      this.tables.forEach(async tbl => {
+        const rows = await this.dataService.countRows(tbl);
+        tbl.rows = rows;
+      });
+    } catch (e) {
+      this.errorMsg = e;
+    }
   }
 }

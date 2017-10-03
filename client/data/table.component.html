@@ -1,0 +1,38 @@
+<h1>Table&nbsp;<small class="text-muted" *ngIf="table">{{table.name}}</small></h1>
+
+<div *ngIf="!table && !errorMsg" class="alert alert-info">
+  Loading...
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<div *ngIf="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th *ngFor="let col of table.columns">{{col.name}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let col of table.columns">
+          {{row[col.apiName]}}
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th [colSpan]="table.columns.length">
+          <button class="btn btn-outline-success" (click)="add();">Add</button>
+        </th>
+      </tr>
+      <tr>
+        <th colspan="3">
+          <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
+          <button class="btn btn-primary" (click)="save();">Save</button>
+        </th>
+    </tfoot>
+  </table>
+</div>

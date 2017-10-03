@@ -8,7 +8,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { TablesComponent } from './tables.component'
+import { TablesComponent } from './tables.component';
+import { TableComponent } from './table.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { TablesComponent } from './tables.component'
     NgbModule
   ],
   declarations: [
-    TablesComponent
+    TablesComponent,
+    TableComponent
   ],
   bootstrap: [
   ],
