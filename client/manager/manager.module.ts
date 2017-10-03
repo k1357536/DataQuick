@@ -29,7 +29,6 @@ import { DataService } from '../services/data.service';
     DataService
   ],
   exports: [
-    TableEditorComponent
   ]
 })
 export class ManagerModule { }
