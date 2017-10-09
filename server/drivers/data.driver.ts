@@ -5,7 +5,8 @@ import { TableProposal, Table, Column, Columns, ColumnTypes } from '../../shared
 const SCHEMA = "data";
 
 const COUNT_STMT = "SELECT COUNT(*) FROM ";
-const GETALL_STMT = "SELECT * FROM ";
+const GET_STMT = "SELECT * FROM ";
+const GET_CLAUSE = " WHERE id = $1";
 
 const CREATE_STMT = "CREATE TABLE ";
 const DROP_STMT = "DROP TABLE ";
@@ -51,8 +52,23 @@ export class DataDriver {
     if (!DataDriver.idRegEx.test(id))
       throw 400;
 
-    const { rows } = await pool.query(GETALL_STMT + DataDriver.toTableName(id) + ";");
+    const { rows } = await pool.query(GET_STMT + DataDriver.toTableName(id) + ";");
     return rows;
+  }
+
+  async get(tableId: string, entryId: string): Promise<any[]> {
+    let eid = Number(entryId);
+    if (!DataDriver.idRegEx.test(tableId) && eid != NaN)
+      throw 400;
+
+    const { rows } = await pool.query(
+      GET_STMT + DataDriver.toTableName(tableId) + GET_CLAUSE + ";",
+      [eid]);
+
+    if (rows.length < 1)
+      throw 400;
+
+    return rows[0];
   }
 
   async create(table: Table): Promise<void> {

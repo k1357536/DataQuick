@@ -29,6 +29,14 @@ export function DataApi(): Router {
       handleError(e, res);
     }
   });
+  data.get('/:id/:entry', async (req, res) => {
+    try {
+      res.json(await driver.get(req.params.id, req.params.entry));
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+  });
 
   return data;
 }

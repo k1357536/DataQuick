@@ -10,6 +10,9 @@ import { DataService } from '../services/data.service';
 
 import { TablesComponent } from './tables.component';
 import { TableComponent } from './table.component';
+import { EntryComponent } from './entry.component';
+
+import { ColumnTypePipe } from './column-type.pipe';
 
 @NgModule({
   imports: [
@@ -20,7 +23,9 @@ import { TableComponent } from './table.component';
   ],
   declarations: [
     TablesComponent,
-    TableComponent
+    TableComponent,
+    EntryComponent,
+    ColumnTypePipe
   ],
   bootstrap: [
   ],

@@ -18,8 +18,15 @@ export class DataService {
     return Number(response.text());
   }
 
-  async getAll(table: Table): Promise<any[]> {
+  async getAll(table: Table): Promise<{ id: number }[]> {
     const response = await this.http.get(this.url + table.id).toPromise();
+    if (response.status != 200)
+      throw response;
+    return response.json();
+  }
+
+  async get(tableId: string, entryId: number): Promise<{ id: number }> {
+    const response = await this.http.get(this.url + tableId + "/" + entryId).toPromise();
     if (response.status != 200)
       throw response;
     return response.json();

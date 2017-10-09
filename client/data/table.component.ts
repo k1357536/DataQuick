@@ -1,38 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { TableProposal, Table, Column, Columns, ColumnType, ColumnTypes } from '../../shared/metadata.model';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
 import { Observable } from 'rxjs/Observable';
 
-interface ColumnEx extends Column {
-  apiName: string;
-}
-
-interface TableEx extends Table {
-  columns: ColumnEx[];
-}
-
-function exTable(tbl: Table): TableEx {
-  (tbl as TableEx).columns.forEach(c => c.apiName = Columns.apiName(c));
-  return tbl as TableEx;
-}
+import { TableEx, exTable } from './utils';
 
 @Component({
   templateUrl: './table.component.html'
 })
 export class TableComponent implements OnInit {
   @Input() table: TableEx;
-  data: any[];
+  data: (any | { id: number })[];
   newName: string;
   errorMsg: string = null;
 
   constructor(
+    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
@@ -48,11 +37,19 @@ export class TableComponent implements OnInit {
 
   }
 
+  onSelect(row: { id: number }) {
+    this.router.navigate(['/data', this.table.id, String(row.id)]);
+  }
+
   async load(id: string): Promise<void> {
     await this.metadataService.getTable(id)
       .then(t => this.table = exTable(t))
       .then(t => this.dataService.getAll(t))
       .then(d => this.data = d)
-      .catch(e => this.errorMsg = e);
+      .catch(e => { this.errorMsg = e; });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
