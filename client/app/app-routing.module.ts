@@ -9,6 +9,7 @@ import { TableEditorComponent } from '../manager/table-editor.component';
 import { TablesComponent } from '../data/tables.component';
 import { TableComponent } from '../data/table.component';
 import { EntryComponent } from '../data/entry.component';
+import { EntryEditorComponent } from '../data/entry-editor.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
     path: 'data', children: [
       { path: '', component: TablesComponent },
       { path: ':id', component: TableComponent },
-      { path: ':table/:entry', component: EntryComponent }]
+      { path: ':table/:entry', component: EntryComponent },
+      { path: 'edit/:table/:entry', component: EntryEditorComponent }]
   },
   { path: 'setup', redirectTo: '/' }
 ];

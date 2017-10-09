@@ -8,18 +8,19 @@ import { Table } from '../../shared/metadata.model';
 @Injectable()
 export class DataService {
   private readonly url = 'api/data/';
+  private headers = new Headers({ 'Content-Type': 'application/json' });
 
   constructor(private http: Http) { }
 
-  async countRows(table: Table): Promise<number> {
-    const response = await this.http.get(this.url + 'count/' + table.id).toPromise();
+  async countRows(tableId: string): Promise<number> {
+    const response = await this.http.get(this.url + 'count/' + tableId).toPromise();
     if (response.status != 200)
       throw response;
     return Number(response.text());
   }
 
-  async getAll(table: Table): Promise<{ id: number }[]> {
-    const response = await this.http.get(this.url + table.id).toPromise();
+  async getAll(tableId: string): Promise<{ id: number }[]> {
+    const response = await this.http.get(this.url + tableId).toPromise();
     if (response.status != 200)
       throw response;
     return response.json();
@@ -30,5 +31,9 @@ export class DataService {
     if (response.status != 200)
       throw response;
     return response.json();
+  }
+
+  async update(tableId: string, entry: { id: number }): Promise<void> {
+    await this.http.put(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
 }

@@ -44,7 +44,7 @@ export class TableComponent implements OnInit {
   async load(id: string): Promise<void> {
     await this.metadataService.getTable(id)
       .then(t => this.table = exTable(t))
-      .then(t => this.dataService.getAll(t))
+      .then(t => this.dataService.getAll(t.id))
       .then(d => this.data = d)
       .catch(e => { this.errorMsg = e; });
   }

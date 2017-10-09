@@ -51,12 +51,9 @@ export class TableEditorComponent implements OnInit {
 
   async save(): Promise<void> {
     if (this.table)
-      try {
-        await this.metadataService.updateTable(this.table);
-        this.goBack();
-      } catch (e) {
-        this.errorMsg = e;
-      }
+      await this.metadataService.updateTable(this.table)
+        .then(() => this.goBack())
+        .catch(e => this.errorMsg = e);
   }
 
   goBack(): void {

@@ -33,24 +33,15 @@ export class TableListComponent implements OnInit {
   }
 
   async add(): Promise<void> {
-    try {
-      await this.metadataService.addTable(this.newName);
-    }
-    catch (e) {
-      this.errorMsg = e;
-    } finally {
-      this.newName = "";
-    }
+    await this.metadataService.addTable(this.newName)
+      .catch(e => this.errorMsg = e);
+    this.newName = "";
     await this.getTables();
   }
 
   async delete(tbl: Table): Promise<void> {
-    try {
-      await this.metadataService.deleteTable(tbl);
-    }
-    catch (e) {
-      this.errorMsg = e;
-    }
+    await this.metadataService.deleteTable(tbl)
+      .catch(e => this.errorMsg = e);
     await this.getTables();
   }
 
@@ -62,7 +53,7 @@ export class TableListComponent implements OnInit {
     try {
       this.tables = await this.metadataService.getTables() as TableEx[];
       this.tables.forEach(async tbl => {
-        const rows = await this.dataService.countRows(tbl);
+        const rows = await this.dataService.countRows(tbl.id);
         tbl.rows = rows;
       });
     }

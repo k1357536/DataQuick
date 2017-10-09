@@ -1,0 +1,51 @@
+<h1>Table
+  <span *ngIf="table">{{table.name}}</span>
+  <small class="text-muted">Entry
+    <span *ngIf="entry">{{entry.id}}</span>
+  </small>
+</h1>
+
+<div *ngIf="!table && !entry && !errorMsg" class="alert alert-info">
+  Loading...
+</div>
+<div *ngIf="!table && entry && !errorMsg" class="alert alert-info">
+  Loading metadata...
+</div>
+<div *ngIf="table && !entry && !errorMsg" class="alert alert-info">
+  Loading data...
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<div *ngIf="table && entry">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let col of table.columns">
+        <td>
+          {{col.name}}
+        </td>
+        <td [ngSwitch]="col.type">
+          <input *ngSwitchCase="ColumnType.NUMBER" type="number" class="form-control" [(ngModel)]="entry[col.apiName]" />
+          <input *ngSwitchCase="ColumnType.DATE" type="date" class="form-control" [(ngModel)]="entry[col.apiName]" />
+          <input *ngSwitchCase="ColumnType.BOOL" type="checkbox" class="form-control" [(ngModel)]="entry[col.apiName]" />
+          <input *ngSwitchDefault class="form-control" [(ngModel)]="entry[col.apiName]" />
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th [colSpan]="table.columns.length">
+          <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
+          <button class="btn btn-outline-primary" (click)="save();">Save</button>
+        </th>
+    </tfoot>
+  </table>
+</div>

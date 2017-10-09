@@ -7,18 +7,21 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
+import { ColumnType } from '../../shared/metadata.model';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/zip';
 
 import { TableEx, exTable } from './utils';
 
 @Component({
-  templateUrl: './entry.component.html'
+  templateUrl: './entry-editor.component.html'
 })
-export class EntryComponent implements OnInit {
+export class EntryEditorComponent implements OnInit {
   @Input() table: TableEx;
   @Input() entry: { id: number };
   errorMsg: string = null;
+  ColumnType = ColumnType; // for view
 
   constructor(
     private router: Router,
@@ -56,11 +59,9 @@ export class EntryComponent implements OnInit {
     this.location.back();
   }
 
-  edit(): void {
-    this.router.navigate(["/data/edit", this.table.id, this.entry.id]);
-  }
-
-  delete(): void {
-    this.errorMsg = "Not supported yet!";
+  save(): void {
+    this.dataService.update(this.table.id, this.entry)
+      .then(() => this.goBack())
+      .catch(e => this.errorMsg = e);
   }
 }

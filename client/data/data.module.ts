@@ -11,6 +11,7 @@ import { DataService } from '../services/data.service';
 import { TablesComponent } from './tables.component';
 import { TableComponent } from './table.component';
 import { EntryComponent } from './entry.component';
+import { EntryEditorComponent } from './entry-editor.component';
 
 import { ColumnTypePipe } from './column-type.pipe';
 
@@ -25,6 +26,7 @@ import { ColumnTypePipe } from './column-type.pipe';
     TablesComponent,
     TableComponent,
     EntryComponent,
+    EntryEditorComponent,
     ColumnTypePipe
   ],
   bootstrap: [
