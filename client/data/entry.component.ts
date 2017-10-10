@@ -57,7 +57,7 @@ export class EntryComponent implements OnInit {
   }
 
   edit(): void {
-    this.router.navigate(["/data/edit", this.table.id, this.entry.id]);
+    this.router.navigate(["/data", this.table.id, this.entry.id, "edit"]);
   }
 
   delete(): void {

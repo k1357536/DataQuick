@@ -34,7 +34,7 @@ export class TableComponent implements OnInit {
   }
 
   add(): void {
-
+    this.router.navigate(['/data', this.table.id, "add"]);
   }
 
   onSelect(row: { id: number }) {

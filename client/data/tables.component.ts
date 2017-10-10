@@ -36,7 +36,7 @@ export class TablesComponent implements OnInit {
     try {
       this.tables = await this.metadataService.getTables() as TableEx[];
       this.tables.forEach(async tbl => {
-        const rows = await this.dataService.countRows(tbl);
+        const rows = await this.dataService.countRows(tbl.id);
         tbl.rows = rows;
       });
     } catch (e) {

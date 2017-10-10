@@ -22,8 +22,9 @@ const routes: Routes = [
     path: 'data', children: [
       { path: '', component: TablesComponent },
       { path: ':id', component: TableComponent },
+      { path: ':table/add', component: EntryEditorComponent },
       { path: ':table/:entry', component: EntryComponent },
-      { path: 'edit/:table/:entry', component: EntryEditorComponent }]
+      { path: ':table/:entry/edit', component: EntryEditorComponent }]
   },
   { path: 'setup', redirectTo: '/' }
 ];

@@ -31,15 +31,22 @@ export class EntryEditorComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    let tableId = this.route.paramMap.switchMap((params: ParamMap) => Observable.of(params.get('table')));
-    let entryId = this.route.paramMap.switchMap((params: ParamMap) => Observable.of(params.get('entry')));
+    const tableId = this.route.paramMap
+      .switchMap((params: ParamMap) => Observable.of(params.get('table')));
+    const entryId = this.route.paramMap
+      .switchMap((params: ParamMap) => Observable.of(params.get('entry')));
 
     tableId.subscribe(
       tid => this.loadMetadata(tid),
       e => this.errorMsg = e);
 
     Observable.zip(tableId, entryId).subscribe(
-      parms => this.loadData(parms[0], Number(parms[1])),
+      ([tid, eid]) => {
+        if (eid && Number(eid) != NaN)
+          return this.loadData(tid, Number(eid));
+        else
+          this.entry = { id: NaN };
+      },
       e => this.errorMsg = e);
   }
 
@@ -60,8 +67,14 @@ export class EntryEditorComponent implements OnInit {
   }
 
   save(): void {
-    this.dataService.update(this.table.id, this.entry)
-      .then(() => this.goBack())
-      .catch(e => this.errorMsg = e);
+    if (this.entry.id === 0) {
+      this.dataService.add(this.table.id, this.entry)
+        .then(() => this.goBack())
+        .catch(e => this.errorMsg = e);
+    } else {
+      this.dataService.update(this.table.id, this.entry)
+        .then(() => this.goBack())
+        .catch(e => this.errorMsg = e);
+    }
   }
 }

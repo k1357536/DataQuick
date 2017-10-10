@@ -1,8 +1,5 @@
 <h1>Table
-  <span *ngIf="table">{{table.name}}</span>
-  <small class="text-muted">Entry
-    <span *ngIf="entry">{{entry.id}}</span>
-  </small>
+  <small class="text-muted" *ngIf="table">{{table.name}}</small>
 </h1>
 
 <div *ngIf="!table && !entry && !errorMsg" class="alert alert-info">

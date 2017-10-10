@@ -1,8 +1,5 @@
 <h1>Table
-  <span *ngIf="table">{{table.name}}</span>
-  <small class="text-muted">Entry
-    <span *ngIf="entry">{{entry.id}}</span>
-  </small>
+  <small class="text-muted" *ngIf="table">{{table.name}}</small>
 </h1>
 
 <div *ngIf="!table && !entry && !errorMsg" class="alert alert-info">
@@ -33,6 +30,10 @@
           {{col.name}}
         </td>
         <td [ngSwitch]="col.type">
+          <div *ngSwitchCase="ColumnType.AUTO" class="input-group">
+            <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+            <input type="number" [(ngModel)]="entry[col.apiName]" class="form-control" disabled>
+          </div>
           <input *ngSwitchCase="ColumnType.NUMBER" type="number" class="form-control" [(ngModel)]="entry[col.apiName]" />
           <input *ngSwitchCase="ColumnType.DATE" type="date" class="form-control" [(ngModel)]="entry[col.apiName]" />
           <input *ngSwitchCase="ColumnType.BOOL" type="checkbox" class="form-control" [(ngModel)]="entry[col.apiName]" />

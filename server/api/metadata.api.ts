@@ -13,10 +13,15 @@ export function MetadataApi(): Router {
   const dataDriver = new DataDriver();
 
   function handleError(e: any, res: Response) {
-    if (Number(e) !== NaN)
-      res.sendStatus(Number(e));
-    else
+    console.error(e);
+    try {
+      if (Number(e) !== NaN)
+        res.sendStatus(Number(e));
+      else
+        res.sendStatus(500);
+    } catch{
       res.sendStatus(500);
+    }
   }
 
   metadata.get('/', async (req, res) => {

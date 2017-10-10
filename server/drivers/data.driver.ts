@@ -11,7 +11,6 @@ const GET_CLAUSE = " WHERE id = $1";
 const CREATE_STMT = "CREATE TABLE ";
 const DROP_STMT = "DROP TABLE ";
 // const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
-// const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, columns = $3 WHERE id = $1;";
 // const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, $3);";
 // const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
 
@@ -61,9 +60,8 @@ export class DataDriver {
     if (!DataDriver.idRegEx.test(tableId) && eid != NaN)
       throw 400;
 
-    const { rows } = await pool.query(
-      GET_STMT + DataDriver.toTableName(tableId) + GET_CLAUSE + ";",
-      [eid]);
+    const stmt = GET_STMT + DataDriver.toTableName(tableId) + GET_CLAUSE + ";";
+    const { rows } = await pool.query(stmt, [eid]);
 
     if (rows.length < 1)
       throw 400;
@@ -71,12 +69,24 @@ export class DataDriver {
     return rows[0];
   }
 
+  async update(table: Table, entry: any): Promise<void> {
+    const [stmt, data] = this.toUpdateSQL(table, entry);
+    console.log(stmt, data);
+    try {
+      const { rowCount } = await pool.query(stmt, data);
+      if (rowCount < 1)
+        throw 404;
+    } catch (e) {
+      throw 500;
+    }
+  }
+
   async create(table: Table): Promise<void> {
     if (!DataDriver.idRegEx.test(table.id))
       throw 400;
 
     try {
-      let sql = this.toSQL(table);
+      let sql = this.toCreateSQL(table);
       console.log("SQL:" + sql);
       const qr = await pool.query(sql);
     } catch (e) {
@@ -97,14 +107,30 @@ export class DataDriver {
     }
   }
 
-  toSQL(table: Table): string {
+  toCreateSQL(table: Table): string {
     return CREATE_STMT
       + DataDriver.toTableName(table.id)
       + ' ('
-      + table.columns.map(col => {
-        let s = Columns.apiName(col) + ' ';
-        return s + ColumnTypes.get(col.type).sqlName;
-      }).join(', ')
+      + table.columns.map(
+        col => Columns.apiName(col) + ' ' + ColumnTypes.get(col.type).sqlName
+      ).join(', ')
       + ');';
+  }
+
+  toUpdateSQL(table: Table, entry: any): [string, any[]] {
+    const data: any[] = [];
+    const stmt = "UPDATE "
+      + DataDriver.toTableName(table.id)
+      + ' SET '
+      + table.columns.map(
+        (col, i) => {
+          const name = Columns.apiName(col);
+          data[i] = entry[name];
+          return name + " = $" + (i + 1);
+        }
+      ).join(', ')
+      + ';';
+
+    return [stmt, data];
   }
 }
