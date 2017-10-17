@@ -18,7 +18,7 @@ export module ColumnTypes {
     { id: ColumnType.NUMBER, name: 'Number', sqlName: 'INT' },
     { id: ColumnType.STRING, name: 'Text', sqlName: 'TEXT' },
     { id: ColumnType.DATE, name: 'Date', sqlName: 'DATE' },
-    { id: ColumnType.BOOL, name: 'Yes/No', sqlName: 'BOOLEAN' },
+    { id: ColumnType.BOOL, name: 'True/False', sqlName: 'BOOLEAN' },
   ];
 
   export function get(id: ColumnType): ColumnDescription {
@@ -29,17 +29,15 @@ export module ColumnTypes {
 export interface Column {
   name: string;
   type: number;
-  readonly: boolean;
-  key: boolean;
 }
 
 export module Columns {
   export function createIdColumn(): Column {
-    return { name: 'Id', type: ColumnTypes.get(ColumnType.AUTO).id, readonly: true, key: true };
+    return { name: 'Id', type: ColumnTypes.get(ColumnType.AUTO).id, readonly: true };
   }
 
   export function create(name: string): Column {
-    return { name, type: ColumnType.STRING, key: false, readonly: false }
+    return { name, type: ColumnType.STRING, readonly: false }
   }
 
   export function apiName(col: Column): string {

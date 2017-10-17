@@ -68,14 +68,6 @@ export class Utils {
       console.log("Column " + col.name + " has illegal column type!");
       return null;
     }
-    else if (col.readonly == null) {
-      console.log("Column " + col.name + " has no readonly flag!");
-      return null;
-    }
-    else if (col.key == null) {
-      console.log("Column " + col.name + " has no key flag!");
-      return null;
-    }
-    return { name: col.name, type: Number(col.type), readonly: col.readonly, key: col.key };
+    return { name: col.name, type: Number(col.type) };
   }
 }
