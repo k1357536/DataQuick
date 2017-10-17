@@ -31,8 +31,13 @@
           <br/>
           <small class="text-muted"> {{col.type | columntype}}</small>
         </td>
-        <td>
-          {{entry[col.apiName]}}
+        <td [ngSwitch]="col.type">
+          <ng-container *ngSwitchCase="ColumnType.DATE">
+            {{entry[col.apiName] | date }}
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            {{entry[col.apiName]}}
+          </ng-container>
         </td>
       </tr>
     </tbody>

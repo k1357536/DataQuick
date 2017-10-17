@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
+import { ColumnType } from '../../shared/metadata.model';
+
 import { Observable } from 'rxjs/Observable';
 
 import { TableEx, exTable } from './utils';
@@ -19,6 +21,7 @@ export class TableComponent implements OnInit {
   data: (any | { id: number })[];
   newName: string;
   errorMsg: string = null;
+  ColumnType = ColumnType; // for view
 
   constructor(
     private router: Router,

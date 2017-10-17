@@ -21,12 +21,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of data" (click)="onSelect(row)">
-        <td *ngFor="let col of table.columns">
-          {{row[col.apiName]}}
+      <tr *ngFor="let entry of data" (click)="onSelect(entry)">
+        <td *ngFor="let col of table.columns" [ngSwitch]="col.type">
+          <ng-container *ngSwitchCase="ColumnType.DATE">
+            {{entry[col.apiName] | date }}
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            {{entry[col.apiName]}}
+          </ng-container>
         </td>
         <td>
-          <button class="btn btn-outline-success btn-sm" (click)="onSelect(row);">&gt;</button>
+          <button class="btn btn-outline-success btn-sm" (click)="onSelect(entry);">&gt;</button>
         </td>
       </tr>
     </tbody>

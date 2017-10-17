@@ -7,6 +7,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
+import { ColumnType } from '../../shared/metadata.model';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/zip';
 
@@ -19,6 +21,7 @@ export class EntryComponent implements OnInit {
   @Input() table: TableEx;
   @Input() entry: { id: number };
   errorMsg: string = null;
+  ColumnType = ColumnType; // for view
 
   constructor(
     private router: Router,
