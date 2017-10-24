@@ -23,14 +23,14 @@
   </thead>
   <tbody>
     <ng-container *ngFor="let table of tables; trackBy: trackById">
-      <tr class="d-sm-none">
-        <td (click)="onSelect(table.id)">{{table.name}}</td>
+      <tr class="d-sm-none" (click)="onSelect(table.id)">
+        <td>{{table.name}}</td>
         <td>{{table.columns.length}}</td>
         <td><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>
       </tr>
-      <tr>
+      <tr (click)="onSelect(table.id)">
         <td class="d-none d-sm-table-cell"><small><code>{{table.id}}</code></small></td>
-        <td class="d-none d-sm-table-cell" (click)="onSelect(table.id)">{{table.name}}</td>
+        <td class="d-none d-sm-table-cell">{{table.name}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.columns.length}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.rows}}</td>
         <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>
@@ -40,7 +40,7 @@
   <tfoot>
     <tr>
       <th>
-        <input type="text" class="form-control" [(ngModel)]="newName">
+        <input type="text" class="form-control" [(ngModel)]="newName" required (keyup.enter)="add();">
       </th>
       <th colspan="4">
         <button class="btn btn-outline-dark" (click)="add();">Add</button>

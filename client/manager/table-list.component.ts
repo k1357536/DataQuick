@@ -16,7 +16,7 @@ interface TableEx extends Table {
 
 export class TableListComponent implements OnInit {
   tables: TableEx[];
-  newName: string;
+  newName: string = "";
   errorMsg: string = null;
 
   constructor(
@@ -33,10 +33,20 @@ export class TableListComponent implements OnInit {
   }
 
   async add(): Promise<void> {
-    await this.metadataService.addTable(this.newName)
-      .catch(e => this.errorMsg = e);
-    this.newName = "";
-    await this.getTables();
+    if (!this.newName || this.newName.length <= 0)
+      this.errorMsg = "No table name specified!";
+    else {
+      await this.metadataService.addTable(this.newName)
+        .then(() => this.errorMsg = "")
+        .catch(e => {
+          if (e.status && e.status === 409)
+            this.errorMsg = "Table name already exists!";
+          else
+            this.errorMsg = e;
+        });
+      this.newName = "";
+      await this.getTables();
+    }
   }
 
   async delete(tbl: Table): Promise<void> {

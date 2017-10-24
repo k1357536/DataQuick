@@ -48,9 +48,14 @@ export function MetadataApi(): Router {
       if (!p.name || typeof p.name !== 'string')
         throw 400;
 
-      const newTable = await driver.add(p.name);
-      await dataDriver.create(newTable);
-      res.sendStatus(200);
+      const tbls = await driver.search(p.name);
+      if (tbls.length > 0)
+        res.sendStatus(409);
+      else {
+        const newTable = await driver.add(p.name);
+        await dataDriver.create(newTable);
+        res.sendStatus(200);
+      }
     }
     catch (e) {
       handleError(e, res);

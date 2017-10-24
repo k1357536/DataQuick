@@ -5,6 +5,7 @@ import { Utils } from '../utils';
 
 const GETALL_STMT = "SELECT id, name, columns FROM metadata.lists;";
 const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
+const SEARCH_STMT = "SELECT id, name, columns FROM metadata.lists WHERE name LIKE $1;";
 const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, columns = $3 WHERE id = $1;";
 const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, $3);";
 const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
@@ -35,6 +36,11 @@ export class MetadataDriver {
       throw 404;
 
     return rows[0];
+  }
+
+  async search(name: string): Promise<Table[]> {
+    const { rows } = await pool.query(SEARCH_STMT, [name]);
+    return rows;
   }
 
   async add(name: string): Promise<Table> {

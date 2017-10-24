@@ -14,7 +14,7 @@ export module ColumnTypes {
   }
 
   export const ALL: ColumnDescription[] = [
-    { id: ColumnType.AUTO, name: 'Key', sqlName: 'SERIAL' },
+    { id: ColumnType.AUTO, name: 'Key', sqlName: 'BIGSERIAL PRIMARY KEY' },
     { id: ColumnType.NUMBER, name: 'Number', sqlName: 'INT' },
     { id: ColumnType.STRING, name: 'Text', sqlName: 'TEXT' },
     { id: ColumnType.DATE, name: 'Date', sqlName: 'DATE' },
