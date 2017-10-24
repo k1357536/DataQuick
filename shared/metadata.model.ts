@@ -33,11 +33,11 @@ export interface Column {
 
 export module Columns {
   export function createIdColumn(): Column {
-    return { name: 'Id', type: ColumnTypes.get(ColumnType.AUTO).id, readonly: true };
+    return { name: 'Id', type: ColumnTypes.get(ColumnType.AUTO).id };
   }
 
   export function create(name: string): Column {
-    return { name, type: ColumnType.STRING, readonly: false }
+    return { name, type: ColumnType.STRING }
   }
 
   export function apiName(col: Column): string {

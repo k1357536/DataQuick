@@ -40,8 +40,14 @@ export class TableComponent implements OnInit {
     this.router.navigate(['/data', this.table.id, "add"]);
   }
 
-  onSelect(row: { id: number }) {
+  onSelect(row: { id: number }, event: any): void {
+    event.stopPropagation();
     this.router.navigate(['/data', this.table.id, String(row.id)]);
+  }
+
+  delete(row: { id: number }, event: any): void {
+    event.stopPropagation();
+    this.errorMsg = "Not supported yet!";
   }
 
   async load(id: string): Promise<void> {

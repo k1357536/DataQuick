@@ -63,5 +63,23 @@ export function DataApi(): Router {
     }
   });
 
+  data.post('/:tableId', async (req, res) => {
+    try {
+      let table = await metadataDriver.get(req.params.tableId);
+
+      const entry = req.body; // TODO Utils.sanitizeEntry(req.body);
+      if (!entry) {
+        console.log("Entry JSON: " + JSON.stringify(req.body));
+        res.sendStatus(400);
+      }
+
+      await driver.insert(table, entry);
+      res.sendStatus(200);
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+  });
+
   return data;
 }

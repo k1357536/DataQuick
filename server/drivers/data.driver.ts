@@ -1,6 +1,6 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { TableProposal, Table, Column, Columns, ColumnTypes } from '../../shared/metadata.model';
+import { TableProposal, Table, Column, Columns, ColumnType, ColumnTypes } from '../../shared/metadata.model';
 
 const SCHEMA = "data";
 
@@ -81,6 +81,18 @@ export class DataDriver {
     }
   }
 
+  async insert(table: Table, entry: any): Promise<void> {
+    const [stmt, data] = this.toInsertSQL(table, entry);
+    console.log(stmt, data);
+    try {
+      const { rowCount } = await pool.query(stmt, data);
+      if (rowCount < 1)
+        throw 404;
+    } catch (e) {
+      throw 500;
+    }
+  }
+
   async create(table: Table): Promise<void> {
     if (!DataDriver.idRegEx.test(table.id))
       throw 400;
@@ -130,6 +142,26 @@ export class DataDriver {
         }
       ).join(', ')
       + ';';
+
+    return [stmt, data];
+  }
+
+  toInsertSQL(table: Table, entry: any): [string, any[]] {
+    const data = table.columns
+      .filter(col => col.type !== ColumnType.AUTO)
+      .map((col, i) => entry[Columns.apiName(col)]);
+
+    const stmt = "INSERT INTO "
+      + DataDriver.toTableName(table.id)
+      + ' ( '
+      + table.columns
+        .filter(col => col.type !== ColumnType.AUTO)
+        .map((col, i) => Columns.apiName(col)).join(', ')
+      + ' ) VALUES ('
+      + table.columns
+        .filter(col => col.type !== ColumnType.AUTO)
+        .map((col, i) => "$" + (i + 1)).join(', ')
+      + ');';
 
     return [stmt, data];
   }

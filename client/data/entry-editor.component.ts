@@ -67,12 +67,12 @@ export class EntryEditorComponent implements OnInit {
   }
 
   save(): void {
-    if (this.entry.id === 0) {
-      this.dataService.add(this.table.id, this.entry)
+    if (this.entry.id) {
+      this.dataService.update(this.table.id, this.entry)
         .then(() => this.goBack())
         .catch(e => this.errorMsg = e);
     } else {
-      this.dataService.update(this.table.id, this.entry)
+      this.dataService.add(this.table.id, this.entry)
         .then(() => this.goBack())
         .catch(e => this.errorMsg = e);
     }

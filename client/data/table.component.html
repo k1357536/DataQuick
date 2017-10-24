@@ -31,7 +31,8 @@
           </ng-container>
         </td>
         <td>
-          <button class="btn btn-outline-success btn-sm" (click)="onSelect(entry);">&gt;</button>
+          <button class="btn btn-outline-danger btn-sm" (click)="delete(entry, $event);">X</button>
+          <button class="btn btn-outline-success btn-sm" (click)="onSelect(entry, $event);">&gt;</button>
         </td>
       </tr>
     </tbody>
