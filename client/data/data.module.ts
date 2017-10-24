@@ -12,6 +12,8 @@ import { TablesComponent } from './tables.component';
 import { TableComponent } from './table.component';
 import { EntryComponent } from './entry.component';
 import { EntryEditorComponent } from './entry-editor.component';
+import { TypedInputComponent } from './typed-input.component';
+import { TypedOutputComponent } from './typed-output.component';
 
 import { ColumnTypePipe } from './column-type.pipe';
 
@@ -27,6 +29,8 @@ import { ColumnTypePipe } from './column-type.pipe';
     TableComponent,
     EntryComponent,
     EntryEditorComponent,
+    TypedInputComponent,
+    TypedOutputComponent,
     ColumnTypePipe
   ],
   bootstrap: [

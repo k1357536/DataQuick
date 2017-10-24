@@ -28,20 +28,11 @@
       <tr *ngFor="let col of table.columns">
         <td>
           {{col.name}}
+          <br/>
+          <small class="text-muted"> {{col.type | columntype}}</small>
         </td>
-        <td [ngSwitch]="col.type">
-          <div *ngSwitchCase="ColumnType.AUTO" class="input-group">
-            <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-            <input type="number" [(ngModel)]="entry[col.apiName]" class="form-control" disabled>
-          </div>
-
-          <input *ngSwitchCase="ColumnType.NUMBER" type="number" class="form-control" [(ngModel)]="entry[col.apiName]" />
-
-          <input *ngSwitchCase="ColumnType.DATE" type="date" class="form-control" [ngModel]="entry[col.apiName] | date: 'y-MM-dd'" (ngModelChange)="entry[col.apiName]=$event" />
-
-          <input *ngSwitchCase="ColumnType.BOOL" type="checkbox" class="form-control" [(ngModel)]="entry[col.apiName]" />
-
-          <input *ngSwitchDefault class="form-control" [(ngModel)]="entry[col.apiName]" />
+        <td>
+          <typed-input [col]="col" [(ngModel)]="entry[col.apiName]"></typed-input>
         </td>
       </tr>
     </tbody>

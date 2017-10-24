@@ -31,13 +31,8 @@
           <br/>
           <small class="text-muted"> {{col.type | columntype}}</small>
         </td>
-        <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="ColumnType.DATE">
-            {{entry[col.apiName] | date }}
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-            {{entry[col.apiName]}}
-          </ng-container>
+        <td>
+          <typed-output [col]="col" [(ngModel)]="entry[col.apiName]"></typed-output>
         </td>
       </tr>
     </tbody>
