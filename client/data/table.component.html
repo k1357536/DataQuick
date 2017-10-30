@@ -11,6 +11,12 @@
 <div *ngIf="table">
   <table class="table">
     <thead>
+      <tr class="d-print-none">
+        <td [colSpan]="table.columns.length + 1">
+          <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
+          <button class="btn btn-outline-success" (click)="add();">Add</button>
+        </td>
+      </tr>
       <tr>
         <th *ngFor="let col of table.columns">
           {{col.name}}
@@ -25,14 +31,14 @@
         <td *ngFor="let col of table.columns">
           <typed-output [col]="col" [(ngModel)]="entry[col.apiName]"></typed-output>
         </td>
-        <td>
+        <td class="d-print-none">
           <button class="btn btn-outline-danger btn-sm" (click)="delete(entry, $event);">X</button>
           <button class="btn btn-outline-success btn-sm" (click)="onSelect(entry, $event);">&gt;</button>
         </td>
       </tr>
     </tbody>
     <tfoot>
-      <tr>
+      <tr class="d-print-none">
         <th [colSpan]="table.columns.length + 1">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
           <button class="btn btn-outline-success" (click)="add();">Add</button>
