@@ -8,6 +8,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
+import { SetupComponent } from './setup.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -16,6 +18,7 @@ import { DataService } from '../services/data.service';
     NgbModule
   ],
   declarations: [
+    SetupComponent
   ],
   bootstrap: [
   ],

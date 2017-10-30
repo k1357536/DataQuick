@@ -1,0 +1,16 @@
+<h1>Setup</h1>
+
+<div *ngIf="msg" class="alert alert-info">
+  <h4 class="alert-heading">Msg:</h4>
+  <hr /> {{msg}}
+</div>
+
+<p>
+  <button class="btn btn-outline-dark" (click)="clear()">Drop all tables</button>
+</p>
+<p>
+  <button class="btn btn-outline-dark" (click)="create()">Create test table</button>
+</p>
+<p>
+  <button class="btn btn-outline-dark" (click)="insert()">Insert test data</button>
+</p>

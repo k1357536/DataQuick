@@ -37,7 +37,7 @@ export class DataService {
     await this.http.put(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
 
-  async add(tableId: string, entry: { id: number }): Promise<void> {
+  async add(tableId: string, entry: any): Promise<void> {
     await this.http.post(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
 }

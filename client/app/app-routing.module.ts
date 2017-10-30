@@ -11,6 +11,8 @@ import { TableComponent } from '../data/table.component';
 import { EntryComponent } from '../data/entry.component';
 import { EntryEditorComponent } from '../data/entry-editor.component';
 
+import { SetupComponent } from '../setup/setup.component';
+
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   {
@@ -26,7 +28,7 @@ const routes: Routes = [
       { path: ':table/:entry', component: EntryComponent },
       { path: ':table/:entry/edit', component: EntryEditorComponent }]
   },
-  { path: 'setup', redirectTo: '/' }
+  { path: 'setup', component: SetupComponent }
 ];
 
 @NgModule({
