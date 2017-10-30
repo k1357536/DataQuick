@@ -7,13 +7,13 @@ const SCHEMA = "data";
 
 const COUNT_STMT = "SELECT COUNT(*) FROM ";
 const GET_STMT = "SELECT * FROM ";
-const GET_CLAUSE = " WHERE id = $1";
+const DELETE_STMT = "DELETE FROM ";
+const ID_CLAUSE = " WHERE id = $1";
 
 const CREATE_STMT = "CREATE TABLE ";
 const DROP_STMT = "DROP TABLE ";
 // const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
 // const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, $3);";
-// const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
 
 const credentials = require('../../dbCredentials.json');
 const pool = new Pool(credentials);
@@ -61,7 +61,7 @@ export class DataDriver {
     if (!DataDriver.idRegEx.test(tableId) && eid != NaN)
       throw 400;
 
-    const stmt = GET_STMT + DataDriver.toTableName(tableId) + GET_CLAUSE + ";";
+    const stmt = GET_STMT + DataDriver.toTableName(tableId) + ID_CLAUSE + ";";
     const { rows } = await pool.query(stmt, [eid]);
 
     if (rows.length < 1)
@@ -92,6 +92,18 @@ export class DataDriver {
     } catch (e) {
       throw 500;
     }
+  }
+
+  async delete(tableId: string, entryId: string): Promise<void> {
+    let eid = Number(entryId);
+    if (!DataDriver.idRegEx.test(tableId) && eid != NaN)
+      throw 400;
+
+    const stmt = DELETE_STMT + DataDriver.toTableName(tableId) + ID_CLAUSE + ";";
+    const { rowCount } = await pool.query(stmt, [eid]);
+
+    if (rowCount < 1)
+      throw 404;
   }
 
   async create(table: Table): Promise<void> {

@@ -81,5 +81,15 @@ export function DataApi(): Router {
     }
   });
 
+  data.delete('/:tableId/:entryId', async (req, res) => {
+    try {
+      await driver.delete(req.params.tableId, req.params.entryId);
+      res.sendStatus(200);
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+  });
+
   return data;
 }

@@ -45,9 +45,11 @@ export class TableComponent implements OnInit {
     this.router.navigate(['/data', this.table.id, String(row.id)]);
   }
 
-  delete(row: { id: number }, event: any): void {
+  async delete(row: { id: number }, event: any): Promise<void> {
     event.stopPropagation();
-    this.errorMsg = "Not supported yet!";
+    await this.dataService.delete(this.table.id, row)
+      .then(() => this.load(this.table.id))
+      .catch(e => this.errorMsg = e);
   }
 
   async load(id: string): Promise<void> {

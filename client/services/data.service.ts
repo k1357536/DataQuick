@@ -40,4 +40,8 @@ export class DataService {
   async add(tableId: string, entry: any): Promise<void> {
     await this.http.post(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
+
+  async delete(tableId: string, entry: { id: number }): Promise<void> {
+    await this.http.delete(this.url + tableId + '/' + entry.id, { headers: this.headers }).toPromise();
+  }
 }

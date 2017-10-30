@@ -63,7 +63,9 @@ export class EntryComponent implements OnInit {
     this.router.navigate(["/data", this.table.id, this.entry.id, "edit"]);
   }
 
-  delete(): void {
-    this.errorMsg = "Not supported yet!";
+  async delete(): Promise<void> {
+    await this.dataService.delete(this.table.id, this.entry)
+      .then(() => this.location.back())
+      .catch(e => this.errorMsg = e);
   }
 }
