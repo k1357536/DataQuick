@@ -1,4 +1,5 @@
-import { Table, Column, ColumnType, ColumnTypes } from '../shared/metadata.model';
+import { Table, Column, ColumnType, } from '../shared/metadata.model';
+import { ColumnTypes } from '../shared/metadata.utils';
 
 export class Utils {
   public static generateUUID(): string { // Public Domain/MIT

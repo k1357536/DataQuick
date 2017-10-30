@@ -4,7 +4,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { Table, Column, Columns, ColumnType, ColumnTypes } from '../../shared/metadata.model';
+import { Table, Column, ColumnType } from '../../shared/metadata.model';
+import { Columns, ColumnTypes } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';

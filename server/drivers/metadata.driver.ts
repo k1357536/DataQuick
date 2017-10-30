@@ -1,6 +1,7 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { Table, Column, Columns } from '../../shared/metadata.model';
+import { Table, Column } from '../../shared/metadata.model';
+import { Columns } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
 const GETALL_STMT = "SELECT id, name, columns FROM metadata.lists;";

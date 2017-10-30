@@ -1,6 +1,7 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { TableProposal, Table, Column, Columns, ColumnType, ColumnTypes } from '../../shared/metadata.model';
+import { TableProposal, Table, Column, ColumnType } from '../../shared/metadata.model';
+import { Columns, ColumnTypes } from '../../shared/metadata.utils';
 
 const SCHEMA = "data";
 
