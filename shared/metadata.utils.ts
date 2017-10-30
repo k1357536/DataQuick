@@ -4,19 +4,19 @@ export module ColumnTypes {
   export interface ColumnDescription {
     id: ColumnType;
     name: string;
-    sqlName: string;
   }
 
   export const ALL: ColumnDescription[] = [
-    { id: ColumnType.AUTO, name: 'Key', sqlName: 'BIGSERIAL PRIMARY KEY' },
-    { id: ColumnType.NUMBER, name: 'Number', sqlName: 'INT' },
-    { id: ColumnType.STRING, name: 'Text', sqlName: 'TEXT' },
-    { id: ColumnType.DATE, name: 'Date', sqlName: 'DATE' },
-    { id: ColumnType.BOOL, name: 'True/False', sqlName: 'BOOLEAN' },
+    { id: ColumnType.AUTO, name: 'Key' },
+    { id: ColumnType.NUMBER, name: 'Number' },
+    { id: ColumnType.STRING, name: 'Text' },
+    { id: ColumnType.DATE, name: 'Date' },
+    { id: ColumnType.BOOL, name: 'True/False' },
   ];
 
-  export function get(id: ColumnType): ColumnDescription {
-    return ColumnTypes.ALL.find((t) => t.id === id);
+  export function getName(id: ColumnType): string {
+    const desc = ColumnTypes.ALL.find((t) => t.id === id);
+    return desc ? desc.name : null;
   }
 }
 
@@ -25,10 +25,12 @@ export module Columns {
     return Columns.create('Id', ColumnType.AUTO);
   }
 
-  export function create(name: string, type?: ColumnType): Column {
-    if (type === undefined)
+  export function create(name: string, type?: ColumnType, constraint?: Constraint): Column {
+    if (!type)
       type = ColumnType.STRING;
-    return { name, type, constraints: Constraints.getDefault(type) }
+    if (!constraint)
+      constraint = Constraints.getDefault(type);
+    return { name, type, constraint }
   }
 
   export function apiName(col: Column): string {
@@ -37,11 +39,11 @@ export module Columns {
 }
 
 export module Constraints {
-  const defNumberConstraint: NumberConstraint = { notNull: true, min: null, max: null };
-  const defStringConstraint: StringConstraint = { notNull: true, regExp: null, maxLength: null };
-  const defDateConstraint: DateConstraint = { notNull: true, min: null, max: null };
-  const defBoolConstraint: BoolConstraint = { notNull: true };
-  const defConstraint: Constraint = { notNull: true };
+  const defConstraint: Constraint = { notNull: true, unique: false };
+  const defNumberConstraint: NumberConstraint = { notNull: true, unique: false, min: null, max: null };
+  const defStringConstraint: StringConstraint = { notNull: true, unique: false, regExp: null, maxLength: null };
+  const defDateConstraint: DateConstraint = { notNull: true, unique: false, min: null, max: null };
+  const defBoolConstraint: BoolConstraint = defConstraint;
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {

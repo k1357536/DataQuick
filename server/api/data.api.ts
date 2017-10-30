@@ -12,12 +12,12 @@ export function DataApi(): Router {
   function handleError(e: any, res: Response) {
     console.error(e);
     try {
-      if (Number(e) !== NaN)
+      if (Number.isInteger(e))
         res.sendStatus(Number(e));
       else
-        res.sendStatus(500);
-    } catch{
-      res.sendStatus(500);
+        res.status(500).send(e);
+    } catch {
+      res.sendStatus(500).send(e);
     }
   }
   data.get('/count/:id', async (req, res) => {
@@ -30,7 +30,8 @@ export function DataApi(): Router {
   });
   data.get('/:id', async (req, res) => {
     try {
-      res.json(await driver.getAll(req.params.id));
+      let table = await metadataDriver.get(req.params.id);
+      res.json(await driver.getAll(table, req.query.sortby));
     }
     catch (e) {
       handleError(e, res);

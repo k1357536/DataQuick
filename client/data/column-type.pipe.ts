@@ -6,6 +6,6 @@ import { ColumnTypes } from './../../shared/metadata.utils';
 @Pipe({ name: 'columntype' })
 export class ColumnTypePipe implements PipeTransform {
   transform(columnType: ColumnType): string {
-    return ColumnTypes.get(columnType).name;
+    return ColumnTypes.getName(columnType);
   }
 }

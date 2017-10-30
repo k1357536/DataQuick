@@ -7,7 +7,8 @@ import { Location } from '@angular/common';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType } from '../../shared/metadata.model';
+import { ColumnType, Column } from '../../shared/metadata.model';
+import { Columns } from '../../shared/metadata.utils';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -19,6 +20,7 @@ import { TableEx, exTable } from './utils';
 export class TableComponent implements OnInit {
   @Input() table: TableEx;
   data: (any | { id: number })[];
+  sortCol: Column;
   newName: string;
   errorMsg: string = null;
   ColumnType = ColumnType; // for view
@@ -53,16 +55,29 @@ export class TableComponent implements OnInit {
   async delete(row: { id: number }, event: any): Promise<void> {
     event.stopPropagation();
     await this.dataService.delete(this.table.id, row)
-      .then(() => this.load(this.table.id))
+      .then(() => this.loadData())
       .catch(e => this.handleError(e));
   }
 
   async load(id: string): Promise<void> {
     await this.metadataService.getTable(id)
       .then(t => this.table = exTable(t))
-      .then(t => this.dataService.getAll(t.id))
+      .then(() => this.loadData());
+  }
+
+  async loadData(): Promise<void> {
+    const sortCol = this.sortCol ? Columns.apiName(this.sortCol) : null;
+    this.dataService.getAll(this.table.id, sortCol)
       .then(d => this.data = d)
       .catch(e => this.handleError(e));
+  }
+
+  async sort(col: Column): Promise<void> {
+    if (this.sortCol === col)
+      this.sortCol = null;
+    else
+      this.sortCol = col;
+    await this.loadData();
   }
 
   goBack(): void {

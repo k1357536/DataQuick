@@ -19,8 +19,11 @@ export class DataService {
     return Number(response.text());
   }
 
-  async getAll(tableId: string): Promise<{ id: number }[]> {
-    const response = await this.http.get(this.url + tableId).toPromise();
+  async getAll(tableId: string, sortby?: string): Promise<{ id: number }[]> {
+    let url = this.url + tableId;
+    if (sortby)
+      url += `?sortby=${sortby}`;
+    const response = await this.http.get(url).toPromise();
     if (response.status != 200)
       throw response;
     return response.json();

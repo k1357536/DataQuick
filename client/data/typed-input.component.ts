@@ -3,6 +3,8 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { Column, ColumnType } from '../../shared/metadata.model';
 
+import { ColumnEx } from './utils';
+
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TypedInputComponent),
@@ -10,19 +12,12 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  template: `
-  <ng-container *ngIf="col" [ngSwitch]="col.type">
-    <input *ngSwitchCase="ColumnType.AUTO" type="number" class="form-control" [ngModel]="value" disabled>
-    <input *ngSwitchCase="ColumnType.NUMBER" type="number" class="form-control" [(ngModel)]="value" (blur)="onBlur()" />
-    <input *ngSwitchCase="ColumnType.DATE" type="date" class="form-control" [ngModel]="value | date: 'y-MM-dd'" (ngModelChange)="value=$event" (blur)="onBlur()" />
-    <input *ngSwitchCase="ColumnType.BOOL" type="checkbox" class="form-control" [(ngModel)]="value" (blur)="onBlur()" />
-    <input *ngSwitchDefault type="text" class="form-control" [(ngModel)]="value" (blur)="onBlur()" />
-  </ng-container>`,
+  templateUrl: './typed-input.component.html',
   selector: 'typed-input',
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class TypedInputComponent implements ControlValueAccessor {
-  @Input() col: Column;
+  @Input() col: ColumnEx;
   private innerValue: any = undefined;
   ColumnType = ColumnType; // for view
 

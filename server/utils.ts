@@ -1,4 +1,4 @@
-import { Table, Column, ColumnType, } from '../shared/metadata.model';
+import { Table, Column, ColumnType, Constraint } from '../shared/metadata.model';
 import { Columns, ColumnTypes } from '../shared/metadata.utils';
 
 export class Utils {
@@ -65,10 +65,21 @@ export class Utils {
       console.log("Column " + col.name + " has illegal column type id!");
       return null;
     }
-    else if (!ColumnTypes.get(Number(col.type))) {
+    else if (!ColumnTypes.getName(Number(col.type))) {
       console.log("Column " + col.name + " has illegal column type!");
       return null;
     }
-    return Columns.create(col.name, Number(col.type));
+    const constraint = Utils.sanitizeConstraint(col.type, col.constraint);
+    if (!constraint) {
+      console.log("Column " + col.name + " has illegal constraints!");
+      return null;
+    }
+
+    return Columns.create(col.name, Number(col.type), constraint);
+  }
+
+  // TODO
+  private static sanitizeConstraint(type: ColumnType, constraint: Constraint): Constraint {
+    return constraint;
   }
 }

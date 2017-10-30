@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType } from '../../shared/metadata.model';
+import { ColumnType, StringConstraint, NumberConstraint, DateConstraint } from '../../shared/metadata.model';
 import { Columns, Constraints } from '../../shared/metadata.utils';
 
 @Component({
@@ -41,10 +41,24 @@ export class SetupComponent implements OnInit {
       await this.metadataService.addTable("Employees");
 
       const tbl = (await this.metadataService.getTables()).filter(tbl => tbl.name === "Employees")[0];
-      tbl.columns.push(Columns.create("Name", ColumnType.STRING));
-      tbl.columns.push(Columns.create("Age", ColumnType.NUMBER));
-      tbl.columns.push(Columns.create("Date of Birth", ColumnType.DATE));
-      tbl.columns.push(Columns.create("Executive", ColumnType.BOOL));
+
+      const name = Columns.create("Name", ColumnType.STRING);
+      const age = Columns.create("Age", ColumnType.NUMBER);
+      const birthday = Columns.create("Date of Birth", ColumnType.DATE);
+      const exec = Columns.create("Executive", ColumnType.BOOL);
+      const comment = Columns.create("Comment", ColumnType.STRING);
+
+      name.constraint = { notNull: true, unique: true, maxLength: 30, regExp: '^[a-zA-Z0-9 ]*$' } as StringConstraint;
+      age.constraint = { notNull: true, unique: false, min: 1, max: 120 } as NumberConstraint;
+      birthday.constraint = { notNull: false, unique: false, min: new Date(1900, 1, 1), max: new Date(2018, 1, 1) } as DateConstraint;
+      exec.constraint = { notNull: true, unique: false };
+      comment.constraint = { notNull: false, unique: false };
+
+      tbl.columns.push(name);
+      tbl.columns.push(age);
+      tbl.columns.push(birthday);
+      tbl.columns.push(exec);
+      tbl.columns.push(comment);
       await this.metadataService.updateTable(tbl);
 
       this.msg = "Create successful!";
@@ -59,15 +73,14 @@ export class SetupComponent implements OnInit {
       const tbl = (await this.metadataService.getTables()).filter(tbl => tbl.name === "Employees")[0];
 
       const data = {
-        name: "Michael",
-        age: 23,
+        name: '',
+        age: 0,
         date_of_birth: new Date(),
         executive: true
       };
-      this.dataService.add(tbl.id, data);
-      for (let i = 1; i < 20; i++) {
-        data.name += "1";
-        data.age += 1;
+      for (let i = 0; i < 20; i++) {
+        data.name = 'Michael ' + String.fromCharCode(20 * Math.random() + 'a'.charCodeAt(0)) + i;
+        data.age = Math.floor(50 * Math.random()) + 20;
         data.executive = !data.executive;
         await this.dataService.add(tbl.id, data);
       }
@@ -75,6 +88,8 @@ export class SetupComponent implements OnInit {
       this.msg = "Insert successful!";
     } catch (e) {
       this.msg = e;
+      if (e._body)
+        this.msg += ' ' + e._body;
     }
   }
 }

@@ -17,31 +17,33 @@
 </div>
 
 <div *ngIf="table && entry">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let col of table.columns">
-        <td>
-          {{col.name}}
-          <br/>
-          <small class="text-muted"> {{col.type | columntype}}</small>
-        </td>
-        <td>
-          <typed-input [col]="col" [(ngModel)]="entry[col.apiName]"></typed-input>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <th [colSpan]="table.columns.length">
-          <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
-          <button class="btn btn-outline-primary" (click)="save();">Save</button>
-        </th>
-    </tfoot>
-  </table>
+  <form (ngSubmit)="save();" ngNativeValidate>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let col of table.columns">
+          <td>
+            {{col.name}}
+            <br/>
+            <small class="text-muted"> {{col.type | columntype}}</small>
+          </td>
+          <td>
+            <typed-input [name]="col.apiName" [col]="col" [(ngModel)]="entry[col.apiName]"></typed-input>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th [colSpan]="table.columns.length">
+            <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
+            <button class="btn btn-outline-primary" type="submit">Save</button>
+          </th>
+      </tfoot>
+    </table>
+  </form>
 </div>

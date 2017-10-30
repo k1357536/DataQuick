@@ -1,0 +1,9 @@
+<ng-container *ngIf="col" [ngSwitch]="col.type">
+  <input *ngSwitchCase="ColumnType.AUTO" type="number" class="form-control" [ngModel]="value" disabled />
+  <input class="form-control" (blur)="onBlur()" *ngSwitchCase="ColumnType.NUMBER" type="number" [(ngModel)]="value" [required]="col.constraint.notNull" [min]="col.constraint.min" [max]="col.constraint.max" />
+  <input class="form-control" (blur)="onBlur()" *ngSwitchCase="ColumnType.STRING" type="text" [(ngModel)]="value" [maxlength]="col.constraint.maxLength" [pattern]="col.constraint.regExp" [placeholder]="col.name" [required]="col.constraint.notNull" />
+  <input class="form-control" (blur)="onBlur()" *ngSwitchCase="ColumnType.DATE" type="date" [ngModel]="value | date: 'y-MM-dd'" (ngModelChange)="value=$event" [required]="col.constraint.notNull" [min]="col.constraint.min| date: 'y-MM-dd'" [max]="col.constraint.max| date: 'y-MM-dd'"
+  />
+  <input class="form-control" (blur)="onBlur()" *ngSwitchCase="ColumnType.BOOL" type="checkbox" [(ngModel)]="value" [required]="col.constraint.notNull" />
+  <input class="form-control" (blur)="onBlur()" *ngSwitchDefault type="text" [(ngModel)]="value" [required]="col.constraint.notNull" />
+</ng-container>

@@ -15,12 +15,12 @@ export function MetadataApi(): Router {
   function handleError(e: any, res: Response) {
     console.error(e);
     try {
-      if (Number(e) !== NaN)
+      if (Number.isInteger(e))
         res.sendStatus(Number(e));
       else
-        res.sendStatus(500);
+        res.status(500).send(e);
     } catch{
-      res.sendStatus(500);
+      res.status(500).send(e);
     }
   }
 

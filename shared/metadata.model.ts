@@ -1,15 +1,16 @@
 export enum ColumnType {
-  AUTO = 0,
-  NUMBER = 1,
-  STRING = 2,
-  DATE = 3,
-  BOOL = 4
+  INVALID = 0,
+  AUTO = 1,
+  NUMBER = 2,
+  STRING = 3,
+  DATE = 4,
+  BOOL = 5
 }
 
 export interface Column {
   name: string;
   type: number;
-  constraints: Constraint;
+  constraint: Constraint;
 }
 
 export interface TableProposal {
@@ -24,10 +25,11 @@ export interface Table {
 
 export interface Constraint {
   notNull: boolean;
+  unique: boolean;
 }
 
 export interface StringConstraint extends Constraint {
-  regExp: RegExp;
+  regExp: string;
   maxLength: number;
 }
 
