@@ -1,5 +1,5 @@
 import { Table, Column, ColumnType, } from '../shared/metadata.model';
-import { ColumnTypes } from '../shared/metadata.utils';
+import { Columns, ColumnTypes } from '../shared/metadata.utils';
 
 export class Utils {
   public static generateUUID(): string { // Public Domain/MIT
@@ -69,6 +69,6 @@ export class Utils {
       console.log("Column " + col.name + " has illegal column type!");
       return null;
     }
-    return { name: col.name, type: Number(col.type) };
+    return Columns.create(col.name, Number(col.type));
   }
 }
