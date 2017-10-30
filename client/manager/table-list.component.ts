@@ -25,6 +25,11 @@ export class TableListComponent implements OnInit {
     private dataService: DataService,
     private metadataService: MetadataService) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   async ngOnInit(): Promise<void> {
     await this.getTables();
   }
@@ -43,7 +48,7 @@ export class TableListComponent implements OnInit {
           if (e.status && e.status === 409)
             this.errorMsg = "Table name already exists!";
           else
-            this.errorMsg = e;
+            this.handleError(e);
         });
       this.newName = "";
       await this.getTables();
@@ -52,7 +57,7 @@ export class TableListComponent implements OnInit {
 
   async delete(tbl: Table): Promise<void> {
     await this.metadataService.deleteTable(tbl)
-      .catch(e => this.errorMsg = e);
+      .catch(e => this.handleError(e));
     await this.getTables();
   }
 
@@ -69,7 +74,7 @@ export class TableListComponent implements OnInit {
       });
     }
     catch (e) {
-      this.errorMsg = e;
+      this.handleError(e);
     }
   }
 }

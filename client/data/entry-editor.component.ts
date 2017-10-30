@@ -30,6 +30,11 @@ export class EntryEditorComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   ngOnInit(): void {
     const tableId = this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('table')));
@@ -38,7 +43,7 @@ export class EntryEditorComponent implements OnInit {
 
     tableId.subscribe(
       tid => this.loadMetadata(tid),
-      e => this.errorMsg = e);
+      e => this.handleError(e));
 
     Observable.zip(tableId, entryId).subscribe(
       ([tid, eid]) => {
@@ -46,20 +51,19 @@ export class EntryEditorComponent implements OnInit {
           return this.loadData(tid, Number(eid));
         else
           this.entry = { id: NaN };
-      },
-      e => this.errorMsg = e);
+      }, e => this.handleError(e));
   }
 
   async loadMetadata(id: string): Promise<void> {
     return await this.metadataService.getTable(id)
-      .then(t => this.table = exTable(t))
-      .catch(e => this.errorMsg = e);
+      .then(t => { this.table = exTable(t); })
+      .catch(e => this.handleError(e));
   }
 
   async loadData(tableId: string, entryId: number): Promise<void> {
     return await this.dataService.get(tableId, entryId)
-      .then(d => this.entry = d)
-      .catch(e => this.errorMsg = e);
+      .then(d => { this.entry = d; })
+      .catch(e => this.handleError(e));
   }
 
   goBack(): void {
@@ -70,11 +74,11 @@ export class EntryEditorComponent implements OnInit {
     if (this.entry.id) {
       this.dataService.update(this.table.id, this.entry)
         .then(() => this.goBack())
-        .catch(e => this.errorMsg = e);
+        .catch(e => this.handleError(e));
     } else {
       this.dataService.add(this.table.id, this.entry)
         .then(() => this.goBack())
-        .catch(e => this.errorMsg = e);
+        .catch(e => this.handleError(e));
     }
   }
 }

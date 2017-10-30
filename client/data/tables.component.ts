@@ -25,6 +25,11 @@ export class TablesComponent implements OnInit {
     private dataService: DataService,
     private metadataService: MetadataService) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   async ngOnInit(): Promise<void> {
     await this.getTables();
   }
@@ -41,7 +46,7 @@ export class TablesComponent implements OnInit {
         tbl.rows = rows;
       });
     } catch (e) {
-      this.errorMsg = e;
+      this.handleError(e);
     }
   }
 }

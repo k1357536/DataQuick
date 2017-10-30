@@ -32,10 +32,15 @@ export class TableEditorComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   ngOnInit(): void {
     this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
-      .subscribe(id => this.load(id), e => this.errorMsg = e);
+      .subscribe(id => this.load(id), e => this.handleError(e));
   }
 
   async load(id: string): Promise<void> {
@@ -61,7 +66,7 @@ export class TableEditorComponent implements OnInit {
     if (this.table)
       await this.metadataService.updateTable(this.table)
         .then(() => this.goBack())
-        .catch(e => this.errorMsg = e);
+        .catch(e => this.handleError(e));
   }
 
   goBack(): void {

@@ -30,10 +30,15 @@ export class TableComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   ngOnInit(): void {
     this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
-      .subscribe(id => this.load(id), e => this.errorMsg = e);
+      .subscribe(id => this.load(id), e => this.handleError(e));
   }
 
   add(): void {
@@ -49,7 +54,7 @@ export class TableComponent implements OnInit {
     event.stopPropagation();
     await this.dataService.delete(this.table.id, row)
       .then(() => this.load(this.table.id))
-      .catch(e => this.errorMsg = e);
+      .catch(e => this.handleError(e));
   }
 
   async load(id: string): Promise<void> {
@@ -57,7 +62,7 @@ export class TableComponent implements OnInit {
       .then(t => this.table = exTable(t))
       .then(t => this.dataService.getAll(t.id))
       .then(d => this.data = d)
-      .catch(e => { this.errorMsg = e; });
+      .catch(e => this.handleError(e));
   }
 
   goBack(): void {

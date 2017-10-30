@@ -30,29 +30,34 @@ export class EntryComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute) { }
 
+  private handleError(e: any): void {
+    this.errorMsg = e._body ? e + ' ' + e._body : e;
+    console.error(e);
+  }
+
   ngOnInit(): void {
     let tableId = this.route.paramMap.switchMap((params: ParamMap) => Observable.of(params.get('table')));
     let entryId = this.route.paramMap.switchMap((params: ParamMap) => Observable.of(params.get('entry')));
 
     tableId.subscribe(
       tid => this.loadMetadata(tid),
-      e => this.errorMsg = e);
+      e => this.handleError(e));
 
     Observable.zip(tableId, entryId).subscribe(
       parms => this.loadData(parms[0], Number(parms[1])),
-      e => this.errorMsg = e);
+      e => this.handleError(e));
   }
 
   async loadMetadata(id: string): Promise<void> {
     return await this.metadataService.getTable(id)
-      .then(t => this.table = exTable(t))
-      .catch(e => this.errorMsg = e);
+      .then(t => { this.table = exTable(t); })
+      .catch(e => this.handleError(e));
   }
 
   async loadData(tableId: string, entryId: number): Promise<void> {
     return await this.dataService.get(tableId, entryId)
-      .then(d => this.entry = d)
-      .catch(e => this.errorMsg = e);
+      .then(d => { this.entry = d; })
+      .catch(e => this.handleError(e));
   }
 
   goBack(): void {
@@ -66,6 +71,6 @@ export class EntryComponent implements OnInit {
   async delete(): Promise<void> {
     await this.dataService.delete(this.table.id, this.entry)
       .then(() => this.location.back())
-      .catch(e => this.errorMsg = e);
+      .catch(e => this.handleError(e));
   }
 }
