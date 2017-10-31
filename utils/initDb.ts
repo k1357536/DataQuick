@@ -15,18 +15,25 @@ import { Client } from 'pg';
     await client.query('CREATE SCHEMA data AUTHORIZATION "' + credentials.user + '";');
     await client.query('CREATE SCHEMA metadata AUTHORIZATION "' + credentials.user + '";');
 
+    console.log('create table folders');
+    await client.query('CREATE TABLE metadata.folders ('
+      + 'id uuid PRIMARY KEY, '
+      + 'name text NOT NULL, '
+      + 'parent uuid NOT NULL REFERENCES metadata.folders(id), '
+      + 'UNIQUE(parent, name));');
+
     console.log('create table lists');
     await client.query('CREATE TABLE metadata.lists ('
       + 'id uuid PRIMARY KEY, '
-      + 'name varchar(20) NOT NULL, '
+      + 'name text NOT NULL, '
+      + 'parent uuid NOT NULL REFERENCES metadata.folders(id), '
       + 'columns jsonb NOT NULL, '
-      + 'UNIQUE(name))');
+      + 'UNIQUE(parent, name));');
 
-    console.log('create table dependencies');
-    await client.query('CREATE TABLE metadata.dependencies ('
-      + 'reference uuid REFERENCES metadata.lists(id) ON DELETE CASCADE, '
-      + 'tgt uuid REFERENCES metadata.lists(id) ON DELETE RESTRICT, '
-      + 'PRIMARY KEY(reference, tgt))');
+    console.log('create root folder');
+    const rootId = '00000000-0000-0000-0000-000000000000';
+    await client.query('INSERT INTO metadata.folders (id, name, parent)'
+      + ` VALUES ('${rootId}', '','${rootId}')`);
 
     console.log('done');
     await client.end();

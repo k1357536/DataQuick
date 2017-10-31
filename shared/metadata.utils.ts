@@ -1,4 +1,4 @@
-import { ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, BoolConstraint } from './metadata.model';
+import { ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, BoolConstraint, Folder } from './metadata.model';
 
 export module ColumnTypes {
   export interface ColumnDescription {
@@ -58,5 +58,11 @@ export module Constraints {
       default:
         return Object.assign(defConstraint);
     }
+  }
+}
+
+export module Folders {
+  export function getRoot(): Folder {
+    return { id: '00000000-0000-0000-0000-000000000000', name: '', parent: '00000000-0000-0000-0000-000000000000' };
   }
 }

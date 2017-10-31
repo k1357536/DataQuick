@@ -4,7 +4,7 @@ import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
 import { ColumnType, StringConstraint, NumberConstraint, DateConstraint } from '../../shared/metadata.model';
-import { Columns, Constraints } from '../../shared/metadata.utils';
+import { Columns, Constraints, Folders } from '../../shared/metadata.utils';
 
 @Component({
   templateUrl: './setup.component.html',
@@ -29,7 +29,13 @@ export class SetupComponent implements OnInit {
         await this.metadataService.deleteTable(tbl);
       }
 
-      this.msg = "Deleted " + tables.length + " tables!";
+      const folders = (await this.metadataService.getFolders()).filter(f => f.id != Folders.getRoot().id);
+
+      for (const f of folders) {
+        await this.metadataService.deleteFolder(f);
+      }
+
+      this.msg = "Deleted " + folders.length + " folders and " + tables.length + " tables!";
     } catch (e) {
       this.msg = e;
     }
@@ -38,9 +44,13 @@ export class SetupComponent implements OnInit {
   async create() {
     this.msg = "";
     try {
-      await this.metadataService.addTable("Employees");
+      this.metadataService.addFolder("HR", Folders.getRoot());
 
-      const tbl = (await this.metadataService.getTables()).filter(tbl => tbl.name === "Employees")[0];
+      const HR = (await this.metadataService.getFolders()).find(f => f.name === "HR");
+
+      await this.metadataService.addTable("Employees", HR);
+
+      const tbl = (await this.metadataService.getTables()).find(tbl => tbl.name === "Employees");
 
       const name = Columns.create("Name", ColumnType.STRING);
       const age = Columns.create("Age", ColumnType.NUMBER);

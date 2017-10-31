@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { TableProposal, Table, Column, ColumnType } from '../../shared/metadata.model';
-import { ColumnTypes } from '../../shared/metadata.utils';
+import { TableProposal, Table, Folder, Column, ColumnType } from '../../shared/metadata.model';
+import { ColumnTypes, Folders } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
@@ -16,8 +16,12 @@ interface TableEx extends Table {
 })
 
 export class TableListComponent implements OnInit {
+  folders: Folder[];
+  newFolderName: string = "";
+
   tables: TableEx[];
   newName: string = "";
+
   errorMsg: string = null;
 
   constructor(
@@ -31,18 +35,32 @@ export class TableListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getTables();
+    await Promise.all([this.getFolders(), this.getTables()]);
   }
 
   onSelect(id: string): void {
     this.router.navigate(['/manager', id]);
   }
 
+  async addFolder(): Promise<void> {
+    if (!this.newFolderName || this.newFolderName.length <= 0)
+      this.errorMsg = "No table name specified!";
+    else {
+      await this.metadataService.addFolder(this.newFolderName, Folders.getRoot())
+        .then(() => this.errorMsg = "")
+        .catch(e => {
+          this.handleError(e);
+        });
+      this.newFolderName = "";
+      await this.getFolders();
+    }
+  }
+
   async add(): Promise<void> {
     if (!this.newName || this.newName.length <= 0)
       this.errorMsg = "No table name specified!";
     else {
-      await this.metadataService.addTable(this.newName)
+      await this.metadataService.addTable(this.newName, Folders.getRoot())
         .then(() => this.errorMsg = "")
         .catch(e => {
           if (e.status && e.status === 409)
@@ -63,6 +81,15 @@ export class TableListComponent implements OnInit {
 
   trackById(index: number, table: Table): number {
     return index; // TODO
+  }
+
+  private async getFolders(): Promise<void> {
+    try {
+      this.folders = await this.metadataService.getFolders();
+    }
+    catch (e) {
+      this.handleError(e);
+    }
   }
 
   private async getTables(): Promise<void> {

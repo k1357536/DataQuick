@@ -15,11 +15,18 @@ export interface Column {
 
 export interface TableProposal {
   name: string;
+  parent: string;
+}
+
+export interface FolderProposal {
+  name: string;
+  parent: string;
 }
 
 export interface Table {
   id: string;
   name: string;
+  parent: string;
   columns: Column[];
 }
 
@@ -44,4 +51,10 @@ export interface DateConstraint extends Constraint {
 }
 
 export interface BoolConstraint extends Constraint {
+}
+
+export interface Folder {
+  id: string;
+  name: string;
+  parent: string;
 }

@@ -1,14 +1,21 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { Table, Column } from '../../shared/metadata.model';
+import { Table, TableProposal, FolderProposal, Column, Folder } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
-const GETALL_STMT = "SELECT id, name, columns FROM metadata.lists;";
-const GET_STMT = "SELECT id, name, columns FROM metadata.lists WHERE id = $1;";
-const SEARCH_STMT = "SELECT id, name, columns FROM metadata.lists WHERE name LIKE $1;";
-const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, columns = $3 WHERE id = $1;";
-const INSERT_STMT = "INSERT INTO metadata.lists (id, name, columns) VALUES ($1, $2, $3);";
+const GETALL_FOLDER_STMT = "SELECT id, name, parent FROM metadata.folders;";
+const SEARCH_FOLDER1_STMT = "SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;";
+const SEARCH_FOLDER2_STMT = "SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;";
+const INSERT_FOLDER_STMT = "INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);";
+const DELETE_FOLDER_STMT = "DELETE FROM metadata.folders WHERE id = $1;";
+
+const GETALL_STMT = "SELECT id, name, parent, columns FROM metadata.lists;";
+const GET_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;";
+const SEARCH1_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE name LIKE $1;";
+const SEARCH2_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE name = $1 AND parent = $2;";
+const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, parent = $3, columns = $4 WHERE id = $1;";
+const INSERT_STMT = "INSERT INTO metadata.lists (id, name, parent, columns) VALUES ($1, $2, $3, $4);";
 const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
 
 const credentials = require('../../dbCredentials.json');
@@ -25,6 +32,41 @@ pool.connect().catch(e => {
 });
 
 export class MetadataDriver {
+  // === Folders ===============================================================
+  async getAllFolders(): Promise<Folder[]> {
+    const { rows } = await pool.query(GETALL_FOLDER_STMT);
+    return rows;
+  }
+
+  async searchFolder(param: FolderProposal | string): Promise<Table[]> {
+    if (typeof param === "string") {
+      const { rows } = await pool.query(SEARCH_FOLDER1_STMT, [param]);
+      return rows;
+    } else {
+      const p = param as FolderProposal;
+      const { rows } = await pool.query(SEARCH_FOLDER2_STMT, [p.name, p.parent]);
+      return rows;
+    }
+  }
+
+  async addFolder(p: FolderProposal): Promise<Table> {
+    const id = Utils.generateUUID();
+    const { rowCount } = await pool.query(INSERT_FOLDER_STMT, [id, p.name, p.parent]);
+
+    if (rowCount < 1)
+      throw 400;
+
+    return await this.get(id);
+  }
+
+  async deleteFolder(uuid: string): Promise<void> {
+    const { rowCount } = await pool.query(DELETE_FOLDER_STMT, [uuid]);
+
+    if (rowCount < 1)
+      throw 404;
+  }
+
+  // === Tables ================================================================
   async getAll(): Promise<Table[]> {
     const { rows } = await pool.query(GETALL_STMT);
     return rows;
@@ -39,15 +81,21 @@ export class MetadataDriver {
     return rows[0];
   }
 
-  async search(name: string): Promise<Table[]> {
-    const { rows } = await pool.query(SEARCH_STMT, [name]);
-    return rows;
+  async search(param: TableProposal | string): Promise<Table[]> {
+    if (typeof param === "string") {
+      const { rows } = await pool.query(SEARCH1_STMT, [param]);
+      return rows;
+    } else {
+      const p = param as TableProposal;
+      const { rows } = await pool.query(SEARCH2_STMT, [p.name, p.parent]);
+      return rows;
+    }
   }
 
-  async add(name: string): Promise<Table> {
+  async add(p: TableProposal): Promise<Table> {
     const id = Utils.generateUUID();
     const cols = [Columns.createIdColumn()];
-    const { rowCount } = await pool.query(INSERT_STMT, [id, name, JSON.stringify(cols)]);
+    const { rowCount } = await pool.query(INSERT_STMT, [id, p.name, p.parent, JSON.stringify(cols)]);
 
     if (rowCount < 1)
       throw 400;
@@ -56,7 +104,7 @@ export class MetadataDriver {
   }
 
   async update(table: Table): Promise<void> {
-    const { rowCount } = await pool.query(UPDATE_STMT, [table.id, table.name, JSON.stringify(table.columns)]);
+    const { rowCount } = await pool.query(UPDATE_STMT, [table.id, table.name, table.parent, JSON.stringify(table.columns)]);
 
     if (rowCount < 1)
       throw 404;

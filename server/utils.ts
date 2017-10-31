@@ -42,7 +42,9 @@ export class Utils {
       return null;
     }
 
-    return { id: tbl.id, name: tbl.name, columns: cols };
+    let parent = tbl.parent; // TODO check
+
+    return { id: tbl.id, name: tbl.name, columns: cols, parent };
   }
 
   // TODO
