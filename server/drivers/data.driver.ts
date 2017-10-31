@@ -40,7 +40,7 @@ export class DataDriver {
   async getAll(table: Table, sortBy?: string, page?: number, pageSize?: number): Promise<any[]> {
     let sortCol = table.columns.find(c => Columns.apiName(c) === sortBy);
     if (!sortCol)
-      sortCol = table.columns.find(c => c.type === ColumnType.AUTO);
+      sortCol = table.columns.find(c => c.type === ColumnType.PK);
     if (!sortCol)
       throw 400;
 

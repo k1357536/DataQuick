@@ -28,11 +28,11 @@
     <tbody>
       <tr *ngFor="let col of table.columns; let i=index; trackBy:trackByIndex">
         <td>
-          <div class="input-group" *ngIf="col.type == ColumnType.AUTO">
+          <div class="input-group" *ngIf="col.type == ColumnType.PK">
             <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
             <input type="text" [(value)]="table.columns[i].name" class="form-control" disabled>
           </div>
-          <input type="text" *ngIf="col.type !== ColumnType.AUTO" [(ngModel)]="table.columns[i].name" class="form-control" required>
+          <input type="text" *ngIf="col.type !== ColumnType.PK" [(ngModel)]="table.columns[i].name" class="form-control" required>
         </td>
         <td>
           <select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required>
@@ -40,7 +40,7 @@
           </select>
         </td>
         <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="ColumnType.NUMBER">
+          <ng-container *ngSwitchCase="ColumnType.INT">
             <div class="form-group row">
               <label class="col-sm-3">Min</label>
               <input type="number" class="form-control col-sm-9" />

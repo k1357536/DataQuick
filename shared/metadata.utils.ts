@@ -7,11 +7,15 @@ export module ColumnTypes {
   }
 
   export const ALL: ColumnDescription[] = [
-    { id: ColumnType.AUTO, name: 'Key' },
-    { id: ColumnType.NUMBER, name: 'Number' },
+    { id: ColumnType.PK, name: 'Key' },
+    { id: ColumnType.INT, name: 'Number' },
     { id: ColumnType.STRING, name: 'Text' },
     { id: ColumnType.DATE, name: 'Date' },
     { id: ColumnType.BOOL, name: 'True/False' },
+    { id: ColumnType.IMAGE, name: 'Image' },
+    { id: ColumnType.MONEY, name: 'Money' },
+    { id: ColumnType.REAL, name: 'Real Number' },
+    { id: ColumnType.FK, name: 'Reference' },
   ];
 
   export function getName(id: ColumnType): string {
@@ -22,7 +26,7 @@ export module ColumnTypes {
 
 export module Columns {
   export function createIdColumn(): Column {
-    return Columns.create('Id', ColumnType.AUTO);
+    return Columns.create('Id', ColumnType.PK);
   }
 
   export function create(name: string, type?: ColumnType, constraint?: Constraint): Column {
@@ -47,7 +51,7 @@ export module Constraints {
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {
-      case ColumnType.NUMBER:
+      case ColumnType.INT:
         return Object.assign(defNumberConstraint);
       case ColumnType.STRING:
         return Object.assign(defNumberConstraint);

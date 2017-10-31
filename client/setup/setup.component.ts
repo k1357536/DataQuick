@@ -53,7 +53,7 @@ export class SetupComponent implements OnInit {
       const tbl = (await this.metadataService.getTables()).find(tbl => tbl.name === "Employees");
 
       const name = Columns.create("Name", ColumnType.STRING);
-      const age = Columns.create("Age", ColumnType.NUMBER);
+      const age = Columns.create("Age", ColumnType.INT);
       const birthday = Columns.create("Date of Birth", ColumnType.DATE);
       const exec = Columns.create("Executive", ColumnType.BOOL);
       const comment = Columns.create("Comment", ColumnType.STRING);

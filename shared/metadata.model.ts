@@ -1,10 +1,14 @@
 export enum ColumnType {
   INVALID = 0,
-  AUTO = 1,
-  NUMBER = 2,
+  PK = 1,
+  INT = 2,
   STRING = 3,
   DATE = 4,
-  BOOL = 5
+  BOOL = 5,
+  IMAGE = 6,
+  MONEY = 7,
+  REAL = 8,
+  FK = 9
 }
 
 export interface Column {

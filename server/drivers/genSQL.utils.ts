@@ -6,11 +6,15 @@ export namespace GenSQLUtils {
   const SCHEMA = "data";
 
   const TYPES: any[] = [
-    { id: ColumnType.AUTO, sqlName: 'BIGSERIAL' },
-    { id: ColumnType.NUMBER, sqlName: 'INT' },
+    { id: ColumnType.PK, sqlName: 'BIGSERIAL' },
+    { id: ColumnType.INT, sqlName: 'INT' },
     { id: ColumnType.STRING, sqlName: 'TEXT' },
     { id: ColumnType.DATE, sqlName: 'DATE' },
     { id: ColumnType.BOOL, sqlName: 'BOOLEAN' },
+    { id: ColumnType.IMAGE, sqlName: 'BYTEA' },
+    { id: ColumnType.MONEY, sqlName: 'MONEY' },
+    { id: ColumnType.REAL, sqlName: 'REAL' },
+    { id: ColumnType.FK, sqlName: 'BIGINT' },
   ];
 
   function toType(type: ColumnType, constr: Constraint): string {
@@ -33,10 +37,10 @@ export namespace GenSQLUtils {
       str += ' UNIQUE';
 
     switch (col.type) {
-      case ColumnType.AUTO:
+      case ColumnType.PK:
         return 'PRIMARY KEY';
 
-      case ColumnType.NUMBER:
+      case ColumnType.INT:
         const numConst = constraint as NumberConstraint;
 
         if (numConst.max)
@@ -99,7 +103,7 @@ export namespace GenSQLUtils {
   }
 
   export function insert(table: Table, entry: any): [string, any[]] {
-    const cols = table.columns.filter(col => col.type !== ColumnType.AUTO);
+    const cols = table.columns.filter(col => col.type !== ColumnType.PK);
 
     const data = cols.map((col) => entry[Columns.apiName(col)]);
     const colList = cols.map((col) => Columns.apiName(col)).join(', ');
@@ -109,8 +113,8 @@ export namespace GenSQLUtils {
   }
 
   export function update(table: Table, entry: any): [string, any[]] {
-    const cols = table.columns.filter(col => col.type !== ColumnType.AUTO);
-    const id = table.columns.find(col => col.type == ColumnType.AUTO);
+    const cols = table.columns.filter(col => col.type !== ColumnType.PK);
+    const id = table.columns.find(col => col.type == ColumnType.PK);
 
     const data: any[] = [];
     const colList = cols.map(
