@@ -37,7 +37,7 @@ export class DataDriver {
     }
   }
 
-  async getAll(table: Table, sortBy?: string): Promise<any[]> {
+  async getAll(table: Table, sortBy?: string, page?: number, pageSize?: number): Promise<any[]> {
     let sortCol = table.columns.find(c => Columns.apiName(c) === sortBy);
     if (!sortCol)
       sortCol = table.columns.find(c => c.type === ColumnType.AUTO);
@@ -45,8 +45,12 @@ export class DataDriver {
       throw 400;
 
     try {
-      const { rows } = await pool.query(GenSQLUtils.getAll(table.id, Columns.apiName(sortCol)));
-      return rows;
+      let res: Promise<QueryResult>;
+      if (!Number.isNaN(page) && !Number.isNaN(pageSize))
+        res = pool.query(GenSQLUtils.getRange(table.id, Columns.apiName(sortCol), page * pageSize, pageSize));
+      else
+        res = pool.query(GenSQLUtils.getAll(table.id, Columns.apiName(sortCol)));
+      return (await res).rows;
     }
     catch (e) {
       throw e.detail ? e.detail : e;

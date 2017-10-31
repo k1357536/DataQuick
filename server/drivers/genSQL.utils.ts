@@ -90,6 +90,10 @@ export namespace GenSQLUtils {
     return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy};`;
   }
 
+  export function getRange(tableId: string, sortBy: string, start: number, num: number): string {
+    return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy} LIMIT ${num} OFFSET ${start};`;
+  }
+
   export function count(tableId: string): string {
     return `SELECT COUNT(*) FROM ${toTableName(tableId)};`;
   }

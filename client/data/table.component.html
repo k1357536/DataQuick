@@ -15,14 +15,35 @@
         <td [colSpan]="table.columns.length + 1">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
           <button class="btn btn-outline-success" (click)="add();">Add</button>
+          <nav *ngIf="numPages >= 2">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="0 === currentPage">
+                <a class="page-link" (click)="lastPage();" aria-label="Previous">
+                  <b aria-hidden="true">&laquo;</b>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <ng-container *ngFor="let i of pages">
+                <li class="page-item" [class.active]="i === currentPage">
+                  <a class="page-link" (click)="setPage(i);">{{i + 1}}</a>
+                </li>
+              </ng-container>
+              <li class="page-item" [class.disabled]="numPages-1 <= currentPage">
+                <a class="page-link" (click)="nextPage();" aria-label="Next">
+                    <b aria-hidden="true">&raquo;</b>
+                    <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </td>
       </tr>
       <tr>
         <th *ngFor="let col of table.columns" (click)="sort(col);">
           {{col.name}}
           <i class="material-icons text-muted mx-1">
-            <small *ngIf="col == sortCol">sort_by_alpha</small>
-            <small *ngIf="col != sortCol">sort</small>
+            <small *ngIf="col==s ortCol">sort_by_alpha</small>
+            <small *ngIf="col !=s ortCol">sort</small>
           </i>
           <br />
           <small class="text-muted"> {{col.type | columntype}}</small>

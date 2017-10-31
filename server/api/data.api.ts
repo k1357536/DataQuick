@@ -31,7 +31,7 @@ export function DataApi(): Router {
   data.get('/:id', async (req, res) => {
     try {
       let table = await metadataDriver.get(req.params.id);
-      res.json(await driver.getAll(table, req.query.sortby));
+      res.json(await driver.getAll(table, req.query.sortby, req.query.page, req.query.pageSize));
     }
     catch (e) {
       handleError(e, res);
