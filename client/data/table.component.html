@@ -42,8 +42,9 @@
         <th *ngFor="let col of table.columns" (click)="sort(col);">
           {{col.name}}
           <i class="material-icons text-muted mx-1">
-            <small *ngIf="col==s ortCol">sort_by_alpha</small>
-            <small *ngIf="col !=s ortCol">sort</small>
+            <small *ngIf="col == sortCol && sortASC">arrow_downward</small>
+              <small *ngIf="col == sortCol && !sortASC">arrow_upward</small>
+            <small *ngIf="col != sortCol">sort</small>
           </i>
           <br />
           <small class="text-muted"> {{col.type | columntype}}</small>

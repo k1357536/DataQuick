@@ -24,6 +24,7 @@ export class TableComponent implements OnInit {
   data: (any | { id: number })[];
 
   sortCol: Column;
+  sortASC = true;
 
   numEntries = 0;
   numPages = 0;
@@ -84,16 +85,21 @@ export class TableComponent implements OnInit {
         if (this.currentPage > this.numPages - 1)
           this.currentPage = Math.max(this.numPages - 1, 0);
       })
-      .then(() => this.dataService.getAll(this.table.id, sortCol, this.currentPage, ENTRIES_PER_PAGE))
+      .then(() => this.dataService.getAll(this.table.id, sortCol, this.sortASC, this.currentPage, ENTRIES_PER_PAGE))
       .then(d => this.data = d)
       .catch(e => this.handleError(e));
   }
 
   async sort(col: Column): Promise<void> {
-    if (this.sortCol === col)
-      this.sortCol = null;
-    else
+    if (this.sortCol === col) {
+      if (this.sortASC)
+        this.sortASC = false;
+      else
+        this.sortCol = null;
+    } else {
       this.sortCol = col;
+      this.sortASC = true;
+    }
     await this.loadData();
   }
 
@@ -107,13 +113,13 @@ export class TableComponent implements OnInit {
     await this.loadData();
   }
 
-  async   lastPage() {
+  async lastPage() {
     if (this.currentPage > 0)
       this.currentPage--;
     await this.loadData();
   }
 
-  async   nextPage() {
+  async nextPage() {
     if (this.currentPage + 1 < this.numPages)
       this.currentPage++;
     await this.loadData();

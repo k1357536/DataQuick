@@ -94,12 +94,12 @@ export namespace GenSQLUtils {
     return `SELECT * FROM ${toTableName(tableId)} WHERE id = $1;`;
   }
 
-  export function getAll(tableId: string, sortBy: string): string {
-    return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy};`;
+  export function getAll(tableId: string, sortBy: string, sortASC: boolean): string {
+    return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy} ${sortASC ? 'ASC' : 'DESC'};`;
   }
 
-  export function getRange(tableId: string, sortBy: string, start: number, num: number): string {
-    return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy} LIMIT ${num} OFFSET ${start};`;
+  export function getRange(tableId: string, sortBy: string, sortASC: boolean, start: number, num: number): string {
+    return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy} ${sortASC ? 'ASC' : 'DESC'} LIMIT ${num} OFFSET ${start};`;
   }
 
   export function count(tableId: string): string {
