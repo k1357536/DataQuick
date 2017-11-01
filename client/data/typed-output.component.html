@@ -9,8 +9,8 @@
     <ng-container *ngSwitchDefault>-</ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="ColumnType.IMAGE">
-    <div style="width: 4em; height: 4em; border: 1px solid black; display: flex; align-items: center; justify-content: center;">
-      &lt;/&gt;
+    <div *ngIf="!value" style="width: 6rem; height: 6rem; border: 1px solid black; display: inline-flex; align-items: center; justify-content: center; font-size:3em;">
+      ?
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="ColumnType.MONEY">{{value | currency}}</ng-container>
