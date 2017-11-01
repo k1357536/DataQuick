@@ -10,16 +10,7 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  template: `
-  <ng-container *ngIf="col" [ngSwitch]="col.type">
-    <ng-container *ngSwitchCase="ColumnType.DATE">{{value | date }}</ng-container>
-    <ng-container *ngSwitchCase="ColumnType.BOOL" [ngSwitch]="value">
-      <ng-container *ngSwitchCase="true">true</ng-container>
-      <ng-container *ngSwitchCase="false">false</ng-container>
-      <ng-container *ngSwitchDefault>-</ng-container>
-    </ng-container>
-    <ng-container *ngSwitchDefault>{{value  }}</ng-container>
-  </ng-container>`,
+  templateUrl: './typed-output.component.html',
   selector: 'typed-output',
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })

@@ -1,0 +1,21 @@
+<ng-container *ngIf="col" [ngSwitch]="col.type">
+  <ng-container *ngSwitchCase="ColumnType.PK">{{value}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.INT">{{value}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.STRING">{{value}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.DATE">{{value | date }}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.BOOL" [ngSwitch]="value">
+    <ng-container *ngSwitchCase="true">true</ng-container>
+    <ng-container *ngSwitchCase="false">false</ng-container>
+    <ng-container *ngSwitchDefault>-</ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="ColumnType.IMAGE">
+    <div style="width: 4em; height: 4em; border: 1px solid black; display: flex; align-items: center; justify-content: center;">
+      &lt;/&gt;
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="ColumnType.MONEY">{{value | currency}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.REAL">{{value}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.PERCENT">{{value | percent}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.FK">ID: {{value}}</ng-container>
+  <ng-container *ngSwitchDefault>{{value}}</ng-container>
+</ng-container>
