@@ -1,0 +1,94 @@
+<h1>Table&nbsp;<small class="text-muted" *ngIf="table">{{table.name}}</small></h1>
+
+<div *ngIf="!table && !errorMsg" class="alert alert-info">
+  Loading...
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<div *ngIf="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width: 25%">Name</th>
+        <th style="width: 25%">Type</th>
+        <th>Constraint</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let col of table.columns; let i=index; trackBy:trackByIndex">
+        <td>
+          {{table.columns[i].name}}
+        </td>
+        <td>
+          <!--select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required>
+            <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t.id == table.columns[i].type">{{t.name}}</option>
+          </select-->
+          {{table.columns[i].type | columntype}}
+        </td>
+        <td [ngSwitch]="col.type">
+          <div *ngIf="col.constraint.notNull">Required</div>
+          <div *ngIf="!col.constraint.notNull">Optional</div>
+
+          <div *ngIf="col.constraint.unique">Unique</div>
+
+          <ng-container *ngSwitchCase="ColumnType.PK">
+            Consecutive Number
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.INT">
+            <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min}}</div>
+            <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.STRING">
+            <div *ngIf="col.constraint.maxLength != null">Max Length: {{col.constraint.maxLength}}</div>
+            <div *ngIf="col.constraint.maxLength == null">Variable Length</div>
+            <div *ngIf="col.constraint.regExp != null">Pattern: {{col.constraint.regExp}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.DATE">
+            <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min | date}}</div>
+            <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max | date}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.BOOL">
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.IMAGE">
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.MONEY">
+            <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min | currency}}</div>
+            <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max | currency}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.REAL">
+            <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min}}</div>
+            <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.PERCENT">
+            <div *ngIf="col.constraint.min != null && col.constraint.min != 0">Min: {{col.constraint.min | percent}}</div>
+            <div *ngIf="col.constraint.max != null && col.constraint.max != 1">Max: {{col.constraint.max | percent}}</div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="ColumnType.FK">
+          </ng-container>
+
+          <ng-container *ngSwitchDefault>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">
+          <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
+          <button class="btn btn-primary" (click)="edit();">Edit</button>
+        </th>
+    </tfoot>
+  </table>
+</div>

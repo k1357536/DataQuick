@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 
 import { TableListComponent } from '../manager/table-list.component';
+import { TableDetailsComponent } from '../manager/table-details.component';
 import { TableEditorComponent } from '../manager/table-editor.component';
 
 import { TablesComponent } from '../data/tables.component';
@@ -15,19 +16,17 @@ import { SetupComponent } from '../setup/setup.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
-  {
-    path: 'manager', children: [
-      { path: '', component: TableListComponent },
-      { path: ':id', component: TableEditorComponent }]
-  },
-  {
-    path: 'data', children: [
-      { path: '', component: TablesComponent },
-      { path: ':id', component: TableComponent },
-      { path: ':table/add', component: EntryEditorComponent },
-      { path: ':table/:entry', component: EntryComponent },
-      { path: ':table/:entry/edit', component: EntryEditorComponent }]
-  },
+
+  { path: 'manager', component: TableListComponent },
+  { path: 'manager/:id', component: TableDetailsComponent },
+  { path: 'manager/:id/edit', component: TableEditorComponent },
+
+  { path: 'data', component: TablesComponent },
+  { path: 'data/:id', component: TableComponent, data: { fluid: true } },
+  { path: 'data/:table/add', component: EntryEditorComponent },
+  { path: 'data/:table/:entry', component: EntryComponent },
+  { path: 'data/:table/:entry/edit', component: EntryEditorComponent },
+
   { path: 'setup', component: SetupComponent }
 ];
 
