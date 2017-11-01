@@ -5,30 +5,24 @@ import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { TableListComponent } from './table-list.component';
-import { TableEditorComponent } from './table-editor.component';
+import { ServicesModule } from '../services/services.module';
 
-import { MetadataService } from '../services/metadata.service';
-import { DataService } from '../services/data.service';
+import { TableListComponent } from './table-list.component';
+import { TableDetailsComponent } from './table-details.component';
+import { TableEditorComponent } from './table-editor.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule
+    NgbModule,
+    ServicesModule
   ],
   declarations: [
     TableListComponent,
+    TableDetailsComponent,
     TableEditorComponent
-  ],
-  bootstrap: [
-  ],
-  providers: [
-    MetadataService,
-    DataService
-  ],
-  exports: [
   ]
 })
 export class ManagerModule { }

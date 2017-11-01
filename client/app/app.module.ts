@@ -6,14 +6,15 @@ import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
+import { ManagerModule } from '../manager/manager.module';
+import { DataModule } from '../data/data.module';
+import { SetupModule } from '../setup/setup.module';
 
 import { AppComponent } from './app.component';
 import { AppNavComponent } from './app-nav.component';
 import { DashboardComponent } from './dashboard.component';
 
-import { ManagerModule } from '../manager/manager.module';
-import { DataModule } from '../data/data.module';
-import { SetupModule } from '../setup/setup.module';
+
 
 @NgModule({
   imports: [
@@ -29,12 +30,10 @@ import { SetupModule } from '../setup/setup.module';
   declarations: [
     AppComponent,
     AppNavComponent,
-    DashboardComponent,
+    DashboardComponent
   ],
   bootstrap: [
     AppComponent
-  ],
-  providers: [
   ]
 })
 export class AppModule { }

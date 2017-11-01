@@ -5,8 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetadataService } from '../services/metadata.service';
-import { DataService } from '../services/data.service';
+import { ServicesModule } from '../services/services.module';
 
 import { TablesComponent } from './tables.component';
 import { TableComponent } from './table.component';
@@ -15,14 +14,13 @@ import { EntryEditorComponent } from './entry-editor.component';
 import { TypedInputComponent } from './typed-input.component';
 import { TypedOutputComponent } from './typed-output.component';
 
-import { ColumnTypePipe } from './column-type.pipe';
-
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule
+    NgbModule,
+    ServicesModule
   ],
   declarations: [
     TablesComponent,
@@ -30,16 +28,7 @@ import { ColumnTypePipe } from './column-type.pipe';
     EntryComponent,
     EntryEditorComponent,
     TypedInputComponent,
-    TypedOutputComponent,
-    ColumnTypePipe
+    TypedOutputComponent
   ],
-  bootstrap: [
-  ],
-  providers: [
-    MetadataService,
-    DataService
-  ],
-  exports: [
-  ]
 })
 export class DataModule { }
