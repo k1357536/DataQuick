@@ -52,7 +52,7 @@ export function DataApi(): Router {
 
       const entry = req.body; // TODO Utils.sanitizeEntry(req.body);
       if (!entry) {
-        console.log("Entry JSON: " + JSON.stringify(req.body));
+        console.error("Entry JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
       }
 
@@ -70,7 +70,7 @@ export function DataApi(): Router {
 
       const entry = req.body; // TODO Utils.sanitizeEntry(req.body);
       if (!entry) {
-        console.log("Entry JSON: " + JSON.stringify(req.body));
+        console.error("Entry JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
       }
 

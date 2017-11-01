@@ -14,7 +14,7 @@ pool.on('error', (err, client) => {
 })
 
 pool.connect().catch(e => {
-  console.log(e);
+  console.error(e);
   process.exit(-1);
 });
 
@@ -82,7 +82,7 @@ export class DataDriver {
       throw 400;
 
     const [stmt, data] = GenSQLUtils.update(table, entry);
-    console.log(stmt, data);
+    console.log("UPDATE STMT:", stmt, data);
     try {
       const { rowCount } = await pool.query(stmt, data);
       if (rowCount < 1)
@@ -99,7 +99,7 @@ export class DataDriver {
       throw 400;
 
     const [stmt, data] = GenSQLUtils.insert(table, entry);
-    console.log(stmt, data);
+    console.log("INSERT STMT:", stmt, data);
     try {
       const { rowCount } = await pool.query(stmt, data);
       if (rowCount < 1)
@@ -116,6 +116,7 @@ export class DataDriver {
       throw 400;
 
     const stmt = GenSQLUtils.del(tableId);
+    console.log("DELETE STMT:", stmt, eid);
     try {
       const { rowCount } = await pool.query(stmt, [eid]);
 
@@ -131,10 +132,10 @@ export class DataDriver {
     if (!DataDriver.idRegEx.test(table.id))
       throw 400;
 
-    let sql = GenSQLUtils.create(table);
-    console.log("SQL:" + sql);
+    let stmt = GenSQLUtils.create(table);
+    console.log("CREATE STMT:", stmt);
     try {
-      await pool.query(sql);
+      await pool.query(stmt);
     }
     catch (e) {
       throw e.detail ? e.detail : e;
@@ -145,10 +146,10 @@ export class DataDriver {
     if (!DataDriver.idRegEx.test(id))
       throw 400;
 
-    let sql = GenSQLUtils.drop(id);
-    console.log("SQL:" + sql);
+    let stmt = GenSQLUtils.drop(id);
+    console.log("DROP STMT:", stmt);
     try {
-      await pool.query(sql);
+      await pool.query(stmt);
     }
     catch (e) {
       throw e.detail ? e.detail : e;

@@ -38,7 +38,7 @@ export function MetadataApi(): Router {
     try {
       const p: FolderProposal | Folder = req.body;
       if (!p.name || typeof p.name !== 'string' || !p.parent || typeof p.parent !== 'string') {
-        console.log(p);
+        console.error(p);
         throw 400;
       }
 
@@ -82,8 +82,10 @@ export function MetadataApi(): Router {
   metadata.post('/', async (req, res) => {
     try {
       const p: Table | TableProposal = req.body;
-      if (!p.name || typeof p.name !== 'string' || !p.parent)
+      if (!p.name || typeof p.name !== 'string' || !p.parent) {
+        console.error(p);
         throw 400;
+      }
 
       const tbls = await driver.search(p);
       if (tbls.length > 0)
@@ -103,7 +105,7 @@ export function MetadataApi(): Router {
     try {
       const table = Utils.sanitizeTable(req.body);
       if (!table || table.id != req.params.id) {
-        console.log("Column JSON: " + JSON.stringify(req.body));
+        console.error("Column JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
       }
 

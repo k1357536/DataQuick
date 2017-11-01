@@ -27,7 +27,7 @@ pool.on('error', (err, client) => {
 })
 
 pool.connect().catch(e => {
-  console.log(e);
+  console.error(e);
   process.exit(-1);
 });
 
@@ -38,7 +38,7 @@ export class MetadataDriver {
     return rows;
   }
 
-  async searchFolder(param: FolderProposal | string): Promise<Table[]> {
+  async searchFolder(param: FolderProposal | string): Promise<Folder[]> {
     if (typeof param === 'string') {
       const { rows } = await pool.query(SEARCH_FOLDER1_STMT, [param]);
       return rows;
@@ -49,22 +49,22 @@ export class MetadataDriver {
     }
   }
 
-  async addFolder(p: FolderProposal | Folder): Promise<Table> {
+  async addFolder(p: FolderProposal | Folder): Promise<void> {
     let id;
     if ((p as Folder).id)
       id = (p as Folder).id;
     else
       id = Utils.generateUUID();
+    console.log("ADD FOLDER:", [id, p.name, p.parent]);
 
     const { rowCount } = await pool.query(INSERT_FOLDER_STMT, [id, p.name, p.parent]);
 
     if (rowCount < 1)
       throw 400;
-
-    return await this.get(id);
   }
 
   async deleteFolder(uuid: string): Promise<void> {
+    console.log("DELETE FOLDER:", [uuid]);
     const { rowCount } = await pool.query(DELETE_FOLDER_STMT, [uuid]);
 
     if (rowCount < 1)
@@ -110,6 +110,7 @@ export class MetadataDriver {
     else
       cols = [Columns.createIdColumn()];
 
+    console.log("ADD TABLE:", [id, p.name, p.parent, JSON.stringify(cols)]);
     const { rowCount } = await pool.query(INSERT_STMT, [id, p.name, p.parent, JSON.stringify(cols)]);
 
     if (rowCount < 1)
@@ -119,6 +120,7 @@ export class MetadataDriver {
   }
 
   async update(table: Table): Promise<void> {
+    console.log("UPDATE TABLE:", table);
     const { rowCount } = await pool.query(UPDATE_STMT, [table.id, table.name, table.parent, JSON.stringify(table.columns)]);
 
     if (rowCount < 1)
@@ -126,6 +128,7 @@ export class MetadataDriver {
   }
 
   async delete(uuid: string): Promise<void> {
+    console.log("DELETE TABLE:", [uuid]);
     const { rowCount } = await pool.query(DELETE_STMT, [uuid]);
 
     if (rowCount < 1)
