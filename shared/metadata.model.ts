@@ -17,20 +17,22 @@ export interface Column {
   constraint: Constraint;
 }
 
-export interface TableProposal {
-  name: string;
-  parent: string;
-}
-
 export interface FolderProposal {
   name: string;
   parent: string;
 }
 
-export interface Table {
+export interface Folder extends FolderProposal {
   id: string;
+}
+
+export interface TableProposal {
   name: string;
   parent: string;
+}
+
+export interface Table extends TableProposal {
+  id: string;
   columns: Column[];
 }
 
@@ -55,10 +57,4 @@ export interface DateConstraint extends Constraint {
 }
 
 export interface BoolConstraint extends Constraint {
-}
-
-export interface Folder {
-  id: string;
-  name: string;
-  parent: string;
 }

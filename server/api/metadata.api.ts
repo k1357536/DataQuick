@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Router, Response } from 'express';
 
-import { TableProposal, FolderProposal, Table, Column } from '../../shared/metadata.model';
+import { TableProposal, FolderProposal, Table, Column, Folder } from '../../shared/metadata.model';
 import { Utils } from '../utils';
 
 import { MetadataDriver } from '../drivers/metadata.driver';
@@ -25,7 +25,7 @@ export function MetadataApi(): Router {
   }
 
   // === Folders ===============================================================
-  metadata.get('/folders', async (req, res) => {
+  metadata.get('/folders/', async (req, res) => {
     try {
       res.json(await driver.getAllFolders());
     }
@@ -34,9 +34,9 @@ export function MetadataApi(): Router {
     }
   });
 
-  metadata.post('/folders', async (req, res) => {
+  metadata.post('/folders/', async (req, res) => {
     try {
-      const p: FolderProposal = req.body;
+      const p: FolderProposal | Folder = req.body;
       if (!p.name || typeof p.name !== 'string' || !p.parent || typeof p.parent !== 'string') {
         console.log(p);
         throw 400;
@@ -81,7 +81,7 @@ export function MetadataApi(): Router {
 
   metadata.post('/', async (req, res) => {
     try {
-      const p: TableProposal = req.body;
+      const p: Table | TableProposal = req.body;
       if (!p.name || typeof p.name !== 'string' || !p.parent)
         throw 400;
 

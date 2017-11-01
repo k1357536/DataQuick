@@ -23,6 +23,10 @@ export namespace GenSQLUtils {
     return TYPES.find((t) => t.id === type).sqlName;
   }
 
+  function toEscapedName(col: Column): string {
+    return '"' + Columns.apiName(col) + '"';
+  }
+
   export function toTableName(id: string): string {
     const name = SCHEMA + '."t' + id.replace(/\-/g, '_') + '"';
     return name;
@@ -30,7 +34,7 @@ export namespace GenSQLUtils {
 
   function toConstraintString(col: Column): string {
     const constraint = col.constraint ? col.constraint : Constraints.getDefault(col.type);
-    const name = Columns.apiName(col);
+    const name = toEscapedName(col);
 
     let str = constraint.notNull ? 'NOT NULL' : 'NULL';
     if (constraint.unique)
@@ -76,7 +80,7 @@ export namespace GenSQLUtils {
   export function create(table: Table): string {
     console.log(JSON.stringify(table));
     const colList = table.columns.map(col =>
-      `${Columns.apiName(col)} ${toType(col.type, col.constraint)} ${toConstraintString(col)}`
+      `${toEscapedName(col)} ${toType(col.type, col.constraint)} ${toConstraintString(col)}`
     ).join(', ');
     return `CREATE TABLE ${toTableName(table.id)} (${colList});`;
   }
@@ -106,7 +110,7 @@ export namespace GenSQLUtils {
     const cols = table.columns.filter(col => col.type !== ColumnType.PK);
 
     const data = cols.map((col) => entry[Columns.apiName(col)]);
-    const colList = cols.map((col) => Columns.apiName(col)).join(', ');
+    const colList = cols.map((col) => toEscapedName(col)).join(', ');
     const valList = cols.map((col, i) => "$" + (i + 1)).join(', ');
 
     return [`INSERT INTO ${toTableName(table.id)} (${colList}) VALUES (${valList});`, data];
@@ -119,9 +123,8 @@ export namespace GenSQLUtils {
     const data: any[] = [];
     const colList = cols.map(
       col => {
-        const name = Columns.apiName(col);
-        data.push(entry[name]);
-        return name + ` = $${data.length}`;
+        data.push(entry[Columns.apiName(col)]);
+        return toEscapedName(col) + ` = $${data.length}`;
       }
     ).join(', ');
     data.push(entry[Columns.apiName(id)]);

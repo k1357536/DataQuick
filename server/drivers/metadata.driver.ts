@@ -4,19 +4,19 @@ import { Table, TableProposal, FolderProposal, Column, Folder } from '../../shar
 import { Columns } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
-const GETALL_FOLDER_STMT = "SELECT id, name, parent FROM metadata.folders;";
-const SEARCH_FOLDER1_STMT = "SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;";
-const SEARCH_FOLDER2_STMT = "SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;";
-const INSERT_FOLDER_STMT = "INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);";
-const DELETE_FOLDER_STMT = "DELETE FROM metadata.folders WHERE id = $1;";
+const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != parent;';
+const SEARCH_FOLDER1_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;';
+const SEARCH_FOLDER2_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;';
+const INSERT_FOLDER_STMT = 'INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);';
+const DELETE_FOLDER_STMT = 'DELETE FROM metadata.folders WHERE id = $1;';
 
-const GETALL_STMT = "SELECT id, name, parent, columns FROM metadata.lists;";
-const GET_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;";
-const SEARCH1_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE name LIKE $1;";
-const SEARCH2_STMT = "SELECT id, name, parent, columns FROM metadata.lists WHERE name = $1 AND parent = $2;";
-const UPDATE_STMT = "UPDATE metadata.lists SET name = $2, parent = $3, columns = $4 WHERE id = $1;";
-const INSERT_STMT = "INSERT INTO metadata.lists (id, name, parent, columns) VALUES ($1, $2, $3, $4);";
-const DELETE_STMT = "DELETE FROM metadata.lists WHERE id = $1;";
+const GETALL_STMT = 'SELECT id, name, parent, columns FROM metadata.lists;';
+const GET_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;';
+const SEARCH1_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name LIKE $1;';
+const SEARCH2_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name = $1 AND parent = $2;';
+const UPDATE_STMT = 'UPDATE metadata.lists SET name = $2, parent = $3, columns = $4 WHERE id = $1;';
+const INSERT_STMT = 'INSERT INTO metadata.lists (id, name, parent, columns) VALUES ($1, $2, $3, $4);';
+const DELETE_STMT = 'DELETE FROM metadata.lists WHERE id = $1;';
 
 const credentials = require('../../dbCredentials.json');
 const pool = new Pool(credentials);
@@ -39,7 +39,7 @@ export class MetadataDriver {
   }
 
   async searchFolder(param: FolderProposal | string): Promise<Table[]> {
-    if (typeof param === "string") {
+    if (typeof param === 'string') {
       const { rows } = await pool.query(SEARCH_FOLDER1_STMT, [param]);
       return rows;
     } else {
@@ -49,8 +49,13 @@ export class MetadataDriver {
     }
   }
 
-  async addFolder(p: FolderProposal): Promise<Table> {
-    const id = Utils.generateUUID();
+  async addFolder(p: FolderProposal | Folder): Promise<Table> {
+    let id;
+    if ((p as Folder).id)
+      id = (p as Folder).id;
+    else
+      id = Utils.generateUUID();
+
     const { rowCount } = await pool.query(INSERT_FOLDER_STMT, [id, p.name, p.parent]);
 
     if (rowCount < 1)
@@ -82,7 +87,7 @@ export class MetadataDriver {
   }
 
   async search(param: TableProposal | string): Promise<Table[]> {
-    if (typeof param === "string") {
+    if (typeof param === 'string') {
       const { rows } = await pool.query(SEARCH1_STMT, [param]);
       return rows;
     } else {
@@ -92,9 +97,19 @@ export class MetadataDriver {
     }
   }
 
-  async add(p: TableProposal): Promise<Table> {
-    const id = Utils.generateUUID();
-    const cols = [Columns.createIdColumn()];
+  async add(p: Table | TableProposal): Promise<Table> {
+    let id;
+    if ((p as Table).id)
+      id = (p as Table).id;
+    else
+      id = Utils.generateUUID();
+
+    let cols;
+    if ((p as Table).columns)
+      cols = (p as Table).columns;
+    else
+      cols = [Columns.createIdColumn()];
+
     const { rowCount } = await pool.query(INSERT_STMT, [id, p.name, p.parent, JSON.stringify(cols)]);
 
     if (rowCount < 1)

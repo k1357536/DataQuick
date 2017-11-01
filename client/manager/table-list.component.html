@@ -39,7 +39,7 @@
         <input type="text" class="form-control" [(ngModel)]="newFolderName" required (keyup.enter)="addFolder();">
       </th>
       <th colspan="4">
-        <button class="btn btn-outline-dark" (click)="addFolder();">Add Folder</button>
+        <button class="btn btn-outline-success" (click)="addFolder();">Add Folder</button>
       </th>
     </tr>
   </tfoot>
@@ -82,7 +82,9 @@
         <input type="text" class="form-control" [(ngModel)]="newName" required (keyup.enter)="add();">
       </th>
       <th colspan="4">
-        <button class="btn btn-outline-dark" (click)="add();">Add Table</button>
+        <button class="btn btn-outline-success" (click)="add();">Add Table</button>
+        <button class="btn btn-outline-dark" (click)="export();">Export Structure</button>
+        <button class="btn btn-outline-dark" (click)="import();">Import Structure</button>
       </th>
     </tr>
   </tfoot>

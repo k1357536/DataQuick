@@ -30,6 +30,10 @@ export class MetadataService {
     await this.http.post(this.folderUrl, JSON.stringify(p), { headers: this.headers }).toPromise();
   }
 
+  async importFolder(p: Folder): Promise<void> {
+    await this.http.post(this.folderUrl, JSON.stringify(p), { headers: this.headers }).toPromise();
+  }
+
   async deleteFolder(f: Folder): Promise<void> {
     await this.http.delete(this.folderUrl + f.id).toPromise();
   }
@@ -49,6 +53,10 @@ export class MetadataService {
   async addTable(name: string, parent: Folder): Promise<void> {
     const p: TableProposal = { name, parent: parent.id };
     await this.http.post(this.url, JSON.stringify(p), { headers: this.headers }).toPromise();
+  }
+
+  async importTable(tbl: Table): Promise<void> {
+    await this.http.post(this.url, JSON.stringify(tbl), { headers: this.headers }).toPromise();
   }
 
   async updateTable(table: Table): Promise<void> {
