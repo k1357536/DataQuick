@@ -8,13 +8,14 @@ export module ColumnTypes {
 
   export const ALL: ColumnDescription[] = [
     { id: ColumnType.PK, name: 'Key' },
-    { id: ColumnType.INT, name: 'Number' },
+    { id: ColumnType.INT, name: 'Whole Number' },
     { id: ColumnType.STRING, name: 'Text' },
     { id: ColumnType.DATE, name: 'Date' },
     { id: ColumnType.BOOL, name: 'True/False' },
     { id: ColumnType.IMAGE, name: 'Image' },
     { id: ColumnType.MONEY, name: 'Money' },
-    { id: ColumnType.REAL, name: 'Real Number' },
+    { id: ColumnType.REAL, name: 'Decimal Number' },
+    { id: ColumnType.PERCENT, name: 'Percentage' },
     { id: ColumnType.FK, name: 'Reference' },
   ];
 
@@ -45,6 +46,7 @@ export module Columns {
 export module Constraints {
   const defConstraint: Constraint = { notNull: true, unique: false };
   const defNumberConstraint: NumberConstraint = { notNull: true, unique: false, min: null, max: null };
+  const defPercentConstraint: NumberConstraint = { notNull: true, unique: false, min: 0, max: 1 };
   const defStringConstraint: StringConstraint = { notNull: true, unique: false, regExp: null, maxLength: null };
   const defDateConstraint: DateConstraint = { notNull: true, unique: false, min: null, max: null };
   const defBoolConstraint: BoolConstraint = defConstraint;
@@ -59,6 +61,8 @@ export module Constraints {
         return Object.assign(defNumberConstraint);
       case ColumnType.BOOL:
         return Object.assign(defNumberConstraint);
+      case ColumnType.PERCENT:
+        return Object.assign(defPercentConstraint);
       default:
         return Object.assign(defConstraint);
     }

@@ -19,10 +19,10 @@ export class DataService {
     return Number(response.text());
   }
 
-  async getAll(tableId: string, sortby: string, page: number, pageSize: number): Promise<{ id: number }[]> {
+  async getAll(tableId: string, sortby: string, sortASC: boolean, page: number, pageSize: number): Promise<{ id: number }[]> {
     let url = this.url + tableId;
     if (sortby)
-      url += `?sortby=${sortby}`;
+      url += `?sortby=${sortby}&sortASC=${sortASC}`;
     if (!Number.isNaN(page) && !Number.isNaN(pageSize))
       url += (sortby ? '&' : '?') + `page=${page}&pageSize=${pageSize}`;
 

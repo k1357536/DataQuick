@@ -8,7 +8,8 @@ export enum ColumnType {
   IMAGE = 6,
   MONEY = 7,
   REAL = 8,
-  FK = 9
+  PERCENT = 9,
+  FK = 10
 }
 
 export interface Column {

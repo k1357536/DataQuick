@@ -12,8 +12,9 @@ export namespace GenSQLUtils {
     { id: ColumnType.DATE, sqlName: 'DATE' },
     { id: ColumnType.BOOL, sqlName: 'BOOLEAN' },
     { id: ColumnType.IMAGE, sqlName: 'BYTEA' },
-    { id: ColumnType.MONEY, sqlName: 'MONEY' },
+    { id: ColumnType.MONEY, sqlName: 'NUMERIC(12,2)' },
     { id: ColumnType.REAL, sqlName: 'REAL' },
+    { id: ColumnType.PERCENT, sqlName: 'REAL' },
     { id: ColumnType.FK, sqlName: 'BIGINT' },
   ];
 
