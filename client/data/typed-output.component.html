@@ -12,10 +12,15 @@
     <div *ngIf="!value" style="width: 6rem; height: 6rem; border: 1px solid black; display: inline-flex; align-items: center; justify-content: center; font-size:3em;">
       ?
     </div>
+    <img *ngIf="value" [src]="value" style="width: 6rem; height: 6rem;" />
   </ng-container>
   <ng-container *ngSwitchCase="ColumnType.MONEY">{{value | currency}}</ng-container>
   <ng-container *ngSwitchCase="ColumnType.REAL">{{value}}</ng-container>
   <ng-container *ngSwitchCase="ColumnType.PERCENT">{{value | percent}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.FK">ID: {{value}}</ng-container>
+  <ng-container *ngSwitchCase="ColumnType.FK">
+    <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
+      ID: {{value}}
+    </a>
+  </ng-container>
   <ng-container *ngSwitchDefault>{{value}}</ng-container>
 </ng-container>

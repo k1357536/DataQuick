@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { Table, Column, ColumnType } from '../../shared/metadata.model';
+import { Table, Column, ColumnType, FKConstraint } from '../../shared/metadata.model';
 import { Columns, ColumnTypes } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
@@ -45,6 +45,12 @@ export class TableDetailsComponent implements OnInit {
   async load(id: string): Promise<void> {
     const table = await this.metadataService.getTable(id);
     this.table = table;
+    table.columns
+      .filter(col => col.type == ColumnType.FK)
+      .forEach(col => {
+        const tgt = (col.constraint as FKConstraint).target;
+        (col as any).resolvedName = this.metadataService.getTableName(tgt);
+      });
   }
 
   edit(): void {

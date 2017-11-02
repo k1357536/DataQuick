@@ -45,6 +45,10 @@ export class MetadataService {
     return response.json() as Table;
   }
 
+  async getTableName(uuid: string): Promise<string> {
+    return (await this.getTable(uuid)).name;
+  }
+
   async getTables(): Promise<Table[]> {
     const response = await this.http.get(this.url).toPromise();
     return response.json() as Table[];

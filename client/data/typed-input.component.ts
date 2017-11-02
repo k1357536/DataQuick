@@ -51,4 +51,32 @@ export class TypedInputComponent implements ControlValueAccessor {
   registerOnTouched(fn: any) {
     this.onTouchedCallback = fn;
   }
+
+  uploadImg() {
+    const input = window.document.createElement('input');
+    input.type = 'file';
+    input.hidden = true;
+
+    input.onchange = () => {
+      document.body.removeChild(input);
+      alert('Not jet supported!');
+      // if (input.files.length === 1) {
+      //   const file = input.files[0];
+      //   const fr = new FileReader();
+      //
+      //   fr.onload = async () => {
+      //     const array = new Uint8Array(fr.result);
+      //     const v = Array.from(array);
+      //     console.log(v);
+      //     this.innerValue = v;
+      //     this.onChangeCallback(v);
+      //   }
+      //
+      //   fr.readAsArrayBuffer(file);
+      // }
+    };
+
+    document.body.appendChild(input);
+    input.click();
+  }
 }

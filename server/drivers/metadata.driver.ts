@@ -108,9 +108,9 @@ export class MetadataDriver {
     if ((p as Table).columns)
       cols = (p as Table).columns;
     else
-      cols = [Columns.createIdColumn()];
+      cols = [Columns.createPK()];
 
-    console.log("ADD TABLE:", [id, p.name, p.parent, JSON.stringify(cols)]);
+    console.log("ADD TABLE:", [id, p.name, p.parent, cols]);
     const { rowCount } = await pool.query(INSERT_STMT, [id, p.name, p.parent, JSON.stringify(cols)]);
 
     if (rowCount < 1)

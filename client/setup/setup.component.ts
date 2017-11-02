@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType, StringConstraint, NumberConstraint, DateConstraint } from '../../shared/metadata.model';
+import { ColumnType, StringConstraint, NumberConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
 import { Columns, Constraints, Folders } from '../../shared/metadata.utils';
 
 interface TestData {
@@ -128,8 +128,9 @@ export class SetupComponent implements OnInit {
       tbl.columns.push(Columns.create("Ref", ColumnType.FK,
         {
           notNull: true,
-          unique: false
-        }));
+          unique: false,
+          target: tbl.id
+        } as FKConstraint));
 
       await this.metadataService.updateTable(tbl);
 

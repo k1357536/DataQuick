@@ -14,7 +14,7 @@
       <tr>
         <th style="width: 25%">Name</th>
         <th style="width: 25%">Type</th>
-        <th>Constraint</th>
+        <th colspan="2">Constraint</th>
       </tr>
     </thead>
     <tbody>
@@ -28,12 +28,13 @@
           </select-->
           {{table.columns[i].type | columntype}}
         </td>
-        <td [ngSwitch]="col.type">
-          <div *ngIf="col.constraint.notNull">Required</div>
-          <div *ngIf="!col.constraint.notNull">Optional</div>
+        <td>
+          <div *ngIf="col.constraint.notNull" class="text-danger">Required</div>
+          <div *ngIf="!col.constraint.notNull" class="text-info">Optional</div>
 
           <div *ngIf="col.constraint.unique">Unique</div>
-
+        </td>
+        <td [ngSwitch]="col.type">
           <ng-container *ngSwitchCase="ColumnType.PK">
             Consecutive Number
           </ng-container>
@@ -76,6 +77,7 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="ColumnType.FK">
+            <div>To: {{col.resolvedName | async}}</div>
           </ng-container>
 
           <ng-container *ngSwitchDefault>

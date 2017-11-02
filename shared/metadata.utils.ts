@@ -1,4 +1,4 @@
-import { ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, BoolConstraint, Folder } from './metadata.model';
+import { ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint, Folder } from './metadata.model';
 
 export module ColumnTypes {
   export interface ColumnDescription {
@@ -26,7 +26,7 @@ export module ColumnTypes {
 }
 
 export module Columns {
-  export function createIdColumn(): Column {
+  export function createPK(): Column {
     return Columns.create('Id', ColumnType.PK);
   }
 
@@ -49,20 +49,25 @@ export module Constraints {
   const defPercentConstraint: NumberConstraint = { notNull: true, unique: false, min: 0, max: 1 };
   const defStringConstraint: StringConstraint = { notNull: true, unique: false, regExp: null, maxLength: null };
   const defDateConstraint: DateConstraint = { notNull: true, unique: false, min: null, max: null };
-  const defBoolConstraint: BoolConstraint = defConstraint;
+  const defFKConstraint: FKConstraint = { notNull: true, unique: false, target: null };
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {
       case ColumnType.INT:
+      case ColumnType.MONEY:
+      case ColumnType.REAL:
         return Object.assign(defNumberConstraint);
       case ColumnType.STRING:
         return Object.assign(defNumberConstraint);
       case ColumnType.DATE:
         return Object.assign(defNumberConstraint);
-      case ColumnType.BOOL:
-        return Object.assign(defNumberConstraint);
       case ColumnType.PERCENT:
         return Object.assign(defPercentConstraint);
+      case ColumnType.FK:
+        return Object.assign(defFKConstraint);
+      case ColumnType.PK:
+      case ColumnType.BOOL:
+      case ColumnType.IMAGE:
       default:
         return Object.assign(defConstraint);
     }

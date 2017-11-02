@@ -57,5 +57,6 @@ export interface DateConstraint extends Constraint {
   max: Date;
 }
 
-export interface BoolConstraint extends Constraint {
+export interface FKConstraint extends Constraint {
+  target: string;
 }

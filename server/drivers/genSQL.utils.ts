@@ -1,4 +1,4 @@
-import { Table, ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint } from '../../shared/metadata.model';
+import { Table, ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
 import { Columns, Constraints } from '../../shared/metadata.utils';
 
 export namespace GenSQLUtils {
@@ -46,6 +46,9 @@ export namespace GenSQLUtils {
         return 'PRIMARY KEY';
 
       case ColumnType.INT:
+      case ColumnType.MONEY:
+      case ColumnType.REAL:
+      case ColumnType.PERCENT:
         const numConst = constraint as NumberConstraint;
 
         if (numConst.max)
@@ -70,7 +73,13 @@ export namespace GenSQLUtils {
           str += ` CHECK (${name} >= '${dateConst.min}')`;
         break;
 
+      case ColumnType.FK:
+        const fkConst = constraint as FKConstraint;
+        str += ` REFERENCES ${toTableName(fkConst.target)}`;
+        break;
+
       case ColumnType.BOOL:
+      case ColumnType.IMAGE:
       default:
         break;
     }
@@ -79,7 +88,6 @@ export namespace GenSQLUtils {
 
   // ==== DDL ==================================================================
   export function create(table: Table): string {
-    console.log(JSON.stringify(table));
     const colList = table.columns.map(col =>
       `${toEscapedName(col)} ${toType(col.type, col.constraint)} ${toConstraintString(col)}`
     ).join(', ');
