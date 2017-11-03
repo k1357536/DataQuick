@@ -21,7 +21,7 @@ export class TableDetailsComponent implements OnInit {
   readonly ColumnType = ColumnType;
 
   @Input() table: Table;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
 
   constructor(
     private metadataService: MetadataService,
@@ -35,8 +35,9 @@ export class TableDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap
+    (this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
+      .filter(id => id != null) as Observable<string>)
       .subscribe(id => this.load(id), e => this.handleError(e));
   }
 

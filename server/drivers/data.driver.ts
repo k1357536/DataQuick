@@ -62,7 +62,6 @@ export class DataDriver {
 
   async get(tableId: string, entryId: string): Promise<Row> {
     let eid = Number(entryId);
-    console.log(DataDriver.idRegEx.test(tableId), eid);
     if (!DataDriver.idRegEx.test(tableId) || Number.isNaN(eid))
       throw 400;
 

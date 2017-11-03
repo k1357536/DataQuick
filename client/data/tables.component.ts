@@ -17,7 +17,7 @@ interface TableEx extends Table {
 export class TablesComponent implements OnInit {
   tables: TableEx[];
   newName: string;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
 
   constructor(
     private router: Router,

@@ -20,9 +20,10 @@
     <ng-container *ngSwitchCase="ColumnType.PERCENT">{{value | percent}}</ng-container>
     <ng-container *ngSwitchCase="ColumnType.FK">
       <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
-        <typed-output [col]="fkCol" [ngModel]="fkModel | async"></typed-output>
+        <typed-output *ngIf="fkCol && fkModel" [col]="fkCol" [ngModel]="fkModel"></typed-output>
+        <span *ngIf="!fkCol || !fkModel">&hellip;</span>
       </a><br />
-      <small class="text-muted">{{tblName | async}}[ID={{value}}]</small>
+      <small class="text-muted">{{tblName}}[ID={{value}}]</small>
     </ng-container>
     <ng-container *ngSwitchDefault>{{value}}</ng-container>
   </ng-container>

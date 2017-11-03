@@ -22,7 +22,7 @@ export class TableListComponent implements OnInit {
   tables: TableEx[];
   newName: string = "";
 
-  errorMsg: string = null;
+  errorMsg: string | null = null;
 
   constructor(
     private router: Router,
@@ -134,7 +134,7 @@ export class TableListComponent implements OnInit {
 
     input.onchange = () => {
       document.body.removeChild(input);
-      if (input.files.length === 1) {
+      if (input.files && input.files.length === 1) {
         const file = input.files[0];
         const fr = new FileReader();
 

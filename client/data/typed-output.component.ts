@@ -23,14 +23,14 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
 export class TypedOutputComponent implements ControlValueAccessor {
-  @Input() col: Column | Promise<Column>;
+  @Input() col: Column;
   @Input() summarize: boolean;
   private innerValue: any = undefined;
   ColumnType = ColumnType; // for view
 
-  tblName: Promise<string>;
-  fkCol: Promise<Column>;
-  fkModel: Promise<any>;
+  tblName: string;
+  fkCol: Column;
+  fkModel: any;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -50,18 +50,7 @@ export class TypedOutputComponent implements ControlValueAccessor {
       return;
     }
 
-    if (this.col instanceof Promise) {
-      this.col = await (this.col as Promise<Column>);
-    }
-
-    const col = this.col as Column;
-
-    if (!col) {
-      this.innerValue = "Error!";
-      return;
-    }
-
-    if (col.type === ColumnType.IMAGE) {
+    if (this.col.type === ColumnType.IMAGE) {
       if (value) {
         const ab = new Uint8Array(value.data);
         const data = new Blob([ab], { type: 'image/*' });
@@ -69,19 +58,19 @@ export class TypedOutputComponent implements ControlValueAccessor {
         this.innerValue = this.sanitizer.bypassSecurityTrustResourceUrl(oUrl);
         return;
       }
-    } else if (col.type === ColumnType.FK) {
-      const tgt = (col.constraint as FKConstraint).target;
-      const tbl = this.metadataService.getTable(tgt);
-
-      this.tblName = tbl.then(t => t.name);
-
+    } else if (this.col.type === ColumnType.FK) {
       if (value) {
-        let summaryCol = tbl.then(t => t.columns.find(c => c.inSummary));
-        this.fkCol = summaryCol;
+        const tgt = (this.col.constraint as FKConstraint).target;
 
-        this.fkModel = this.fkCol
-          .then(s => Promise.all([s, this.dataService.get(tgt, value)]))
-          .then(r => (r[1] as any)[Columns.apiName(r[0])]);
+        const tblP = this.metadataService.getTable(tgt);
+        const colP = tblP.then(t => t.columns.find(c => c.inSummary));
+
+        const dataP = this.dataService.get(tgt, value);
+        const colDataP = Promise.all([colP, dataP]);
+
+        tblP.then(t => { this.tblName = t.name; });
+        colP.then(c => { if (c) this.fkCol = c; });
+        colDataP.then(([col, data]) => { if (col && data) { this.fkModel = (data as any)[Columns.apiName(col)]; } });
       }
     }
     if (value !== this.innerValue)

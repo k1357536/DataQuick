@@ -3,7 +3,7 @@
  * System configuration for Angular samples
  * Adjust as necessary for your application needs.
  */
-(_ => {
+(() => {
   System.config({
     paths: {
       // paths serve as alias
@@ -19,6 +19,7 @@
       // angular bundles
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
+      '@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js',
       '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
       '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
@@ -30,6 +31,7 @@
 
       // other libraries
       'rxjs': 'npm:rxjs',
+      'tslib': 'npm:tslib',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
@@ -84,7 +86,11 @@
       },
       rxjs: {
         defaultExtension: 'js'
+      },
+      tslib: {
+        main: 'tslib.js',
+        defaultExtension: 'js'
       }
     }
   });
-})(this);
+})();

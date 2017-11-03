@@ -20,7 +20,7 @@ import { TableEx, exTable } from './utils';
 export class EntryEditorComponent implements OnInit {
   @Input() table: TableEx;
   @Input() entry: Row;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
   ColumnType = ColumnType; // for view
 
   constructor(
@@ -41,16 +41,13 @@ export class EntryEditorComponent implements OnInit {
       .switchMap((params: ParamMap) => Observable.of(params.get('entry')));
 
     tableId.subscribe(
-      tid => this.loadMetadata(tid),
+      tid => { if (tid) this.loadMetadata(tid); },
       e => this.handleError(e));
 
-    Observable.zip(tableId, entryId).subscribe(
-      ([tid, eid]) => {
-        if (eid && Number(eid) != NaN)
-          return this.loadData(tid, Number(eid));
-        else
-          this.entry = { id: NaN };
-      }, e => this.handleError(e));
+    (
+      Observable.zip(tableId, entryId)
+        .filter(([tid, eid]) => (tid && eid && Number(eid) != NaN) ? true : false) as Observable<[string, string]>)
+      .subscribe(([tid, eid]) => this.loadData(tid, Number(eid)), e => this.handleError(e));
   }
 
   async loadMetadata(id: string): Promise<void> {

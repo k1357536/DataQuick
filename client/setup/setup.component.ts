@@ -11,7 +11,7 @@ interface TestData {
   name: string,
   date_of_birth: Date,
   executive: boolean,
-  image: Buffer,
+  image: Buffer | null,
   salary: number,
   liter: number,
   completeness: number,
@@ -54,9 +54,15 @@ export class SetupComponent implements OnInit {
 
       const f = (await this.metadataService.getFolders()).find(f => f.name === "Test Folder");
 
+      if (f == null)
+        throw new Error('Error getting folder!');
+
       await this.metadataService.addTable("Test", f);
 
       const tbl = (await this.metadataService.getTables()).find(tbl => tbl.name === "Test");
+
+      if (tbl == null)
+        throw new Error('Error getting table!');
 
       tbl.columns[0].inSummary = false;
 
@@ -140,6 +146,9 @@ export class SetupComponent implements OnInit {
     this.msg = "";
     try {
       const tbl = (await this.metadataService.getTables()).find(tbl => tbl.name === "Test");
+
+      if (tbl == null)
+        throw new Error('Error getting table!');
 
       for (let i = 0; i < 20; i++) {
         const data: TestData = {

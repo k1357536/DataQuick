@@ -20,7 +20,7 @@ import { TableEx, exTable } from './utils';
 export class EntryComponent implements OnInit {
   @Input() table: TableEx;
   @Input() entry: Row;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
   ColumnType = ColumnType; // for view
 
   constructor(
@@ -40,11 +40,12 @@ export class EntryComponent implements OnInit {
     let entryId = this.route.paramMap.switchMap((params: ParamMap) => Observable.of(params.get('entry')));
 
     tableId.subscribe(
-      tid => this.loadMetadata(tid),
+      tid => { if (tid) this.loadMetadata(tid); },
       e => this.handleError(e));
 
-    Observable.zip(tableId, entryId).subscribe(
-      parms => this.loadData(parms[0], Number(parms[1])),
+    (Observable.zip(tableId, entryId)
+      .filter(([tid, eid]) => tid && eid ? true : false) as Observable<[string, string]>)
+      .subscribe(([tid, eid]) => this.loadData(tid, Number(eid)),
       e => this.handleError(e));
   }
 

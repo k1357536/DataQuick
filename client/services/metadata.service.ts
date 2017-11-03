@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/map';
+import { HttpClient } from '@angular/common/http';
+
 import 'rxjs/add/operator/toPromise';
 
 import { Table, Folder, TableProposal, FolderProposal } from '../../shared/metadata.model';
@@ -11,66 +11,62 @@ import { Folders } from '../../shared/metadata.utils';
 export class MetadataService {
   private readonly url = 'api/metadata/';
   private readonly folderUrl = this.url + 'folders/';
-  private headers = new Headers({ 'Content-Type': 'application/json' });
 
-  constructor(private http: Http) { }
+  constructor(private httpClient: HttpClient) { }
 
   // === Folders ===============================================================
 
-  async getFolders(): Promise<Folder[]> {
-    const response = await this.http.get(this.folderUrl).toPromise();
-    return response.json() as Folder[];
+  getFolders(): Promise<Folder[]> {
+    return this.httpClient.get<Folder[]>(this.folderUrl).toPromise();
   }
 
-  async addFolder(name: string, parent: Folder): Promise<void> {
+  addFolder(name: string, parent: Folder): Promise<void> {
     if (!parent)
       parent = Folders.getRoot();
     const p: FolderProposal = { name, parent: parent.id };
-    await this.http.post(this.folderUrl, JSON.stringify(p), { headers: this.headers }).toPromise();
+    return this.httpClient.post(this.folderUrl, p).toPromise().then(_ => { });
   }
 
-  async importFolder(p: Folder): Promise<void> {
-    await this.http.post(this.folderUrl, JSON.stringify(p), { headers: this.headers }).toPromise();
+  importFolder(p: Folder): Promise<void> {
+    return this.httpClient.post(this.folderUrl, p).toPromise().then(_ => { });
   }
 
-  async deleteAllFolders(): Promise<void> {
-    await this.http.delete(this.folderUrl + 'all').toPromise();
+  deleteAllFolders(): Promise<void> {
+    return this.httpClient.delete(this.folderUrl + 'all').toPromise().then(_ => { });
   }
 
-  async deleteFolder(f: Folder): Promise<void> {
-    await this.http.delete(this.folderUrl + f.id).toPromise();
+  deleteFolder(f: Folder): Promise<void> {
+    return this.httpClient.delete(this.folderUrl + f.id).toPromise().then(_ => { });
   }
 
   // === Tables ================================================================
 
-  async getTable(uuid: string): Promise<Table> {
-    const response = await this.http.get(this.url + uuid).toPromise();
-    return response.json() as Table;
+  getTable(uuid: string): Promise<Table> {
+    return this.httpClient.get<Table>(this.url + uuid).toPromise();
   }
 
-  async getTables(): Promise<Table[]> {
-    const response = await this.http.get(this.url).toPromise();
-    return response.json() as Table[];
+  getTables(): Promise<Table[]> {
+    return this.httpClient.get<Table[]>(this.url).toPromise();
   }
 
-  async addTable(name: string, parent: Folder): Promise<void> {
+  addTable(name: string, parent: Folder): Promise<void> {
     const p: TableProposal = { name, parent: parent.id };
-    await this.http.post(this.url, JSON.stringify(p), { headers: this.headers }).toPromise();
+    return this.httpClient.post(this.url, p).toPromise().then(_ => { });
   }
 
-  async importTable(tbl: Table): Promise<void> {
-    await this.http.post(this.url, JSON.stringify(tbl), { headers: this.headers }).toPromise();
+  importTable(tbl: Table): Promise<void> {
+    return this.httpClient.post(this.url, tbl).toPromise().then(_ => { });
   }
 
-  async updateTable(table: Table): Promise<void> {
-    await this.http.put(this.url + table.id, JSON.stringify(table), { headers: this.headers }).toPromise();
+  updateTable(table: Table): Promise<void> {
+    return this.httpClient.put(this.url + table.id, table).toPromise().then(_ => { });
   }
 
-  async deleteAllTables(): Promise<void> {
-    await this.http.delete(this.url + 'all').toPromise();
+  deleteAllTables(): Promise<void> {
+    return this.httpClient.delete(this.url + 'all').toPromise().then(_ => { });
   }
 
-  async deleteTable(table: Table): Promise<void> {
-    await this.http.delete(this.url + table.id).toPromise();
+  deleteTable(table: Table): Promise<void> {
+    return this.httpClient.delete(this.url + table.id).toPromise().then(_ => { });
   }
 }

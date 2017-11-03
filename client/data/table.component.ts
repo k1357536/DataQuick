@@ -31,7 +31,7 @@ export class TableComponent implements OnInit {
   @Input() table: TableEx;
   data: Row[];
 
-  sortCol: Column;
+  sortCol: Column | null;
   sortASC = true;
 
   readonly nav: NavData = {
@@ -42,7 +42,7 @@ export class TableComponent implements OnInit {
   };
 
   newName: string;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
   ColumnType = ColumnType; // for view
 
   constructor(
@@ -58,8 +58,9 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap
+    (this.route.paramMap
       .switchMap((params: ParamMap) => Observable.of(params.get('id')))
+      .filter(id => id != null) as Observable<string>)
       .subscribe(id => this.load(id), e => this.handleError(e));
   }
 
