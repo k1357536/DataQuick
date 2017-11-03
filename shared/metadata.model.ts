@@ -1,3 +1,14 @@
+// ==== Folder =================================================================
+export interface FolderProposal {
+  name: string;
+  parent: string;
+}
+
+export interface Folder extends FolderProposal {
+  id: string;
+}
+
+// ==== Column =================================================================
 export enum ColumnType {
   INVALID = 0,
   PK = 1,
@@ -19,15 +30,7 @@ export interface Column {
   inSummary: boolean;
 }
 
-export interface FolderProposal {
-  name: string;
-  parent: string;
-}
-
-export interface Folder extends FolderProposal {
-  id: string;
-}
-
+// ==== Table ==================================================================
 export interface TableProposal {
   name: string;
   parent: string;
@@ -38,8 +41,10 @@ export interface Table extends TableProposal {
   columns: Column[];
 }
 
+// ==== Row ====================================================================
 export type Row = { id: number, [name: string]: any };
 
+// ==== Constraints ============================================================
 export interface Constraint {
   notNull: boolean;
   unique: boolean;
