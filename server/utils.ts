@@ -12,7 +12,7 @@ export class Utils {
     });
   }
 
-  public static sanitizeTable(tbl: Table): Table {
+  public static sanitizeTable(tbl: Table): Table | null {
     const nameRegEx = /^[\w ]+$/;
     const idRegEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -36,9 +36,16 @@ export class Utils {
       return null;
     }
 
-    let cols = tbl.columns.map(c => Utils.sanitizeColumn(c));
-    if (cols.filter(c => c === null).length > 0) {
+    const result = tbl.columns.map(c => Utils.sanitizeColumn(c));
+    if (result.filter(c => c === null).length > 0) {
       console.log("Table has illegal columns!");
+      return null;
+    }
+
+    const cols = result as Column[];
+
+    if (cols.filter(c => c.inSummary).length <= 0) {
+      console.log("Table has no summay column(s)!");
       return null;
     }
 
@@ -48,7 +55,7 @@ export class Utils {
   }
 
   // TODO
-  private static sanitizeColumn(col: Column): Column {
+  private static sanitizeColumn(col: Column): Column | null {
     const nameRegEx = /^[\w ]+$/;
 
     if (col.name == null) {
@@ -81,7 +88,7 @@ export class Utils {
   }
 
   // TODO
-  private static sanitizeConstraint(type: ColumnType, constraint: Constraint): Constraint {
+  private static sanitizeConstraint(_type: ColumnType, constraint: Constraint): Constraint {
     return constraint;
   }
 }

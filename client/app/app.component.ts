@@ -17,12 +17,10 @@ import 'rxjs/add/operator/filter'
 export class AppComponent {
   title = 'DataQuick';
   fluid = false;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute) {
+  constructor(router: Router, route: ActivatedRoute) {
     router.events
       .filter(e => e instanceof NavigationEnd)
-      .forEach(e => {
+      .forEach(_ => {
         const ars = route.snapshot;
         this.fluid = ars.firstChild && ars.firstChild.data && ars.firstChild.data['fluid'];
       });

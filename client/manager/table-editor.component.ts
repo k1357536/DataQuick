@@ -8,7 +8,6 @@ import { Table, Column, ColumnType } from '../../shared/metadata.model';
 import { Columns, ColumnTypes } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
-import { DataService } from '../services/data.service';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -27,7 +26,6 @@ export class TableEditorComponent implements OnInit {
   errorMsg: string = null;
 
   constructor(
-    private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
     private route: ActivatedRoute) { }

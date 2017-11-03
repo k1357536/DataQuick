@@ -1,6 +1,6 @@
-import { Pool, Client, QueryResult } from 'pg';
+import { Pool } from 'pg';
 
-import { Table, TableProposal, FolderProposal, Column, Folder } from '../../shared/metadata.model';
+import { Table, TableProposal, FolderProposal, Folder } from '../../shared/metadata.model';
 import { Columns, Folders } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
@@ -23,7 +23,7 @@ const DELETE_ALL_STMT = 'DELETE FROM metadata.lists';
 const credentials = require('../../dbCredentials.json');
 const pool = new Pool(credentials);
 
-pool.on('error', (err, client) => {
+pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err)
   process.exit(-1)
 })

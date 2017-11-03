@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Table, Row } from '../../shared/metadata.model';
+import { Row } from '../../shared/metadata.model';
 
 @Injectable()
 export class DataService {

@@ -1,14 +1,14 @@
-import { Pool, Client, QueryResult } from 'pg';
+import { Pool, QueryResult } from 'pg';
 
-import { Columns, ColumnTypes } from '../../shared/metadata.utils';
 import { Table, ColumnType, Row } from '../../shared/metadata.model';
+import { Columns } from '../../shared/metadata.utils';
 
 import { GenSQLUtils } from './genSQL.utils';
 
 const credentials = require('../../dbCredentials.json');
 const pool = new Pool(credentials);
 
-pool.on('error', (err, client) => {
+pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err)
   process.exit(-1)
 })
@@ -49,7 +49,7 @@ export class DataDriver {
 
     try {
       let res: Promise<QueryResult>;
-      if (!Number.isNaN(page) && !Number.isNaN(pageSize))
+      if (page && pageSize)
         res = pool.query(GenSQLUtils.getRange(table.id, Columns.apiName(sortCol), sortASC, page * pageSize, pageSize));
       else
         res = pool.query(GenSQLUtils.getAll(table.id, Columns.apiName(sortCol), sortASC));
@@ -60,7 +60,7 @@ export class DataDriver {
     }
   }
 
-  async get(tableId: string, entryId: string): Promise<any[]> {
+  async get(tableId: string, entryId: string): Promise<Row> {
     let eid = Number(entryId);
     console.log(DataDriver.idRegEx.test(tableId), eid);
     if (!DataDriver.idRegEx.test(tableId) || Number.isNaN(eid))

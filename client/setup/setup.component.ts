@@ -4,7 +4,7 @@ import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
 import { ColumnType, StringConstraint, NumberConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
-import { Columns, Constraints, Folders } from '../../shared/metadata.utils';
+import { Columns, Folders } from '../../shared/metadata.utils';
 
 interface TestData {
   age: number,
@@ -57,6 +57,8 @@ export class SetupComponent implements OnInit {
       await this.metadataService.addTable("Test", f);
 
       const tbl = (await this.metadataService.getTables()).find(tbl => tbl.name === "Test");
+
+      tbl.columns[0].inSummary = false;
 
       tbl.columns.push(Columns.create("Age", ColumnType.INT,
         {

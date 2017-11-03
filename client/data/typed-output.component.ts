@@ -88,8 +88,8 @@ export class TypedOutputComponent implements ControlValueAccessor {
       this.innerValue = value;
   }
 
-  registerOnChange(fn: any) { }
-  registerOnTouched(fn: any) { }
+  registerOnChange() { }
+  registerOnTouched() { }
 
   goTo(tbl: string, entry: number, event: Event) {
     event.preventDefault();

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Router, Response } from 'express';
 
-import { TableProposal, FolderProposal, Table, Column, Folder } from '../../shared/metadata.model';
+import { TableProposal, FolderProposal, Table, Folder } from '../../shared/metadata.model';
 import { Utils } from '../utils';
 
 import { MetadataDriver } from '../drivers/metadata.driver';
@@ -25,7 +25,7 @@ export function MetadataApi(): Router {
   }
 
   // === Folders ===============================================================
-  metadata.get('/folders/', async (req, res) => {
+  metadata.get('/folders/', async (_, res) => {
     try {
       res.json(await driver.getAllFolders());
     }
@@ -42,7 +42,7 @@ export function MetadataApi(): Router {
         throw 400;
       }
 
-      const newTable = await driver.addFolder(p);
+      await driver.addFolder(p);
       res.sendStatus(200);
     }
     catch (e) {
@@ -75,7 +75,7 @@ export function MetadataApi(): Router {
   });
 
   // === Tables ================================================================
-  metadata.get('/', async (req, res) => {
+  metadata.get('/', async (_, res) => {
     try {
       res.json(await driver.getAll());
     }
@@ -121,12 +121,12 @@ export function MetadataApi(): Router {
       if (!table || table.id != req.params.id) {
         console.error("Column JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
+      } else {
+        await driver.update(table);
+        await dataDriver.drop(table.id);
+        await dataDriver.create(table);
+        res.sendStatus(200);
       }
-
-      await driver.update(table);
-      await dataDriver.drop(table.id);
-      await dataDriver.create(table);
-      res.sendStatus(200);
     }
     catch (e) {
       handleError(e, res);

@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-import { Column, ColumnType } from '../../shared/metadata.model';
+import { ColumnType } from '../../shared/metadata.model';
 
 import { ColumnEx } from './utils';
 

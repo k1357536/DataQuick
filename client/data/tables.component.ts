@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { TableProposal, Table, Column, ColumnType } from '../../shared/metadata.model';
-import { ColumnTypes } from '../../shared/metadata.utils';
+import { Table } from '../../shared/metadata.model';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 

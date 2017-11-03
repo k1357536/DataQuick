@@ -46,18 +46,18 @@ export interface Constraint {
 }
 
 export interface StringConstraint extends Constraint {
-  regExp: string;
-  maxLength: number;
+  regExp: string | null;
+  maxLength: number | null;
 }
 
 export interface NumberConstraint extends Constraint {
-  min: number;
-  max: number;
+  min: number | null;
+  max: number | null;
 }
 
 export interface DateConstraint extends Constraint {
-  min: Date;
-  max: Date;
+  min: Date | null;
+  max: Date | null;
 }
 
 export interface FKConstraint extends Constraint {

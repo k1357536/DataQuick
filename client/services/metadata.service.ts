@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
@@ -47,10 +46,6 @@ export class MetadataService {
   async getTable(uuid: string): Promise<Table> {
     const response = await this.http.get(this.url + uuid).toPromise();
     return response.json() as Table;
-  }
-
-  async getTableName(uuid: string): Promise<string> {
-    return (await this.getTable(uuid)).name;
   }
 
   async getTables(): Promise<Table[]> {

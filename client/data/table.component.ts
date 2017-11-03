@@ -116,7 +116,7 @@ export class TableComponent implements OnInit {
     const navStart = Math.max(0, nav.currentPage - NAV_PAGES_VISIBLE);
     const navEnd = Math.min(nav.numPages, nav.currentPage + NAV_PAGES_VISIBLE);
 
-    nav.pages = Array.from({ length: navEnd - navStart }, (v, i) => i + navStart);
+    nav.pages = Array.from({ length: navEnd - navStart }, (_, i) => i + navStart);
 
     if (nav.currentPage > nav.numPages - 1)
       nav.currentPage = Math.max(nav.numPages - 1, 0);

@@ -21,7 +21,7 @@ export module ColumnTypes {
 
   export function getName(id: ColumnType): string {
     const desc = ColumnTypes.ALL.find((t) => t.id === id);
-    return desc ? desc.name : null;
+    return desc ? desc.name : 'Other';
   }
 }
 
@@ -51,7 +51,7 @@ export module Constraints {
   const defPercentConstraint: NumberConstraint = { notNull: true, unique: false, min: 0, max: 1 };
   const defStringConstraint: StringConstraint = { notNull: true, unique: false, regExp: null, maxLength: null };
   const defDateConstraint: DateConstraint = { notNull: true, unique: false, min: null, max: null };
-  const defFKConstraint: FKConstraint = { notNull: true, unique: false, target: null };
+  const defFKConstraint: FKConstraint = { notNull: true, unique: false, target: '' };
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {
@@ -60,9 +60,9 @@ export module Constraints {
       case ColumnType.REAL:
         return Object.assign(defNumberConstraint);
       case ColumnType.STRING:
-        return Object.assign(defNumberConstraint);
+        return Object.assign(defStringConstraint);
       case ColumnType.DATE:
-        return Object.assign(defNumberConstraint);
+        return Object.assign(defDateConstraint);
       case ColumnType.PERCENT:
         return Object.assign(defPercentConstraint);
       case ColumnType.FK:

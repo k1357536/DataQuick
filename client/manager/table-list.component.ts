@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { TableProposal, Table, Folder, Column, ColumnType } from '../../shared/metadata.model';
-import { ColumnTypes, Folders } from '../../shared/metadata.utils';
+import { Table, Folder } from '../../shared/metadata.model';
+import { Folders } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
@@ -83,7 +83,7 @@ export class TableListComponent implements OnInit {
     await this.getTables();
   }
 
-  trackById(index: number, table: Table): number {
+  trackById(index: number, _: Table): number {
     return index; // TODO
   }
 
@@ -145,9 +145,10 @@ export class TableListComponent implements OnInit {
               await this.metadataService.importFolder(f);
             for (let t of result[1])
               await this.metadataService.importTable(t);
-          } finally {
-            await this.ngOnInit();
+          } catch (e) {
+            this.handleError(e);
           }
+          await this.ngOnInit();
         }
 
         fr.readAsText(file);

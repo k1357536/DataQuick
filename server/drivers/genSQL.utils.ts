@@ -120,7 +120,7 @@ export namespace GenSQLUtils {
 
     const data = cols.map((col) => entry[Columns.apiName(col)]);
     const colList = cols.map((col) => toEscapedName(col)).join(', ');
-    const valList = cols.map((col, i) => "$" + (i + 1)).join(', ');
+    const valList = cols.map((_, i) => "$" + (i + 1)).join(', ');
 
     return [`INSERT INTO ${toTableName(table.id)} (${colList}) VALUES (${valList});`, data];
   }
@@ -128,6 +128,9 @@ export namespace GenSQLUtils {
   export function update(table: Table, entry: any): [string, any[]] {
     const cols = table.columns.filter(col => col.type !== ColumnType.PK);
     const id = table.columns.find(col => col.type == ColumnType.PK);
+
+    if (id === undefined)
+      throw new Error('primary key not found!');
 
     const data: any[] = [];
     const colList = cols.map(

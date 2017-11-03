@@ -27,14 +27,14 @@ module.exports.translate = function(load: LoadData) {
   if (!baseHrefPath.startsWith('/base/')) // it is not karma
     basePath = basePath.replace(baseHrefPath, '');
 
-  load.source = load.source.replace(templateUrlRegex, (match, quote, url) => {
+  load.source = load.source.replace(templateUrlRegex, (_match, _quote, url) => {
     let resolvedUrl = url;
 
     if (url.startsWith('.'))
       resolvedUrl = basePath + url.substr(1);
 
     return 'templateUrl: "' + resolvedUrl + '"';
-  }).replace(stylesRegex, (match: string, relativeUrls: string) => {
+  }).replace(stylesRegex, (_match: string, relativeUrls: string) => {
     let urls = [];
     let urlMatch = stringRegex.exec(relativeUrls);
     while (urlMatch !== null) {
