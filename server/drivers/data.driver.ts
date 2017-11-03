@@ -1,7 +1,7 @@
 import { Pool, Client, QueryResult } from 'pg';
 
-import { TableProposal, Table, Column, ColumnType } from '../../shared/metadata.model';
 import { Columns, ColumnTypes } from '../../shared/metadata.utils';
+import { Table, ColumnType, Row } from '../../shared/metadata.model';
 
 import { GenSQLUtils } from './genSQL.utils';
 
@@ -37,7 +37,7 @@ export class DataDriver {
     }
   }
 
-  async getAll(table: Table, sortBy?: string, sortASC?: boolean, page?: number, pageSize?: number): Promise<any[]> {
+  async getAll(table: Table, sortBy: string, sortASC: boolean, page?: number, pageSize?: number): Promise<Row[]> {
     let sortCol = table.columns.find(c => Columns.apiName(c) === sortBy);
     if (!sortCol)
       sortCol = table.columns.find(c => c.type === ColumnType.PK);
@@ -76,7 +76,7 @@ export class DataDriver {
     }
   }
 
-  async update(table: Table, entry: any): Promise<void> {
+  async update(table: Table, entry: Row): Promise<void> {
     let eid = Number(entry.id);
     if (!DataDriver.idRegEx.test(table.id) && eid != NaN)
       throw 400;
@@ -93,7 +93,7 @@ export class DataDriver {
     }
   }
 
-  async insert(table: Table, entry: any): Promise<void> {
+  async insert(table: Table, entry: Row): Promise<void> {
     let eid = Number(entry.id);
     if (!DataDriver.idRegEx.test(table.id) && eid != NaN)
       throw 400;

@@ -7,7 +7,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType } from '../../shared/metadata.model';
+import { ColumnType, Row } from '../../shared/metadata.model';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/zip';
@@ -19,7 +19,7 @@ import { TableEx, exTable } from './utils';
 })
 export class EntryEditorComponent implements OnInit {
   @Input() table: TableEx;
-  @Input() entry: { id: number };
+  @Input() entry: Row;
   errorMsg: string = null;
   ColumnType = ColumnType; // for view
 

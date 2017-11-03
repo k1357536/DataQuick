@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType, Column } from '../../shared/metadata.model';
+import { ColumnType, Column, Row } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +21,7 @@ const ENTRIES_PER_PAGE = 15;
 })
 export class TableComponent implements OnInit {
   @Input() table: TableEx;
-  data: (any | { id: number })[];
+  data: Row[];
 
   sortCol: Column;
   sortASC = true;
@@ -57,12 +57,12 @@ export class TableComponent implements OnInit {
     this.router.navigate(['/data', this.table.id, "add"]);
   }
 
-  onSelect(row: { id: number }, event: any): void {
+  onSelect(row: Row, event: any): void {
     event.stopPropagation();
     this.router.navigate(['/data', this.table.id, String(row.id)]);
   }
 
-  async delete(row: { id: number }, event: any): Promise<void> {
+  async delete(row: Row, event: any): Promise<void> {
     event.stopPropagation();
     await this.dataService.delete(this.table.id, row)
       .then(() => this.loadData())

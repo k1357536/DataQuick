@@ -37,6 +37,8 @@ export interface Table extends TableProposal {
   columns: Column[];
 }
 
+export type Row = { id: number, [name: string]: any };
+
 export interface Constraint {
   notNull: boolean;
   unique: boolean;

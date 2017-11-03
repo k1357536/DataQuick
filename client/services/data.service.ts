@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Table } from '../../shared/metadata.model';
+import { Table, Row } from '../../shared/metadata.model';
 
 @Injectable()
 export class DataService {
@@ -19,7 +19,7 @@ export class DataService {
     return Number(response.text());
   }
 
-  async getAll(tableId: string, sortby: string, sortASC: boolean, page: number, pageSize: number): Promise<{ id: number }[]> {
+  async getAll(tableId: string, sortby: string, sortASC: boolean, page: number, pageSize: number): Promise<Row[]> {
     let url = this.url + tableId;
     if (sortby)
       url += `?sortby=${sortby}&sortASC=${sortASC}`;
@@ -32,14 +32,14 @@ export class DataService {
     return response.json();
   }
 
-  async get(tableId: string, entryId: number): Promise<{ id: number }> {
+  async get(tableId: string, entryId: number): Promise<Row> {
     const response = await this.http.get(this.url + tableId + "/" + entryId).toPromise();
     if (response.status != 200)
       throw response;
     return response.json();
   }
 
-  async update(tableId: string, entry: { id: number }): Promise<void> {
+  async update(tableId: string, entry: Row): Promise<void> {
     await this.http.put(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
 
@@ -47,7 +47,7 @@ export class DataService {
     await this.http.post(this.url + tableId, JSON.stringify(entry), { headers: this.headers }).toPromise();
   }
 
-  async delete(tableId: string, entry: { id: number }): Promise<void> {
+  async delete(tableId: string, entry: Row): Promise<void> {
     await this.http.delete(this.url + tableId + '/' + entry.id, { headers: this.headers }).toPromise();
   }
 }
