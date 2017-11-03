@@ -9,7 +9,6 @@ import 'rxjs/add/operator/filter'
   template: `
     <app-nav title="{{title}}"></app-nav>
     <div class="pt-4" [class.container-fluid]="fluid" [class.container]="!fluid">
-    <h1>{{fluid}}</h1>
       <router-outlet></router-outlet>
     </div>
   `
