@@ -27,15 +27,17 @@ export module ColumnTypes {
 
 export module Columns {
   export function createPK(): Column {
-    return Columns.create('Id', ColumnType.PK);
+    const col = Columns.create('Id', ColumnType.PK);
+    col.inSummary = true;
+    return col;
   }
 
-  export function create(name: string, type?: ColumnType, constraint?: Constraint): Column {
+  export function create(name: string, type?: ColumnType, constraint?: Constraint, inSummary?: boolean): Column {
     if (!type)
       type = ColumnType.STRING;
     if (!constraint)
       constraint = Constraints.getDefault(type);
-    return { name, type, constraint }
+    return { name, type, constraint, inSummary: inSummary ? true : false };
   }
 
   export function apiName(col: Column): string {

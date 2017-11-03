@@ -18,6 +18,9 @@ pool.connect().catch(e => {
   process.exit(-1);
 });
 
+const DROP_SCHEMA_STMT = 'DROP SCHEMA data CASCADE;';
+const CREATE_SCHEMA_STMT = 'CREATE SCHEMA data;';
+
 export class DataDriver {
   private static readonly idRegEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -136,6 +139,16 @@ export class DataDriver {
     console.log("CREATE STMT:", stmt);
     try {
       await pool.query(stmt);
+    }
+    catch (e) {
+      throw e.detail ? e.detail : e;
+    }
+  }
+
+  async dropAll(): Promise<void> {
+    try {
+      await pool.query(DROP_SCHEMA_STMT);
+      await pool.query(CREATE_SCHEMA_STMT);
     }
     catch (e) {
       throw e.detail ? e.detail : e;

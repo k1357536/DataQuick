@@ -36,18 +36,12 @@ export class SetupComponent implements OnInit {
     this.msg = "";
     try {
       const tables = await this.metadataService.getTables();
+      await this.metadataService.deleteAllTables();
 
-      for (const tbl of tables) {
-        await this.metadataService.deleteTable(tbl);
-      }
+      const folders = await this.metadataService.getFolders();
+      await this.metadataService.deleteAllFolders();
 
-      const folders = (await this.metadataService.getFolders()).filter(f => f.id != Folders.getRoot().id);
-
-      for (const f of folders) {
-        await this.metadataService.deleteFolder(f);
-      }
-
-      this.msg = "Deleted " + folders.length + " folders and " + tables.length + " tables!";
+      this.msg = `Deleted ${folders.length} folders and ${tables.length} tables!`;
     } catch (e) {
       this.msg = e;
     }
@@ -78,8 +72,8 @@ export class SetupComponent implements OnInit {
           unique: true,
           maxLength: 30,
           regExp: '^[a-zA-Z0-9 ]*$'
-        } as StringConstraint
-      ));
+        } as StringConstraint,
+        true));
 
       tbl.columns.push(Columns.create("Date of Birth", ColumnType.DATE,
         {

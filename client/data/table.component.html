@@ -71,9 +71,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let entry of data" (click)="onSelect(entry, $event)">
+      <tr *ngFor="let entry of data">
         <td *ngFor="let col of table.columns">
-          <typed-output [col]="col" [(ngModel)]="entry[col.apiName]"></typed-output>
+          <typed-output [col]="col" [summarize]="table.columns.length > 5" [(ngModel)]="entry[col.apiName]"></typed-output>
         </td>
         <td class="d-print-none">
           <button class="btn btn-outline-danger btn-sm" (click)="delete(entry, $event);">X</button>

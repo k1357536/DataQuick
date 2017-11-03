@@ -16,6 +16,7 @@ export interface Column {
   name: string;
   type: number;
   constraint: Constraint;
+  inSummary: boolean;
 }
 
 export interface FolderProposal {

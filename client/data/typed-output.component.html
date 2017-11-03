@@ -1,26 +1,29 @@
 <ng-container *ngIf="col" [ngSwitch]="col.type">
-  <ng-container *ngSwitchCase="ColumnType.PK">{{value}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.INT">{{value}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.STRING">{{value}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.DATE">{{value | date }}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.BOOL" [ngSwitch]="value">
-    <ng-container *ngSwitchCase="true">true</ng-container>
-    <ng-container *ngSwitchCase="false">false</ng-container>
-    <ng-container *ngSwitchDefault>-</ng-container>
+  <span *ngIf="value == null" class="text-muted">Empty</span>
+  <ng-container *ngIf="value != null">
+    <ng-container *ngSwitchCase="ColumnType.PK">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.INT">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.STRING">
+      <span *ngIf="!summarize || col.constraint.maxLength || value.length < 30">{{value}}</span>
+      <span *ngIf="summarize && !col.constraint.maxLength && value.length >= 30">&hellip;</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="ColumnType.DATE">{{value | date }}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.BOOL" [ngSwitch]="value">
+      <span *ngSwitchCase="true">true</span>
+      <span *ngSwitchCase="false">false</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="ColumnType.IMAGE">
+      <img [src]="value" style="width: 6rem; height: 6rem;" />
+    </ng-container>
+    <ng-container *ngSwitchCase="ColumnType.MONEY">{{value | currency}}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.REAL">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.PERCENT">{{value | percent}}</ng-container>
+    <ng-container *ngSwitchCase="ColumnType.FK">
+      <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
+        <typed-output [col]="fkCol" [ngModel]="fkModel | async"></typed-output>
+      </a><br />
+      <small class="text-muted">{{tblName | async}}[ID={{value}}]</small>
+    </ng-container>
+    <ng-container *ngSwitchDefault>{{value}}</ng-container>
   </ng-container>
-  <ng-container *ngSwitchCase="ColumnType.IMAGE">
-    <div *ngIf="!value" style="width: 6rem; height: 6rem; border: 1px solid black; display: inline-flex; align-items: center; justify-content: center; font-size:3em;">
-      ?
-    </div>
-    <img *ngIf="value" [src]="value" style="width: 6rem; height: 6rem;" />
-  </ng-container>
-  <ng-container *ngSwitchCase="ColumnType.MONEY">{{value | currency}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.REAL">{{value}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.PERCENT">{{value | percent}}</ng-container>
-  <ng-container *ngSwitchCase="ColumnType.FK">
-    <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
-      ID: {{value}}
-    </a>
-  </ng-container>
-  <ng-container *ngSwitchDefault>{{value}}</ng-container>
 </ng-container>

@@ -77,7 +77,7 @@ export class Utils {
       return null;
     }
 
-    return Columns.create(col.name, Number(col.type), constraint);
+    return Columns.create(col.name, Number(col.type), constraint, col.inSummary);
   }
 
   // TODO

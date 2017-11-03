@@ -42,6 +42,10 @@ export class TableListComponent implements OnInit {
     this.router.navigate(['/manager', id]);
   }
 
+  onSelectFolder(id: string): void {
+    this.router.navigate(['/manager/folder/', id]);
+  }
+
   async addFolder(): Promise<void> {
     if (!this.newFolderName || this.newFolderName.length <= 0)
       this.errorMsg = "No table name specified!";
@@ -125,6 +129,7 @@ export class TableListComponent implements OnInit {
   import(): void {
     const input = window.document.createElement('input');
     input.type = 'file';
+    input.accept = '.json';
     input.hidden = true;
 
     input.onchange = () => {

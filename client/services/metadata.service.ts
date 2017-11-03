@@ -34,6 +34,10 @@ export class MetadataService {
     await this.http.post(this.folderUrl, JSON.stringify(p), { headers: this.headers }).toPromise();
   }
 
+  async deleteAllFolders(): Promise<void> {
+    await this.http.delete(this.folderUrl + 'all').toPromise();
+  }
+
   async deleteFolder(f: Folder): Promise<void> {
     await this.http.delete(this.folderUrl + f.id).toPromise();
   }
@@ -65,6 +69,10 @@ export class MetadataService {
 
   async updateTable(table: Table): Promise<void> {
     await this.http.put(this.url + table.id, JSON.stringify(table), { headers: this.headers }).toPromise();
+  }
+
+  async deleteAllTables(): Promise<void> {
+    await this.http.delete(this.url + 'all').toPromise();
   }
 
   async deleteTable(table: Table): Promise<void> {

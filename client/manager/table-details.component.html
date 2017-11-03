@@ -1,4 +1,9 @@
-<h1>Table&nbsp;<small class="text-muted" *ngIf="table">{{table.name}}</small></h1>
+<h6 *ngIf="table"><code>{{table.id}}</code></h6>
+<h1 *ngIf="table" class="py-2">{{table.name}}</h1>
+
+<div class="pb-4" *ngIf="table">
+  Parent: <code>{{table.parent}}</code>
+</div>
 
 <div *ngIf="!table && !errorMsg" class="alert alert-info">
   Loading...
@@ -23,10 +28,8 @@
           {{table.columns[i].name}}
         </td>
         <td>
-          <!--select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required>
-            <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t.id == table.columns[i].type">{{t.name}}</option>
-          </select-->
-          {{table.columns[i].type | columntype}}
+          <div>{{table.columns[i].type | columntype}}</div>
+          <div *ngIf="table.columns[i].inSummary" class="text-primary">Summary Column</div>
         </td>
         <td>
           <div *ngIf="col.constraint.notNull" class="text-danger">Required</div>

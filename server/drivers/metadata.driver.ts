@@ -1,14 +1,15 @@
 import { Pool, Client, QueryResult } from 'pg';
 
 import { Table, TableProposal, FolderProposal, Column, Folder } from '../../shared/metadata.model';
-import { Columns } from '../../shared/metadata.utils';
+import { Columns, Folders } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
-const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != parent;';
+const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != parent ORDER BY parent, name;';
 const SEARCH_FOLDER1_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;';
 const SEARCH_FOLDER2_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;';
 const INSERT_FOLDER_STMT = 'INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);';
 const DELETE_FOLDER_STMT = 'DELETE FROM metadata.folders WHERE id = $1;';
+const DELETE_ALL_FOLDERS_STMT = 'DELETE FROM metadata.folders WHERE id != $1';
 
 const GETALL_STMT = 'SELECT id, name, parent, columns FROM metadata.lists;';
 const GET_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;';
@@ -17,6 +18,7 @@ const SEARCH2_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE
 const UPDATE_STMT = 'UPDATE metadata.lists SET name = $2, parent = $3, columns = $4 WHERE id = $1;';
 const INSERT_STMT = 'INSERT INTO metadata.lists (id, name, parent, columns) VALUES ($1, $2, $3, $4);';
 const DELETE_STMT = 'DELETE FROM metadata.lists WHERE id = $1;';
+const DELETE_ALL_STMT = 'DELETE FROM metadata.lists';
 
 const credentials = require('../../dbCredentials.json');
 const pool = new Pool(credentials);
@@ -63,6 +65,11 @@ export class MetadataDriver {
       throw 400;
   }
 
+  async deleteAllFolders(): Promise<void> {
+    console.log("DELETE ALL FOLDERS:");
+    await pool.query(DELETE_ALL_FOLDERS_STMT, [Folders.getRoot().id]);
+  }
+
   async deleteFolder(uuid: string): Promise<void> {
     console.log("DELETE FOLDER:", [uuid]);
     const { rowCount } = await pool.query(DELETE_FOLDER_STMT, [uuid]);
@@ -98,25 +105,24 @@ export class MetadataDriver {
   }
 
   async add(p: Table | TableProposal): Promise<Table> {
-    let id;
-    if ((p as Table).id)
-      id = (p as Table).id;
-    else
-      id = Utils.generateUUID();
+    let tbl: Table;
+    if ((p as Table).columns) {
+      const result = Utils.sanitizeTable(p as Table);
+      if (result == null) {
+        throw 400;
+      } else {
+        tbl = result;
+      }
+    } else
+      tbl = { id: Utils.generateUUID(), name: p.name, parent: p.parent, columns: [Columns.createPK()] };
 
-    let cols;
-    if ((p as Table).columns)
-      cols = (p as Table).columns;
-    else
-      cols = [Columns.createPK()];
-
-    console.log("ADD TABLE:", [id, p.name, p.parent, cols]);
-    const { rowCount } = await pool.query(INSERT_STMT, [id, p.name, p.parent, JSON.stringify(cols)]);
+    console.log("ADD TABLE:", tbl);
+    const { rowCount } = await pool.query(INSERT_STMT, [tbl.id, tbl.name, tbl.parent, JSON.stringify(tbl.columns)]);
 
     if (rowCount < 1)
       throw 400;
 
-    return await this.get(id);
+    return await this.get(tbl.id);
   }
 
   async update(table: Table): Promise<void> {
@@ -125,6 +131,11 @@ export class MetadataDriver {
 
     if (rowCount < 1)
       throw 404;
+  }
+
+  async deleteAll(): Promise<void> {
+    console.log("DELETE ALL TABLES");
+    await pool.query(DELETE_ALL_STMT);
   }
 
   async delete(uuid: string): Promise<void> {
