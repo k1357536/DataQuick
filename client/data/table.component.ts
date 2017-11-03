@@ -15,6 +15,14 @@ import { Observable } from 'rxjs/Observable';
 import { TableEx, exTable } from './utils';
 
 const ENTRIES_PER_PAGE = 15;
+const NAV_PAGES_VISIBLE = 5;
+
+interface NavData {
+  numEntries: number,
+  numPages: number,
+  currentPage: number,
+  pages: number[]
+};
 
 @Component({
   templateUrl: './table.component.html'
@@ -26,10 +34,12 @@ export class TableComponent implements OnInit {
   sortCol: Column;
   sortASC = true;
 
-  numEntries = 0;
-  numPages = 0;
-  currentPage = 0;
-  pages: number[] = [];
+  readonly nav: NavData = {
+    numEntries: 0,
+    numPages: 0,
+    currentPage: 0,
+    pages: []
+  };
 
   newName: string;
   errorMsg: string = null;
@@ -78,14 +88,8 @@ export class TableComponent implements OnInit {
   async loadData(): Promise<void> {
     const sortCol = this.sortCol ? Columns.apiName(this.sortCol) : null;
     this.dataService.countRows(this.table.id)
-      .then(cnt => {
-        this.numEntries = cnt;
-        this.numPages = Math.floor(((this.numEntries + ENTRIES_PER_PAGE - 1) / ENTRIES_PER_PAGE));
-        this.pages = Array.from({ length: this.numPages }, (v, i) => i);
-        if (this.currentPage > this.numPages - 1)
-          this.currentPage = Math.max(this.numPages - 1, 0);
-      })
-      .then(() => this.dataService.getAll(this.table.id, sortCol, this.sortASC, this.currentPage, ENTRIES_PER_PAGE))
+      .then(cnt => this.updateNav(cnt))
+      .then(() => this.dataService.getAll(this.table.id, sortCol, this.sortASC, this.nav.currentPage, ENTRIES_PER_PAGE))
       .then(d => this.data = d)
       .catch(e => this.handleError(e));
   }
@@ -103,25 +107,40 @@ export class TableComponent implements OnInit {
     await this.loadData();
   }
 
+  private updateNav(cnt: number): void {
+    const nav = this.nav;
+
+    nav.numEntries = cnt;
+    nav.numPages = Math.floor(((nav.numEntries + ENTRIES_PER_PAGE - 1) / ENTRIES_PER_PAGE));
+
+    const navStart = Math.max(0, nav.currentPage - NAV_PAGES_VISIBLE);
+    const navEnd = Math.min(nav.numPages, nav.currentPage + NAV_PAGES_VISIBLE);
+
+    nav.pages = Array.from({ length: navEnd - navStart }, (v, i) => i + navStart);
+
+    if (nav.currentPage > nav.numPages - 1)
+      nav.currentPage = Math.max(nav.numPages - 1, 0);
+  }
+
   goBack(): void {
     this.location.back();
   }
 
   async setPage(num: number) {
-    if (num >= 0 && num < this.numPages)
-      this.currentPage = num;
+    if (num >= 0 && num < this.nav.numPages)
+      this.nav.currentPage = num;
     await this.loadData();
   }
 
   async lastPage() {
-    if (this.currentPage > 0)
-      this.currentPage--;
+    if (this.nav.currentPage > 0)
+      this.nav.currentPage--;
     await this.loadData();
   }
 
   async nextPage() {
-    if (this.currentPage + 1 < this.numPages)
-      this.currentPage++;
+    if (this.nav.currentPage + 1 < this.nav.numPages)
+      this.nav.currentPage++;
     await this.loadData();
   }
 }
