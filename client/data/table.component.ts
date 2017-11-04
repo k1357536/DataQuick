@@ -54,8 +54,8 @@ export class TableComponent implements OnInit {
 
   private handleError(e: any): void {
     console.error(e);
-    if (e instanceof Error)
-      this.errorMsg += e.message;
+    if (e.message && typeof e.message === 'string')
+      this.errorMsg = e.message;
     else
       this.errorMsg = JSON.stringify(e);
   }
