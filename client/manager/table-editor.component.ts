@@ -32,8 +32,11 @@ export class TableEditorComponent implements OnInit {
     private routeParam: RouteParamService) { }
 
   private handleError(e: any): void {
-    this.errorMsg = e._body ? e + ' ' + e._body : e;
     console.error(e);
+    if (e instanceof Error)
+      this.errorMsg += e.message;
+    else
+      this.errorMsg = JSON.stringify(e);
   }
 
   ngOnInit(): void {

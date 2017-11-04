@@ -32,6 +32,14 @@ export class SetupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private handleError(e: any) {
+    console.error(e);
+    if (e instanceof Error)
+      this.msg += e.message;
+    else
+      this.msg = JSON.stringify(e);
+  }
+
   async clear() {
     this.msg = "";
     try {
@@ -43,7 +51,7 @@ export class SetupComponent implements OnInit {
 
       this.msg = `Deleted ${folders.length} folders and ${tables.length} tables!`;
     } catch (e) {
-      this.msg = e;
+      this.handleError(e);
     }
   }
 
@@ -138,7 +146,7 @@ export class SetupComponent implements OnInit {
 
       this.msg = "Create successful!";
     } catch (e) {
-      this.msg = e;
+      this.handleError(e);
     }
   }
 
@@ -167,9 +175,7 @@ export class SetupComponent implements OnInit {
 
       this.msg = "Insert successful!";
     } catch (e) {
-      this.msg = e;
-      if (e._body)
-        this.msg += ' ' + e._body;
+      this.handleError(e);
     }
   }
 }
