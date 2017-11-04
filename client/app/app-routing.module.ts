@@ -18,11 +18,11 @@ const routes: Routes = [
   { path: '', component: DashboardComponent },
 
   { path: 'manager', component: TableListComponent },
-  { path: 'manager/:id', component: TableDetailsComponent },
-  { path: 'manager/:id/edit', component: TableEditorComponent },
+  { path: 'manager/:table', component: TableDetailsComponent },
+  { path: 'manager/:table/edit', component: TableEditorComponent },
 
   { path: 'data', component: TablesComponent },
-  { path: 'data/:id', component: TableComponent, data: { fluid: true } },
+  { path: 'data/:table', component: TableComponent, data: { fluid: true } },
   { path: 'data/:table/add', component: EntryEditorComponent },
   { path: 'data/:table/:entry', component: EntryComponent },
   { path: 'data/:table/:entry/edit', component: EntryEditorComponent },

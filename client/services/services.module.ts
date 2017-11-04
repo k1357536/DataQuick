@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { MetadataService } from './metadata.service';
 import { DataService } from './data.service';
+import { RouteParamService } from './route-param.service';
 
 import { ColumnTypePipe } from './column-type.pipe';
 
@@ -11,7 +12,8 @@ import { ColumnTypePipe } from './column-type.pipe';
   ],
   providers: [
     MetadataService,
-    DataService
+    DataService,
+    RouteParamService
   ],
   exports: [
     ColumnTypePipe

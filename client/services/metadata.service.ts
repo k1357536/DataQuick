@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Table, Folder, TableProposal, FolderProposal } from '../../shared/metadata.model';
+import { UUID, Table, Folder, TableProposal, FolderProposal } from '../../shared/metadata.model';
 import { Folders } from '../../shared/metadata.utils';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class MetadataService {
 
   // === Tables ================================================================
 
-  getTable(uuid: string): Promise<Table> {
+  getTable(uuid: UUID): Promise<Table> {
     return this.httpClient.get<Table>(this.url + uuid).toPromise();
   }
 

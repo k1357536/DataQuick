@@ -1,9 +1,17 @@
-import { ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint, Folder } from './metadata.model';
+import { UUID, ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint, Folder } from './metadata.model';
+
+export module UUIDs {
+  export function check(id: string | UUID | null): UUID | null {
+    if (id == null)
+      return null;
+    return <UUID>id; // do check
+  }
+}
 
 // ==== Folder =================================================================
 export module Folders {
   export function getRoot(): Folder {
-    return { id: '00000000-0000-0000-0000-000000000000', name: '', parent: '00000000-0000-0000-0000-000000000000' };
+    return { id: <UUID>'00000000-0000-0000-0000-000000000000', name: '', parent: <UUID>'00000000-0000-0000-0000-000000000000' };
   }
 }
 
@@ -60,7 +68,7 @@ export module Constraints {
   const defPercentConstraint: NumberConstraint = { notNull: true, unique: false, min: 0, max: 1 };
   const defStringConstraint: StringConstraint = { notNull: true, unique: false, regExp: null, maxLength: null };
   const defDateConstraint: DateConstraint = { notNull: true, unique: false, min: null, max: null };
-  const defFKConstraint: FKConstraint = { notNull: true, unique: false, target: '' };
+  const defFKConstraint: FKConstraint = { notNull: true, unique: false, target: <UUID>'' };
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {

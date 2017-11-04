@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Row } from '../../shared/metadata.model';
+import { UUID, Row } from '../../shared/metadata.model';
 
 @Injectable()
 export class DataService {
@@ -12,7 +12,7 @@ export class DataService {
 
   constructor(private httpClient: HttpClient) { }
 
-  countRows(tableId: string): Promise<number> {
+  countRows(tableId: UUID): Promise<number> {
     return this.httpClient.get(this.url + 'count/' + tableId, { responseType: 'text' })
       .toPromise()
       .then(result => Number(result));

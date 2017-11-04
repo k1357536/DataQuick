@@ -1,16 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Location } from '@angular/common';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
+import { RouteParamService } from '../services/route-param.service';
 
-import { ColumnType, Column, Row } from '../../shared/metadata.model';
-import { Columns } from '../../shared/metadata.utils';
-
-import { Observable } from 'rxjs/Observable';
+import { UUID, ColumnType, Column, Row } from '../../shared/metadata.model';
+import { UUIDs, Columns } from '../../shared/metadata.utils';
 
 import { TableEx, exTable } from './utils';
 
@@ -50,7 +49,8 @@ export class TableComponent implements OnInit {
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private routeParam: RouteParamService) { }
 
   private handleError(e: any): void {
     this.errorMsg = e._body ? e + ' ' + e._body : e;
@@ -58,10 +58,9 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    (this.route.paramMap
-      .switchMap((params: ParamMap) => Observable.of(params.get('id')))
-      .filter(id => id != null) as Observable<string>)
-      .subscribe(id => this.load(id), e => this.handleError(e));
+    this.routeParam
+      .observeParam(this.route, 'table', UUIDs.check)
+      .subscribe(tid => this.load(tid), e => this.handleError(e));
   }
 
   add(): void {
@@ -80,7 +79,7 @@ export class TableComponent implements OnInit {
       .catch(e => this.handleError(e));
   }
 
-  async load(id: string): Promise<void> {
+  async load(id: UUID): Promise<void> {
     await this.metadataService.getTable(id)
       .then(t => this.table = exTable(t))
       .then(() => this.loadData());

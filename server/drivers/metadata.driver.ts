@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-import { Table, TableProposal, FolderProposal, Folder } from '../../shared/metadata.model';
+import { UUID, Table, TableProposal, FolderProposal, Folder } from '../../shared/metadata.model';
 import { Columns, Folders } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
@@ -52,7 +52,7 @@ export class MetadataDriver {
   }
 
   async addFolder(p: FolderProposal | Folder): Promise<void> {
-    let id;
+    let id: UUID;
     if ((p as Folder).id)
       id = (p as Folder).id;
     else

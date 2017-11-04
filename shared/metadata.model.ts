@@ -1,11 +1,15 @@
+// ==== UUID ===================================================================
+export enum UuidTag { };
+export type UUID = string & UuidTag;
+
 // ==== Folder =================================================================
 export interface FolderProposal {
   name: string;
-  parent: string;
+  parent: UUID;
 }
 
 export interface Folder extends FolderProposal {
-  id: string;
+  id: UUID;
 }
 
 // ==== Column =================================================================
@@ -37,7 +41,7 @@ export interface TableProposal {
 }
 
 export interface Table extends TableProposal {
-  id: string;
+  id: UUID;
   columns: Column[];
 }
 
@@ -66,5 +70,5 @@ export interface DateConstraint extends Constraint {
 }
 
 export interface FKConstraint extends Constraint {
-  target: string;
+  target: UUID;
 }

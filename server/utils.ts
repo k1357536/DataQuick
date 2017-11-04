@@ -1,15 +1,15 @@
-import { Table, Column, ColumnType, Constraint } from '../shared/metadata.model';
+import { UUID, Table, Column, ColumnType, Constraint } from '../shared/metadata.model';
 import { Columns, ColumnTypes } from '../shared/metadata.utils';
 
 export class Utils {
-  public static generateUUID(): string { // Public Domain/MIT
+  public static generateUUID(): UUID { // Public Domain/MIT
     let d = new Date().getTime();
 
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       let r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
+    }) as UUID;
   }
 
   public static sanitizeTable(tbl: Table): Table | null {

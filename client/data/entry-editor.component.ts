@@ -2,12 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
 
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
+import { RouteParamService } from '../services/route-param.service';
 
-import { ColumnType, Row } from '../../shared/metadata.model';
+import { UUID, ColumnType, Row } from '../../shared/metadata.model';
+import { UUIDs } from '../../shared/metadata.utils';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/zip';
@@ -27,7 +29,8 @@ export class EntryEditorComponent implements OnInit {
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private routeParam: RouteParamService) { }
 
   private handleError(e: any): void {
     this.errorMsg = e._body ? e + ' ' + e._body : e;
@@ -35,28 +38,20 @@ export class EntryEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const tableId = this.route.paramMap
-      .switchMap((params: ParamMap) => Observable.of(params.get('table')));
-    const entryId = this.route.paramMap
-      .switchMap((params: ParamMap) => Observable.of(params.get('entry')));
+    const tID = this.routeParam.observeParam(this.route, 'table', UUIDs.check);
+    const eID = this.routeParam.observeParam(this.route, 'entry', e => Number(e) != NaN ? Number(e) : null);
 
-    tableId.subscribe(
-      tid => { if (tid) this.loadMetadata(tid); },
-      e => this.handleError(e));
-
-    (
-      Observable.zip(tableId, entryId)
-        .filter(([tid, eid]) => (tid && eid && Number(eid) != NaN) ? true : false) as Observable<[string, string]>)
-      .subscribe(([tid, eid]) => this.loadData(tid, Number(eid)), e => this.handleError(e));
+    tID.subscribe(tid => this.loadMetadata(tid), e => this.handleError(e));
+    Observable.zip(tID, eID).subscribe(([tid, eid]) => this.loadData(tid, eid), e => this.handleError(e));
   }
 
-  async loadMetadata(id: string): Promise<void> {
+  async loadMetadata(id: UUID): Promise<void> {
     return await this.metadataService.getTable(id)
       .then(t => { this.table = exTable(t); })
       .catch(e => this.handleError(e));
   }
 
-  async loadData(tableId: string, entryId: number): Promise<void> {
+  async loadData(tableId: UUID, entryId: number): Promise<void> {
     return await this.dataService.get(tableId, entryId)
       .then(d => { this.entry = d; })
       .catch(e => this.handleError(e));
