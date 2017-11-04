@@ -32,19 +32,19 @@ export class MetadataService extends DataCache<string, Table> implements OnDestr
     if (!parent)
       parent = Folders.getRoot();
     const p: FolderProposal = { name, parent: parent.id };
-    return this.httpClient.post(this.folderUrl, p).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.post(this.folderUrl, p, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   importFolder(p: Folder): Promise<void> {
-    return this.httpClient.post(this.folderUrl, p).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.post(this.folderUrl, p, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   deleteAllFolders(): Promise<void> {
-    return this.httpClient.delete(this.folderUrl + 'all').toPromise().then(_ => super.clearCaches());
+    return this.httpClient.delete(this.folderUrl + 'all', { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   deleteFolder(f: Folder): Promise<void> {
-    return this.httpClient.delete(this.folderUrl + f.id).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.delete(this.folderUrl + f.id, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   // === Tables ================================================================
@@ -61,22 +61,22 @@ export class MetadataService extends DataCache<string, Table> implements OnDestr
 
   addTable(name: string, parent: Folder): Promise<void> {
     const p: TableProposal = { name, parent: parent.id };
-    return this.httpClient.post(this.url, p).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.post(this.url, p, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   importTable(tbl: Table): Promise<void> {
-    return this.httpClient.post(this.url, tbl).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.post(this.url, tbl, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   updateTable(table: Table): Promise<void> {
-    return this.httpClient.put(this.url + table.id, table).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.put(this.url + table.id, table, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   deleteAllTables(): Promise<void> {
-    return this.httpClient.delete(this.url + 'all').toPromise().then(_ => super.clearCaches());
+    return this.httpClient.delete(this.url + 'all', { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   deleteTable(table: Table): Promise<void> {
-    return this.httpClient.delete(this.url + table.id).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.delete(this.url + table.id, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 }

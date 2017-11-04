@@ -44,14 +44,14 @@ export class DataService extends DataCache<string, Row> implements OnDestroy {
   }
 
   update(tableId: UUID, entry: Row): Promise<void> {
-    return this.httpClient.put(this.url + tableId, entry).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.put(this.url + tableId, entry, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   add(tableId: UUID, entry: any): Promise<void> {
-    return this.httpClient.post(this.url + tableId, entry).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.post(this.url + tableId, entry, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   delete(tableId: UUID, entry: Row): Promise<void> {
-    return this.httpClient.delete(this.url + tableId + '/' + entry.id).toPromise().then(_ => super.clearCaches());
+    return this.httpClient.delete(this.url + tableId + '/' + entry.id, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 }
