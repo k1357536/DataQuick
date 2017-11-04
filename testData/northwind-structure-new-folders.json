@@ -1,0 +1,947 @@
+[
+  [{
+      "id": "5db1aeb2-fdcc-46d7-afcb-7066f97d0afd",
+      "name": "HR department",
+      "parent": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "id": "bb625e3b-eb73-436d-a4af-8b2a2a61830a",
+      "name": "Logistics Department",
+      "parent": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "id": "f9d0101c-325a-44cf-9795-8aa1b14db975",
+      "name": "Purchasing Department",
+      "parent": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "id": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "name": "Sales Department",
+      "parent": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  [{
+      "id": "3233bfb7-7910-43b5-9e61-f01b64d9ba5e",
+      "name": "Regions",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Description",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 50
+          }
+        }
+      ]
+    },
+    {
+      "id": "a76aa097-0415-4489-8986-a01a9cc8a444",
+      "name": "Employees",
+      "parent": "5db1aeb2-fdcc-46d7-afcb-7066f97d0afd",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Last Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 20
+          }
+        },
+        {
+          "name": "First Name",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 10
+          }
+        },
+        {
+          "name": "Title",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 30
+          }
+        },
+        {
+          "name": "Title Of Courtesy",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 25
+          }
+        },
+        {
+          "name": "Birth Date",
+          "type": 4,
+          "inSummary": false,
+          "constraint": {
+            "max": "2018-01-01",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Hire Date",
+          "type": 4,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Address",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 60
+          }
+        },
+        {
+          "name": "City",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Region",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Postal Code",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 10
+          }
+        },
+        {
+          "name": "Country",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Home Phone",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 24
+          }
+        },
+        {
+          "name": "Extension",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 4
+          }
+        },
+        {
+          "name": "Photo",
+          "type": 6,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Notes",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Reports To",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Photo Path",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 255
+          }
+        }
+      ]
+    },
+    {
+      "id": "0b77d587-8641-4e87-991d-90957f8fd712",
+      "name": "Categories",
+      "parent": "00000000-0000-0000-0000-000000000000",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Description",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Picture",
+          "type": 6,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "971837f4-287b-46c7-a40c-139c43c0e8ca",
+      "name": "Customers",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Customer ID",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": true,
+            "notNull": true,
+            "maxLength": 5
+          }
+        },
+        {
+          "name": "Company Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 40
+          }
+        },
+        {
+          "name": "Contact Name",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 30
+          }
+        },
+        {
+          "name": "Contact Title",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 30
+          }
+        },
+        {
+          "name": "Address",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 60
+          }
+        },
+        {
+          "name": "City",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Region",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Postal Code",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 10
+          }
+        },
+        {
+          "name": "Country",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Phone",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 24
+          }
+        },
+        {
+          "name": "Fax",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 24
+          }
+        }
+      ]
+    },
+    {
+      "id": "16c18f22-954c-4af2-a235-ad4ff1600dac",
+      "name": "Shippers",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Company Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 40
+          }
+        },
+        {
+          "name": "Phone",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 24
+          }
+        }
+      ]
+    },
+    {
+      "id": "0b52c1d2-99e6-40b9-9d4b-82a685b4e934",
+      "name": "Suppliers",
+      "parent": "f9d0101c-325a-44cf-9795-8aa1b14db975",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Company Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 40
+          }
+        },
+        {
+          "name": "Contact Name",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 30
+          }
+        },
+        {
+          "name": "Contact Title",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 30
+          }
+        },
+        {
+          "name": "Address",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 60
+          }
+        },
+        {
+          "name": "City",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Region",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Postal Code",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 10
+          }
+        },
+        {
+          "name": "Country",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Phone",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 24
+          }
+        },
+        {
+          "name": "Fax",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 24
+          }
+        },
+        {
+          "name": "Homepage",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "9c0de84d-f818-446d-98e8-10a1428d9ecf",
+      "name": "Orders",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Customer",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "971837f4-287b-46c7-a40c-139c43c0e8ca",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Employee",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Order Date",
+          "type": 4,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Required Date",
+          "type": 4,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Shipped Date",
+          "type": 4,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Ship via",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "16c18f22-954c-4af2-a235-ad4ff1600dac",
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Freight",
+          "type": 7,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Ship Name",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 40
+          }
+        },
+        {
+          "name": "Ship Address",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 60
+          }
+        },
+        {
+          "name": "Ship City",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Ship Region",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 15
+          }
+        },
+        {
+          "name": "Ship Postal Code",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": false,
+            "maxLength": 10
+          }
+        },
+        {
+          "name": "Ship Country",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "ee2731f0-8436-4d2a-a0f6-8743d361a5ec",
+      "name": "Products",
+      "parent": "00000000-0000-0000-0000-000000000000",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Name",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 40
+          }
+        },
+        {
+          "name": "Supplier",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "0b52c1d2-99e6-40b9-9d4b-82a685b4e934",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Category",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "0b77d587-8641-4e87-991d-90957f8fd712",
+            "unique": false,
+            "notNull": false
+          }
+        },
+        {
+          "name": "Quantity per Unit",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 20
+          }
+        },
+        {
+          "name": "Unit Price",
+          "type": 7,
+          "inSummary": false,
+          "constraint": {
+            "min": 0,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Units in Stock",
+          "type": 2,
+          "inSummary": false,
+          "constraint": {
+            "min": 0,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Units on Order",
+          "type": 2,
+          "inSummary": false,
+          "constraint": {
+            "min": 0,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Reorder Level",
+          "type": 2,
+          "inSummary": false,
+          "constraint": {
+            "min": 0,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Discontinued",
+          "type": 5,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "013989ff-73bd-42fa-ab15-eb939b45fb8d",
+      "name": "Order Details",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Order",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "9c0de84d-f818-446d-98e8-10a1428d9ecf",
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Product",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "ee2731f0-8436-4d2a-a0f6-8743d361a5ec",
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Unit Price",
+          "type": 7,
+          "inSummary": false,
+          "constraint": {
+            "min": 0,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Quantity",
+          "type": 2,
+          "inSummary": false,
+          "constraint": {
+            "min": 1,
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Discount",
+          "type": 9,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "e0a1315a-9e8a-4371-ad37-9172ee81b34c",
+      "name": "Territories",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": false,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Territory ID",
+          "type": 3,
+          "inSummary": false,
+          "constraint": {
+            "unique": true,
+            "notNull": true,
+            "maxLength": 20
+          }
+        },
+        {
+          "name": "Description",
+          "type": 3,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true,
+            "maxLength": 50
+          }
+        },
+        {
+          "name": "Region",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "3233bfb7-7910-43b5-9e61-f01b64d9ba5e",
+            "unique": false,
+            "notNull": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "850ccb8e-dd28-47f3-9212-7cd8bed90e21",
+      "name": "Employee to Territory Relation",
+      "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
+      "columns": [{
+          "name": "id",
+          "type": 1,
+          "inSummary": true,
+          "constraint": {
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Employee",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
+            "unique": false,
+            "notNull": true
+          }
+        },
+        {
+          "name": "Territory",
+          "type": 10,
+          "inSummary": false,
+          "constraint": {
+            "target": "e0a1315a-9e8a-4371-ad37-9172ee81b34c",
+            "unique": false,
+            "notNull": true
+          }
+        }
+      ]
+    }
+  ]
+]
