@@ -3,7 +3,7 @@ Description=DataQuick Node.js server
 Requires=After=postgresql-10.service
 
 [Service]
-ExecStart=/usr/local/bin/node /srv/DataQuick/server/server.js
+ExecStart=/usr/bin/node /srv/DataQuick/server/server.js
 WorkingDirectory=/srv/DataQuick/
 # Required on some systems
 Restart=always
