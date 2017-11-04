@@ -34,7 +34,7 @@ export class SetupComponent implements OnInit {
 
   private handleError(e: any) {
     console.error(e);
-    if (e instanceof Error)
+    if (e.message && typeof e.message === 'string')
       this.msg += e.message;
     else
       this.msg = JSON.stringify(e);
