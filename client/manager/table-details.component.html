@@ -80,9 +80,8 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'FK'">
-            <div>To: {{col.resolvedName | async}}</div>
+            <div>To: <a [routerLink]="['/manager/tables/', col.constraint.target]">{{col.resolvedName | async}}</a></div>
           </ng-container>
-
           <ng-container *ngSwitchDefault>
           </ng-container>
         </td>
@@ -92,8 +91,26 @@
       <tr>
         <th colspan="3">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
-          <button class="btn btn-primary" (click)="edit();">Edit</button>
+          <button class="btn btn-primary" [routerLink]="['/manager/tables/', table.id, 'edit']">Edit</button>
         </th>
     </tfoot>
+  </table>
+</div>
+
+<div *ngIf="dependents && dependents.length > 0">
+  <h2>Dependents</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width: 25%">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dep of dependents" [routerLink]="['/manager/tables/', dep.id]">
+        <td>
+          {{dep.name}}
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>

@@ -79,8 +79,11 @@ export function MetadataApi(): Router {
   metadata.get('/', async (req, res) => {
     try {
       const parent = UUIDs.check(req.query.parent);
+      const dependents = UUIDs.check(req.query.dependents);
       if (parent)
         res.json(await driver.getChildren(parent));
+      else if (dependents)
+        res.json(await driver.getDependents(dependents));
       else
         res.json(await driver.getAll());
     }

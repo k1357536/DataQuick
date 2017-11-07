@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Location } from '@angular/common';
 
@@ -19,14 +19,13 @@ import 'rxjs/add/observable/of';
 })
 
 export class TableDetailsComponent implements OnInit {
-
   @Input() table: Table;
+  dependents: Table[];
   errorMsg: string | null = null;
 
   constructor(
     private metadataService: MetadataService,
     private location: Location,
-    private router: Router,
     private route: ActivatedRoute,
     private routeParam: RouteParamService) { }
 
@@ -53,10 +52,8 @@ export class TableDetailsComponent implements OnInit {
         (col as any).resolvedName = this.metadataService.getTable(tgt)
           .then(t => t.name);
       });
-  }
 
-  edit(): void {
-    this.router.navigate(['/manager/tables/', this.table.id, 'edit']);
+    this.dependents = await this.metadataService.getDependents(table);
   }
 
   goBack(): void {

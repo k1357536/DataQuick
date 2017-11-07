@@ -13,7 +13,9 @@ const DELETE_ALL_FOLDERS_STMT = 'DELETE FROM metadata.folders WHERE id != $1';
 
 const GETALL_STMT = 'SELECT id, name, parent, columns FROM metadata.lists;';
 const GETCHILDREN_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE parent = $1;';
+const GETDEPENDENTS_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE columns @> $1;';
 const GET_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;';
+
 const SEARCH1_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name LIKE $1;';
 const SEARCH2_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name = $1 AND parent = $2;';
 const UPDATE_STMT = 'UPDATE metadata.lists SET name = $2, parent = $3, columns = $4 WHERE id = $1;';
@@ -90,13 +92,19 @@ export class MetadataDriver {
     return rows;
   }
 
-  async get(uuid: string): Promise<Table> {
+  async get(uuid: UUID): Promise<Table> {
     const { rows } = await pool.query(GET_STMT, [uuid]);
 
     if (rows.length < 1)
       throw 404;
 
     return rows[0];
+  }
+
+  async getDependents(dependency: UUID): Promise<Table[]> {
+    const dep = [{ "constraint": { "target": dependency } }];
+    const { rows } = await pool.query(GETDEPENDENTS_STMT, [JSON.stringify(dep)]);
+    return rows;
   }
 
   async search(param: TableProposal | string): Promise<Table[]> {

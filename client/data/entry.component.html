@@ -28,8 +28,6 @@
       <tr *ngFor="let col of table.columns">
         <td>
           {{col.name}}
-          <br/>
-          <small class="text-muted"> {{col.type | columntype}}</small>
         </td>
         <td>
           <typed-output [col]="col" [(ngModel)]="entry[col.apiName]"></typed-output>
