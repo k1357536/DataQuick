@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { ManagerModule } from '../manager/manager.module';
 import { DataModule } from '../data/data.module';
+import { FoldersModule } from '../folders/folders.module';
 import { SetupModule } from '../setup/setup.module';
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { DashboardComponent } from './dashboard.component';
     NgbModule.forRoot(),
     ManagerModule,
     DataModule,
+    FoldersModule,
     SetupModule
   ],
   declarations: [

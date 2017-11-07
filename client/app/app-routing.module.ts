@@ -13,6 +13,8 @@ import { TableComponent } from '../data/table.component';
 import { EntryComponent } from '../data/entry.component';
 import { EntryEditorComponent } from '../data/entry-editor.component';
 
+import { FoldersComponent } from '../folders/folders.component'
+
 import { SetupComponent } from '../setup/setup.component';
 
 const routes: Routes = [
@@ -28,6 +30,8 @@ const routes: Routes = [
   { path: 'data/:table/add', component: EntryEditorComponent },
   { path: 'data/:table/:entry', component: EntryComponent },
   { path: 'data/:table/:entry/edit', component: EntryEditorComponent },
+
+  { path: 'folders', component: FoldersComponent },
 
   { path: 'setup', component: SetupComponent }
 ];

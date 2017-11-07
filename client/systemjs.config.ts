@@ -11,11 +11,6 @@
     },
     // map tells the System loader where to look for things
     map: {
-      // our app is within the app folder
-      'app': 'app',
-      'editor': 'editor',
-      'shared': 'shared',
-
       // angular bundles
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
@@ -77,6 +72,14 @@
         }
       },
       data: {
+        defaultExtension: 'js',
+        meta: {
+          './*.js': {
+            loader: 'systemjs-angular-loader.js'
+          }
+        }
+      },
+      folders: {
         defaultExtension: 'js',
         meta: {
           './*.js': {
