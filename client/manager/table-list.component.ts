@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
-
 import { Table, Folder } from '../../shared/metadata.model';
 import { Folders } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
@@ -22,7 +20,6 @@ export class TableListComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService) { }
 

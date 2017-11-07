@@ -1,9 +1,5 @@
-<h6 *ngIf="table"><code>{{table.id}}</code></h6>
-<h1 *ngIf="table" class="py-2">{{table.name}}</h1>
-
-<div class="pb-4" *ngIf="table">
-  Parent: <code>{{table.parent}}</code>
-</div>
+<h1 *ngIf="table"><small class="text-muted">{{path}}</small>{{table.name}}</h1>
+<div *ngIf="table" class="py-2"><code>{{table.id}}</code></div>
 
 <div *ngIf="!table && !errorMsg" class="alert alert-info">
   Loading...

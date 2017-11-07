@@ -10,6 +10,7 @@ import { UUIDs } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
 import { RouteParamService } from '../services/route-param.service';
 
+import { getPath } from '../data/utils';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
@@ -20,6 +21,7 @@ import 'rxjs/add/observable/of';
 
 export class TableDetailsComponent implements OnInit {
   @Input() table: Table;
+  path: string;
   dependents: Table[];
   errorMsg: string | null = null;
 
@@ -44,6 +46,7 @@ export class TableDetailsComponent implements OnInit {
 
   async load(id: UUID): Promise<void> {
     const table = await this.metadataService.getTable(id);
+    this.path = getPath(table, await this.metadataService.getFolders());
     this.table = table;
     table.columns
       .filter(col => col.type === 'FK')
