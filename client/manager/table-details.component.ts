@@ -56,7 +56,7 @@ export class TableDetailsComponent implements OnInit {
   }
 
   edit(): void {
-    this.router.navigate(['/manager', this.table.id, 'edit']);
+    this.router.navigate(['/manager/tables/', this.table.id, 'edit']);
   }
 
   goBack(): void {

@@ -1,4 +1,4 @@
-<h1>Table&nbsp;<small class="text-muted">List</small></h1>
+<h1>Tables</h1>
 
 <div *ngIf="!tables && !errorMsg" class="alert alert-info">
   Loading...
@@ -17,7 +17,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let table of tables">
-      <td (click)="onSelect(table.id)">{{table.name}}</td>
+      <td (click)="onSelect(table.id)"><span class="text-muted">{{path(table)}}</span>{{table.name}}</td>
       <td class="text-right">{{table.rows}}</td>
     </tr>
   </tbody>

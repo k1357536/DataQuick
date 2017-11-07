@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ServicesModule } from '../services/services.module';
 
 import { TableListComponent } from './table-list.component';
+import { FolderListComponent } from '../manager/folder-list.component';
 import { TableDetailsComponent } from './table-details.component';
 import { TableEditorComponent } from './table-editor.component';
 
@@ -21,6 +22,7 @@ import { TableEditorComponent } from './table-editor.component';
   ],
   declarations: [
     TableListComponent,
+    FolderListComponent,
     TableDetailsComponent,
     TableEditorComponent
   ]

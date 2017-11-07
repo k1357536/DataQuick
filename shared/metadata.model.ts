@@ -31,7 +31,7 @@ export interface Column {
 // ==== Table ==================================================================
 export interface TableProposal {
   name: string;
-  parent: string;
+  parent: UUID;
 }
 
 export interface Table extends TableProposal {

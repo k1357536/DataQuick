@@ -1,0 +1,49 @@
+<h1>Manage Folders</h1>
+
+<div *ngIf="!folders && !errorMsg" class="alert alert-info">
+  Loading...
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<table class="table" *ngIf="folders">
+  <thead>
+    <tr class="d-sm-none">
+      <th>Name</th>
+    </tr>
+    <tr>
+      <th class="d-none d-lg-table-cell">Id</th>
+      <th class="d-none d-sm-table-cell"></th>
+      <th class="d-none d-sm-table-cell">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let folder of folders; trackBy: trackById">
+      <tr class="d-sm-none" (click)="onSelect(table.id)">
+        <td>{{folder.name}}</td>
+        <td><button class="btn btn-outline-danger btn-sm">x</button></td>
+      </tr>
+      <tr (click)="onSelect(folder.id)">
+        <td class="d-none d-lg-table-cell">
+          <small>
+            <code>{{folder.id}}</code>
+          </small>
+        </td>
+        <td class="d-none d-sm-table-cell"><span class="text-muted">{{path(folder)}}</span>{{folder.name}}</td>
+        <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(folder);">x</button></td>
+      </tr>
+    </ng-container>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>
+        <input type="text" class="form-control" [(ngModel)]="newName" required (keyup.enter)="addFolder();">
+      </th>
+      <th colspan="4">
+        <button class="btn btn-outline-success" (click)="add();">Add Folder</button>
+      </th>
+    </tr>
+  </tfoot>
+</table>

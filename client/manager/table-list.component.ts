@@ -7,9 +7,7 @@ import { Folders } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-interface TableEx extends Table {
-  rows: number;
-}
+import { getPath } from '../data/utils';
 
 @Component({
   templateUrl: './table-list.component.html'
@@ -17,9 +15,8 @@ interface TableEx extends Table {
 
 export class TableListComponent implements OnInit {
   folders: Folder[];
-  newFolderName: string = "";
 
-  tables: TableEx[];
+  tables: (Table & { rows: number })[];
   newName: string = "";
 
   errorMsg: string | null = null;
@@ -42,25 +39,14 @@ export class TableListComponent implements OnInit {
   }
 
   onSelect(id: string): void {
-    this.router.navigate(['/manager', id]);
+    this.router.navigate(['/manager/tables/', id]);
   }
 
-  onSelectFolder(id: string): void {
-    this.router.navigate(['/manager/folder/', id]);
-  }
-
-  async addFolder(): Promise<void> {
-    if (!this.newFolderName || this.newFolderName.length <= 0)
-      this.errorMsg = "No table name specified!";
-    else {
-      await this.metadataService.addFolder(this.newFolderName, Folders.getRoot())
-        .then(() => this.errorMsg = "")
-        .catch(e => {
-          this.handleError(e);
-        });
-      this.newFolderName = "";
-      await this.getFolders();
-    }
+  path(obj: Table | Folder): string {
+    if (this.folders)
+      return getPath(obj, this.folders);
+    else
+      return '';
   }
 
   async add(): Promise<void> {
@@ -88,28 +74,6 @@ export class TableListComponent implements OnInit {
 
   trackById(index: number, _: Table): number {
     return index; // TODO
-  }
-
-  private async getFolders(): Promise<void> {
-    try {
-      this.folders = await this.metadataService.getFolders();
-    }
-    catch (e) {
-      this.handleError(e);
-    }
-  }
-
-  private async getTables(): Promise<void> {
-    try {
-      this.tables = await this.metadataService.getTables() as TableEx[];
-      this.tables.forEach(async tbl => {
-        const rows = await this.dataService.countRows(tbl.id);
-        tbl.rows = rows;
-      });
-    }
-    catch (e) {
-      this.handleError(e);
-    }
   }
 
   async export(): Promise<void> {
@@ -160,5 +124,27 @@ export class TableListComponent implements OnInit {
 
     document.body.appendChild(input);
     input.click();
+  }
+
+  private async getFolders(): Promise<void> {
+    try {
+      this.folders = await this.metadataService.getFolders();
+    }
+    catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  private async getTables(): Promise<void> {
+    try {
+      this.tables = await this.metadataService.getTables() as (Table & { rows: number })[];
+      this.tables.forEach(async tbl => {
+        const rows = await this.dataService.countRows(tbl.id);
+        tbl.rows = rows;
+      });
+    }
+    catch (e) {
+      this.handleError(e);
+    }
   }
 }

@@ -1,4 +1,4 @@
-<h1>Table&nbsp;<small class="text-muted">List</small></h1>
+<h1>Manage Tables</h1>
 
 <div *ngIf="!tables && !errorMsg" class="alert alert-info">
   Loading...
@@ -8,43 +8,6 @@
   <hr /> {{errorMsg}}
 </div>
 
-<table class="table" *ngIf="folders">
-  <thead>
-    <tr class="d-sm-none">
-      <th>Name</th>
-    </tr>
-    <tr>
-      <th class="d-none d-lg-table-cell">Parent</th>
-      <th class="d-none d-sm-table-cell">Id</th>
-      <th class="d-none d-sm-table-cell">Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let folder of folders; trackBy: trackById">
-      <tr class="d-sm-none" (click)="onSelect(table.id)">
-        <td>{{folder.name}}</td>
-        <td><button class="btn btn-outline-danger btn-sm">x</button></td>
-      </tr>
-      <tr (click)="onSelectFolder(folder.id)">
-        <td class="d-none d-lg-table-cell"><small><code>{{folder.parent}}</code></small></td>
-        <td class="d-none d-sm-table-cell"><small><code>{{folder.id}}</code></small></td>
-        <td class="d-none d-sm-table-cell">{{folder.name}}</td>
-        <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm">x</button></td>
-      </tr>
-    </ng-container>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>
-        <input type="text" class="form-control" [(ngModel)]="newFolderName" required (keyup.enter)="addFolder();">
-      </th>
-      <th colspan="4">
-        <button class="btn btn-outline-success" (click)="addFolder();">Add Folder</button>
-      </th>
-    </tr>
-  </tfoot>
-</table>
-
 <table class="table" *ngIf="tables">
   <thead>
     <tr class="d-sm-none">
@@ -52,8 +15,7 @@
       <th colspan="2">Columns</th>
     </tr>
     <tr>
-      <th class="d-none d-lg-table-cell">Parent</th>
-      <th class="d-none d-sm-table-cell">Id</th>
+      <th class="d-none d-lg-table-cell">Id</th>
       <th class="d-none d-sm-table-cell">Name</th>
       <th class="d-none d-sm-table-cell">Columns</th>
       <th class="d-none d-sm-table-cell" colspan="2">Rows</th>
@@ -62,14 +24,17 @@
   <tbody>
     <ng-container *ngFor="let table of tables; trackBy: trackById">
       <tr class="d-sm-none" (click)="onSelect(table.id)">
-        <td>{{table.name}}</td>
+        <td><span class="text-muted">{{path(table)}}</span>{{table.name}}</td>
         <td>{{table.columns.length}}</td>
         <td><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>
       </tr>
       <tr (click)="onSelect(table.id)">
-        <td class="d-none d-lg-table-cell"><small><code>{{table.parent}}</code></small></td>
-        <td class="d-none d-sm-table-cell"><small><code>{{table.id}}</code></small></td>
-        <td class="d-none d-sm-table-cell">{{table.name}}</td>
+        <td class="d-none d-lg-table-cell">
+          <small>
+            <code>{{table.id}}</code>
+          </small>
+        </td>
+        <td class="d-none d-sm-table-cell"><span class="text-muted">{{path(table)}}</span>{{table.name}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.columns.length}}</td>
         <td class="d-none d-sm-table-cell text-right">{{table.rows}}</td>
         <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(table); $event.stopPropagation();">x</button></td>

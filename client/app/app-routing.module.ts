@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 
 import { TableListComponent } from '../manager/table-list.component';
+import { FolderListComponent } from '../manager/folder-list.component';
 import { TableDetailsComponent } from '../manager/table-details.component';
 import { TableEditorComponent } from '../manager/table-editor.component';
 
@@ -17,9 +18,10 @@ import { SetupComponent } from '../setup/setup.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
 
-  { path: 'manager', component: TableListComponent },
-  { path: 'manager/:table', component: TableDetailsComponent },
-  { path: 'manager/:table/edit', component: TableEditorComponent },
+  { path: 'manager/tables', component: TableListComponent },
+  { path: 'manager/folders', component: FolderListComponent },
+  { path: 'manager/tables/:table', component: TableDetailsComponent },
+  { path: 'manager/tables/:table/edit', component: TableEditorComponent },
 
   { path: 'data', component: TablesComponent },
   { path: 'data/:table', component: TableComponent, data: { fluid: true } },
