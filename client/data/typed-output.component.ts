@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-import { Column, ColumnType, FKConstraint } from '../../shared/metadata.model';
+import { Column, FKConstraint } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service'
 import { DataService } from '../services/data.service'
@@ -26,7 +26,6 @@ export class TypedOutputComponent implements ControlValueAccessor {
   @Input() col: Column;
   @Input() summarize: boolean;
   private innerValue: any = undefined;
-  ColumnType = ColumnType; // for view
 
   tblName: string;
   fkCol: Column;
@@ -50,7 +49,7 @@ export class TypedOutputComponent implements ControlValueAccessor {
       return;
     }
 
-    if (this.col.type === ColumnType.IMAGE) {
+    if (this.col.type === 'IMAGE') {
       if (value) {
         const ab = new Uint8Array(value.data);
         const data = new Blob([ab], { type: 'image/*' });
@@ -58,7 +57,7 @@ export class TypedOutputComponent implements ControlValueAccessor {
         this.innerValue = this.sanitizer.bypassSecurityTrustResourceUrl(oUrl);
         return;
       }
-    } else if (this.col.type === ColumnType.FK) {
+    } else if (this.col.type === 'FK') {
       if (value) {
         const tgt = (this.col.constraint as FKConstraint).target;
 

@@ -8,7 +8,7 @@ import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 import { RouteParamService } from '../services/route-param.service';
 
-import { UUID, ColumnType, Column, Row } from '../../shared/metadata.model';
+import { UUID, Column, Row } from '../../shared/metadata.model';
 import { UUIDs, Columns } from '../../shared/metadata.utils';
 
 import { TableEx, exTable } from './utils';
@@ -42,7 +42,6 @@ export class TableComponent implements OnInit {
 
   newName: string;
   errorMsg: string | null = null;
-  ColumnType = ColumnType; // for view
 
   constructor(
     private router: Router,

@@ -8,7 +8,7 @@ import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 import { RouteParamService } from '../services/route-param.service';
 
-import { UUID, ColumnType, Row } from '../../shared/metadata.model';
+import { UUID, Row } from '../../shared/metadata.model';
 import { UUIDs } from '../../shared/metadata.utils';
 
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +23,6 @@ export class EntryEditorComponent implements OnInit {
   @Input() table: TableEx;
   @Input() entry: Row;
   errorMsg: string | null = null;
-  ColumnType = ColumnType; // for view
 
   constructor(
     private dataService: DataService,

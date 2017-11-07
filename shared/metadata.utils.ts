@@ -23,16 +23,16 @@ export module ColumnTypes {
   }
 
   export const ALL: ColumnDescription[] = [
-    { id: ColumnType.PK, name: 'Key' },
-    { id: ColumnType.INT, name: 'Whole Number' },
-    { id: ColumnType.STRING, name: 'Text' },
-    { id: ColumnType.DATE, name: 'Date' },
-    { id: ColumnType.BOOL, name: 'True/False' },
-    { id: ColumnType.IMAGE, name: 'Image' },
-    { id: ColumnType.MONEY, name: 'Money' },
-    { id: ColumnType.REAL, name: 'Decimal Number' },
-    { id: ColumnType.PERCENT, name: 'Percentage' },
-    { id: ColumnType.FK, name: 'Reference' },
+    { id: 'PK', name: 'Key' },
+    { id: 'INT', name: 'Whole Number' },
+    { id: 'STRING', name: 'Text' },
+    { id: 'DATE', name: 'Date' },
+    { id: 'BOOL', name: 'True/False' },
+    { id: 'IMAGE', name: 'Image' },
+    { id: 'MONEY', name: 'Money' },
+    { id: 'REAL', name: 'Decimal Number' },
+    { id: 'PERCENT', name: 'Percentage' },
+    { id: 'FK', name: 'Reference' },
   ];
 
   export function getName(id: ColumnType): string {
@@ -43,14 +43,14 @@ export module ColumnTypes {
 
 export module Columns {
   export function createPK(): Column {
-    const col = Columns.create('Id', ColumnType.PK);
+    const col = Columns.create('Id', 'PK');
     col.inSummary = true;
     return col;
   }
 
   export function create(name: string, type?: ColumnType, constraint?: Constraint, inSummary?: boolean): Column {
     if (!type)
-      type = ColumnType.STRING;
+      type = 'STRING';
     if (!constraint)
       constraint = Constraints.getDefault(type);
     return { name, type, constraint, inSummary: inSummary ? true : false };
@@ -72,21 +72,21 @@ export module Constraints {
 
   export function getDefault(type: ColumnType): Constraint {
     switch (type) {
-      case ColumnType.INT:
-      case ColumnType.MONEY:
-      case ColumnType.REAL:
+      case 'INT':
+      case 'MONEY':
+      case 'REAL':
         return Object.assign(defNumberConstraint);
-      case ColumnType.STRING:
+      case 'STRING':
         return Object.assign(defStringConstraint);
-      case ColumnType.DATE:
+      case 'DATE':
         return Object.assign(defDateConstraint);
-      case ColumnType.PERCENT:
+      case 'PERCENT':
         return Object.assign(defPercentConstraint);
-      case ColumnType.FK:
+      case 'FK':
         return Object.assign(defFKConstraint);
-      case ColumnType.PK:
-      case ColumnType.BOOL:
-      case ColumnType.IMAGE:
+      case 'PK':
+      case 'BOOL':
+      case 'IMAGE':
       default:
         return Object.assign(defConstraint);
     }

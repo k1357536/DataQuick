@@ -20,7 +20,6 @@ import 'rxjs/add/observable/of';
 
 export class TableEditorComponent implements OnInit {
   readonly columnTypes = ColumnTypes.ALL;
-  readonly ColumnType = ColumnType;
 
   @Input() table: Table;
   errorMsg: string | null = null;
@@ -59,8 +58,9 @@ export class TableEditorComponent implements OnInit {
       this.table.columns.splice(idx, 1);
   }
 
-  changeType(col: Column, typeId: number): void {
-    col.type = typeId;
+  changeType(col: Column, typeId: string): void {
+    if (ColumnTypes.ALL.find(c => c.id === typeId))
+      col.type = typeId as ColumnType;
   }
 
   async save(): Promise<void> {

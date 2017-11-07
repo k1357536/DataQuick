@@ -6,20 +6,20 @@ export namespace GenSQLUtils {
   const SCHEMA = "data";
 
   const TYPES: any[] = [
-    { id: ColumnType.PK, sqlName: 'BIGSERIAL' },
-    { id: ColumnType.INT, sqlName: 'INT' },
-    { id: ColumnType.STRING, sqlName: 'TEXT' },
-    { id: ColumnType.DATE, sqlName: 'DATE' },
-    { id: ColumnType.BOOL, sqlName: 'BOOLEAN' },
-    { id: ColumnType.IMAGE, sqlName: 'BYTEA' },
-    { id: ColumnType.MONEY, sqlName: 'NUMERIC(12,2)' },
-    { id: ColumnType.REAL, sqlName: 'REAL' },
-    { id: ColumnType.PERCENT, sqlName: 'REAL' },
-    { id: ColumnType.FK, sqlName: 'BIGINT' },
+    { id: 'PK', sqlName: 'BIGSERIAL' },
+    { id: 'INT', sqlName: 'INT' },
+    { id: 'STRING', sqlName: 'TEXT' },
+    { id: 'DATE', sqlName: 'DATE' },
+    { id: 'BOOL', sqlName: 'BOOLEAN' },
+    { id: 'IMAGE', sqlName: 'BYTEA' },
+    { id: 'MONEY', sqlName: 'NUMERIC(12,2)' },
+    { id: 'REAL', sqlName: 'REAL' },
+    { id: 'PERCENT', sqlName: 'REAL' },
+    { id: 'FK', sqlName: 'BIGINT' },
   ];
 
   function toType(type: ColumnType, constr: Constraint): string {
-    if (type === ColumnType.STRING && (constr as StringConstraint).maxLength)
+    if (type === 'STRING' && (constr as StringConstraint).maxLength)
       return `VARCHAR(${(constr as StringConstraint).maxLength})`;
     return TYPES.find((t) => t.id === type).sqlName;
   }
@@ -42,13 +42,13 @@ export namespace GenSQLUtils {
       str += ' UNIQUE';
 
     switch (col.type) {
-      case ColumnType.PK:
+      case 'PK':
         return 'PRIMARY KEY';
 
-      case ColumnType.INT:
-      case ColumnType.MONEY:
-      case ColumnType.REAL:
-      case ColumnType.PERCENT:
+      case 'INT':
+      case 'MONEY':
+      case 'REAL':
+      case 'PERCENT':
         const numConst = constraint as NumberConstraint;
 
         if (numConst.max)
@@ -57,14 +57,14 @@ export namespace GenSQLUtils {
           str += ` CHECK (${name} >= ${Number(numConst.min)})`;
         break;
 
-      case ColumnType.STRING:
+      case 'STRING':
         const strConst = constraint as StringConstraint;
 
         if (strConst.regExp)
           str += ` CHECK (${name} ~ '${strConst.regExp}')`;
         break;
 
-      case ColumnType.DATE:
+      case 'DATE':
         const dateConst = constraint as DateConstraint;
 
         if (dateConst.max)
@@ -73,13 +73,13 @@ export namespace GenSQLUtils {
           str += ` CHECK (${name} >= '${dateConst.min}')`;
         break;
 
-      case ColumnType.FK:
+      case 'FK':
         const fkConst = constraint as FKConstraint;
         str += ` REFERENCES ${toTableName(fkConst.target)}`;
         break;
 
-      case ColumnType.BOOL:
-      case ColumnType.IMAGE:
+      case 'BOOL':
+      case 'IMAGE':
       default:
         break;
     }
@@ -116,7 +116,7 @@ export namespace GenSQLUtils {
   }
 
   export function insert(table: Table, entry: any): [string, any[]] {
-    const cols = table.columns.filter(col => col.type !== ColumnType.PK);
+    const cols = table.columns.filter(col => col.type !== 'PK');
 
     const data = cols.map((col) => entry[Columns.apiName(col)]);
     const colList = cols.map((col) => toEscapedName(col)).join(', ');
@@ -126,8 +126,8 @@ export namespace GenSQLUtils {
   }
 
   export function update(table: Table, entry: any): [string, any[]] {
-    const cols = table.columns.filter(col => col.type !== ColumnType.PK);
-    const id = table.columns.find(col => col.type == ColumnType.PK);
+    const cols = table.columns.filter(col => col.type !== 'PK');
+    const id = table.columns.find(col => col.type == 'PK');
 
     if (id === undefined)
       throw new Error('primary key not found!');

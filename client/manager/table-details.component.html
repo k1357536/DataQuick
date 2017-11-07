@@ -38,48 +38,48 @@
           <div *ngIf="col.constraint.unique">Unique</div>
         </td>
         <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="ColumnType.PK">
+          <ng-container *ngSwitchCase="PK">
             Consecutive Number
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.INT">
+          <ng-container *ngSwitchCase="INT">
             <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min}}</div>
             <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.STRING">
+          <ng-container *ngSwitchCase="STRING">
             <div *ngIf="col.constraint.maxLength != null">Max Length: {{col.constraint.maxLength}}</div>
             <div *ngIf="col.constraint.maxLength == null">Variable Length</div>
             <div *ngIf="col.constraint.regExp != null">Pattern: {{col.constraint.regExp}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.DATE">
+          <ng-container *ngSwitchCase="DATE">
             <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min | date}}</div>
             <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max | date}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.BOOL">
+          <ng-container *ngSwitchCase="BOOL">
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.IMAGE">
+          <ng-container *ngSwitchCase="IMAGE">
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.MONEY">
+          <ng-container *ngSwitchCase="MONEY">
             <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min | currency}}</div>
             <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max | currency}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.REAL">
+          <ng-container *ngSwitchCase="REAL">
             <div *ngIf="col.constraint.min != null">Min: {{col.constraint.min}}</div>
             <div *ngIf="col.constraint.max != null">Max: {{col.constraint.max}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.PERCENT">
+          <ng-container *ngSwitchCase="PERCENT">
             <div *ngIf="col.constraint.min != null && col.constraint.min != 0">Min: {{col.constraint.min | percent}}</div>
             <div *ngIf="col.constraint.max != null && col.constraint.max != 1">Max: {{col.constraint.max | percent}}</div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.FK">
+          <ng-container *ngSwitchCase="FK">
             <div>To: {{col.resolvedName | async}}</div>
           </ng-container>
 

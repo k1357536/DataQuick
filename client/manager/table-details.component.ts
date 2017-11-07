@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { UUID, Table, ColumnType, FKConstraint } from '../../shared/metadata.model';
+import { UUID, Table, FKConstraint } from '../../shared/metadata.model';
 import { UUIDs } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
@@ -19,7 +19,6 @@ import 'rxjs/add/observable/of';
 })
 
 export class TableDetailsComponent implements OnInit {
-  readonly ColumnType = ColumnType;
 
   @Input() table: Table;
   errorMsg: string | null = null;
@@ -48,7 +47,7 @@ export class TableDetailsComponent implements OnInit {
     const table = await this.metadataService.getTable(id);
     this.table = table;
     table.columns
-      .filter(col => col.type == ColumnType.FK)
+      .filter(col => col.type === 'FK')
       .forEach(col => {
         const tgt = (col.constraint as FKConstraint).target;
         (col as any).resolvedName = this.metadataService.getTable(tgt)

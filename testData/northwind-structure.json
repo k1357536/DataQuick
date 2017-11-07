@@ -26,7 +26,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -35,7 +35,7 @@
         },
         {
           "name": "Description",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -51,7 +51,7 @@
       "parent": "5db1aeb2-fdcc-46d7-afcb-7066f97d0afd",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -60,7 +60,7 @@
         },
         {
           "name": "Last Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -70,7 +70,7 @@
         },
         {
           "name": "First Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -80,7 +80,7 @@
         },
         {
           "name": "Title",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -90,7 +90,7 @@
         },
         {
           "name": "Title Of Courtesy",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -100,7 +100,7 @@
         },
         {
           "name": "Birth Date",
-          "type": 4,
+          "type": "DATE",
           "inSummary": false,
           "constraint": {
             "max": "2018-01-01",
@@ -110,7 +110,7 @@
         },
         {
           "name": "Hire Date",
-          "type": 4,
+          "type": "DATE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -119,7 +119,7 @@
         },
         {
           "name": "Address",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -129,7 +129,7 @@
         },
         {
           "name": "City",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -139,7 +139,7 @@
         },
         {
           "name": "Region",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -149,7 +149,7 @@
         },
         {
           "name": "Postal Code",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -159,7 +159,7 @@
         },
         {
           "name": "Country",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -169,7 +169,7 @@
         },
         {
           "name": "Home Phone",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -179,7 +179,7 @@
         },
         {
           "name": "Extension",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -189,7 +189,7 @@
         },
         {
           "name": "Photo",
-          "type": 6,
+          "type": "IMAGE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -198,7 +198,7 @@
         },
         {
           "name": "Notes",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -207,7 +207,7 @@
         },
         {
           "name": "Reports To",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
@@ -217,7 +217,7 @@
         },
         {
           "name": "Photo Path",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -233,7 +233,7 @@
       "parent": "00000000-0000-0000-0000-000000000000",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -242,7 +242,7 @@
         },
         {
           "name": "Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -252,7 +252,7 @@
         },
         {
           "name": "Description",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -261,7 +261,7 @@
         },
         {
           "name": "Picture",
-          "type": 6,
+          "type": "IMAGE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -276,7 +276,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -285,7 +285,7 @@
         },
         {
           "name": "Customer ID",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": true,
@@ -295,7 +295,7 @@
         },
         {
           "name": "Company Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -305,7 +305,7 @@
         },
         {
           "name": "Contact Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -315,7 +315,7 @@
         },
         {
           "name": "Contact Title",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -325,7 +325,7 @@
         },
         {
           "name": "Address",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -335,7 +335,7 @@
         },
         {
           "name": "City",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -345,7 +345,7 @@
         },
         {
           "name": "Region",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -355,7 +355,7 @@
         },
         {
           "name": "Postal Code",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -365,7 +365,7 @@
         },
         {
           "name": "Country",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -375,7 +375,7 @@
         },
         {
           "name": "Phone",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -385,7 +385,7 @@
         },
         {
           "name": "Fax",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -401,7 +401,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -410,7 +410,7 @@
         },
         {
           "name": "Company Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -420,7 +420,7 @@
         },
         {
           "name": "Phone",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -436,7 +436,7 @@
       "parent": "f9d0101c-325a-44cf-9795-8aa1b14db975",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -445,7 +445,7 @@
         },
         {
           "name": "Company Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -455,7 +455,7 @@
         },
         {
           "name": "Contact Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -465,7 +465,7 @@
         },
         {
           "name": "Contact Title",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -475,7 +475,7 @@
         },
         {
           "name": "Address",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -485,7 +485,7 @@
         },
         {
           "name": "City",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -495,7 +495,7 @@
         },
         {
           "name": "Region",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -505,7 +505,7 @@
         },
         {
           "name": "Postal Code",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -515,7 +515,7 @@
         },
         {
           "name": "Country",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -525,7 +525,7 @@
         },
         {
           "name": "Phone",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -535,7 +535,7 @@
         },
         {
           "name": "Fax",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -545,7 +545,7 @@
         },
         {
           "name": "Homepage",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -560,7 +560,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -569,7 +569,7 @@
         },
         {
           "name": "Customer",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "971837f4-287b-46c7-a40c-139c43c0e8ca",
@@ -579,7 +579,7 @@
         },
         {
           "name": "Employee",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
@@ -589,7 +589,7 @@
         },
         {
           "name": "Order Date",
-          "type": 4,
+          "type": "DATE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -598,7 +598,7 @@
         },
         {
           "name": "Required Date",
-          "type": 4,
+          "type": "DATE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -607,7 +607,7 @@
         },
         {
           "name": "Shipped Date",
-          "type": 4,
+          "type": "DATE",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -616,7 +616,7 @@
         },
         {
           "name": "Ship via",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "16c18f22-954c-4af2-a235-ad4ff1600dac",
@@ -626,7 +626,7 @@
         },
         {
           "name": "Freight",
-          "type": 7,
+          "type": "REAL",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -635,7 +635,7 @@
         },
         {
           "name": "Ship Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -645,7 +645,7 @@
         },
         {
           "name": "Ship Address",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -655,7 +655,7 @@
         },
         {
           "name": "Ship City",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -665,7 +665,7 @@
         },
         {
           "name": "Ship Region",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -675,7 +675,7 @@
         },
         {
           "name": "Ship Postal Code",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -685,7 +685,7 @@
         },
         {
           "name": "Ship Country",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -701,7 +701,7 @@
       "parent": "00000000-0000-0000-0000-000000000000",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -710,7 +710,7 @@
         },
         {
           "name": "Name",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -720,7 +720,7 @@
         },
         {
           "name": "Supplier",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "0b52c1d2-99e6-40b9-9d4b-82a685b4e934",
@@ -730,7 +730,7 @@
         },
         {
           "name": "Category",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "0b77d587-8641-4e87-991d-90957f8fd712",
@@ -740,7 +740,7 @@
         },
         {
           "name": "Quantity per Unit",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -750,7 +750,7 @@
         },
         {
           "name": "Unit Price",
-          "type": 7,
+          "type": "MONEY",
           "inSummary": false,
           "constraint": {
             "min": 0,
@@ -760,7 +760,7 @@
         },
         {
           "name": "Units in Stock",
-          "type": 2,
+          "type": "INT",
           "inSummary": false,
           "constraint": {
             "min": 0,
@@ -770,7 +770,7 @@
         },
         {
           "name": "Units on Order",
-          "type": 2,
+          "type": "INT",
           "inSummary": false,
           "constraint": {
             "min": 0,
@@ -780,7 +780,7 @@
         },
         {
           "name": "Reorder Level",
-          "type": 2,
+          "type": "INT",
           "inSummary": false,
           "constraint": {
             "min": 0,
@@ -790,7 +790,7 @@
         },
         {
           "name": "Discontinued",
-          "type": 5,
+          "type": "BOOL",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -805,7 +805,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -814,7 +814,7 @@
         },
         {
           "name": "Order",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "9c0de84d-f818-446d-98e8-10a1428d9ecf",
@@ -824,7 +824,7 @@
         },
         {
           "name": "Product",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "ee2731f0-8436-4d2a-a0f6-8743d361a5ec",
@@ -834,7 +834,7 @@
         },
         {
           "name": "Unit Price",
-          "type": 7,
+          "type": "MONEY",
           "inSummary": false,
           "constraint": {
             "min": 0,
@@ -844,7 +844,7 @@
         },
         {
           "name": "Quantity",
-          "type": 2,
+          "type": "INT",
           "inSummary": false,
           "constraint": {
             "min": 1,
@@ -854,7 +854,7 @@
         },
         {
           "name": "Discount",
-          "type": 9,
+          "type": "PERCENT",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -869,7 +869,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": false,
           "constraint": {
             "unique": false,
@@ -878,7 +878,7 @@
         },
         {
           "name": "Territory ID",
-          "type": 3,
+          "type": "STRING",
           "inSummary": false,
           "constraint": {
             "unique": true,
@@ -888,7 +888,7 @@
         },
         {
           "name": "Description",
-          "type": 3,
+          "type": "STRING",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -898,7 +898,7 @@
         },
         {
           "name": "Region",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "3233bfb7-7910-43b5-9e61-f01b64d9ba5e",
@@ -914,7 +914,7 @@
       "parent": "2c5f14c3-6550-4f99-90c6-42815948af4d",
       "columns": [{
           "name": "id",
-          "type": 1,
+          "type": "PK",
           "inSummary": true,
           "constraint": {
             "unique": false,
@@ -923,7 +923,7 @@
         },
         {
           "name": "Employee",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "a76aa097-0415-4489-8986-a01a9cc8a444",
@@ -933,7 +933,7 @@
         },
         {
           "name": "Territory",
-          "type": 10,
+          "type": "FK",
           "inSummary": false,
           "constraint": {
             "target": "e0a1315a-9e8a-4371-ad37-9172ee81b34c",

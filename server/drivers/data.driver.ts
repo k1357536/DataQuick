@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from 'pg';
 
-import { Table, ColumnType, Row } from '../../shared/metadata.model';
+import { Table, Row } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 
 import { GenSQLUtils } from './genSQL.utils';
@@ -43,7 +43,7 @@ export class DataDriver {
   async getAll(table: Table, sortBy: string, sortASC: boolean, page?: number, pageSize?: number): Promise<Row[]> {
     let sortCol = table.columns.find(c => Columns.apiName(c) === sortBy);
     if (!sortCol)
-      sortCol = table.columns.find(c => c.type === ColumnType.PK);
+      sortCol = table.columns.find(c => c.type === 'PK');
     if (!sortCol)
       throw 400;
 

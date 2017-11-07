@@ -13,23 +13,17 @@ export interface Folder extends FolderProposal {
 }
 
 // ==== Column =================================================================
-export enum ColumnType {
-  INVALID = 0,
-  PK = 1,
-  INT = 2,
-  STRING = 3,
-  DATE = 4,
-  BOOL = 5,
-  IMAGE = 6,
-  MONEY = 7,
-  REAL = 8,
-  PERCENT = 9,
-  FK = 10
-}
+export type ColumnType = 'PK' | 'FK' |
+  'STRING' |
+  'INT' | 'MONEY' |
+  'REAL' | 'PERCENT' |
+  'DATE' |
+  'BOOL' |
+  'IMAGE';
 
 export interface Column {
   name: string;
-  type: number;
+  type: ColumnType;
   constraint: Constraint;
   inSummary: boolean;
 }

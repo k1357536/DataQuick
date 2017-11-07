@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 
-import { ColumnType, StringConstraint, NumberConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
+import { StringConstraint, NumberConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
 import { Columns, Folders } from '../../shared/metadata.utils';
 
 interface TestData {
@@ -74,7 +74,7 @@ export class SetupComponent implements OnInit {
 
       tbl.columns[0].inSummary = false;
 
-      tbl.columns.push(Columns.create("Age", ColumnType.INT,
+      tbl.columns.push(Columns.create("Age", 'INT',
         {
           notNull: true,
           unique: false,
@@ -82,7 +82,7 @@ export class SetupComponent implements OnInit {
           max: 120
         } as NumberConstraint));
 
-      tbl.columns.push(Columns.create("Name", ColumnType.STRING,
+      tbl.columns.push(Columns.create("Name", 'STRING',
         {
           notNull: true,
           unique: true,
@@ -91,7 +91,7 @@ export class SetupComponent implements OnInit {
         } as StringConstraint,
         true));
 
-      tbl.columns.push(Columns.create("Date of Birth", ColumnType.DATE,
+      tbl.columns.push(Columns.create("Date of Birth", 'DATE',
         {
           notNull: false,
           unique: false,
@@ -99,19 +99,19 @@ export class SetupComponent implements OnInit {
           max: new Date(2018, 1, 1)
         } as DateConstraint));
 
-      tbl.columns.push(Columns.create("Executive", ColumnType.BOOL,
+      tbl.columns.push(Columns.create("Executive", 'BOOL',
         {
           notNull: true,
           unique: false
         }));
 
-      tbl.columns.push(Columns.create("Image", ColumnType.IMAGE,
+      tbl.columns.push(Columns.create("Image", 'IMAGE',
         {
           notNull: false,
           unique: false
         }));
 
-      tbl.columns.push(Columns.create("Salary", ColumnType.MONEY,
+      tbl.columns.push(Columns.create("Salary", 'MONEY',
         {
           notNull: true,
           unique: false,
@@ -119,7 +119,7 @@ export class SetupComponent implements OnInit {
           max: 1000000
         } as NumberConstraint));
 
-      tbl.columns.push(Columns.create("Liter", ColumnType.REAL,
+      tbl.columns.push(Columns.create("Liter", 'REAL',
         {
           notNull: true,
           unique: false,
@@ -127,7 +127,7 @@ export class SetupComponent implements OnInit {
           max: 3.5
         } as NumberConstraint));
 
-      tbl.columns.push(Columns.create("Completeness", ColumnType.PERCENT,
+      tbl.columns.push(Columns.create("Completeness", 'PERCENT',
         {
           notNull: true,
           unique: false,
@@ -135,7 +135,7 @@ export class SetupComponent implements OnInit {
           max: 2
         } as NumberConstraint));
 
-      tbl.columns.push(Columns.create("Ref", ColumnType.FK,
+      tbl.columns.push(Columns.create("Ref", 'FK',
         {
           notNull: true,
           unique: false,

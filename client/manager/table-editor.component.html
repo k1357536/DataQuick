@@ -28,11 +28,11 @@
     <tbody>
       <tr *ngFor="let col of table.columns; let i=index; trackBy:trackByIndex">
         <td>
-          <div class="input-group" *ngIf="col.type == ColumnType.PK">
+          <div class="input-group" *ngIf="col.type == 'PK'">
             <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
             <input type="text" [(value)]="table.columns[i].name" class="form-control" disabled>
           </div>
-          <input type="text" *ngIf="col.type !== ColumnType.PK" [(ngModel)]="table.columns[i].name" class="form-control" required>
+          <input type="text" *ngIf="col.type !== 'PK'" [(ngModel)]="table.columns[i].name" class="form-control" required>
         </td>
         <td>
           <select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required>
@@ -40,7 +40,7 @@
           </select>
         </td>
         <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="ColumnType.INT">
+          <ng-container *ngSwitchCase="INT">
             <div class="form-group row">
               <label class="col-sm-3">Min</label>
               <input type="number" class="form-control col-sm-9" />
@@ -51,7 +51,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.STRING">
+          <ng-container *ngSwitchCase="STRING">
             <div class="form-group row">
               <label class="col-sm-3">Min Length</label>
               <input type="number" class="form-control col-sm-9" />
@@ -62,7 +62,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.DATE">
+          <ng-container *ngSwitchCase="DATE">
             <div class="form-group row">
               <label class="col-sm-3">Min</label>
               <input type="date" class="form-control col-sm-9" value="1970-01-01" />
@@ -73,7 +73,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="ColumnType.BOOL">
+          <ng-container *ngSwitchCase="BOOL">
             <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">

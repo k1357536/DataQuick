@@ -74,7 +74,7 @@ export class Utils {
       console.log("Column " + col.name + " has illegal column type id!");
       return null;
     }
-    else if (!ColumnTypes.getName(Number(col.type))) {
+    else if (!ColumnTypes.getName(col.type)) {
       console.log("Column " + col.name + " has illegal column type!");
       return null;
     }
@@ -84,7 +84,7 @@ export class Utils {
       return null;
     }
 
-    return Columns.create(col.name, Number(col.type), constraint, col.inSummary);
+    return Columns.create(col.name, col.type, constraint, col.inSummary);
   }
 
   // TODO

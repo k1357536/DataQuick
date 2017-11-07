@@ -1,8 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-import { ColumnType } from '../../shared/metadata.model';
-
 import { ColumnEx } from './utils';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
@@ -19,7 +17,6 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 export class TypedInputComponent implements ControlValueAccessor {
   @Input() col: ColumnEx;
   private innerValue: any = undefined;
-  ColumnType = ColumnType; // for view
 
   private onChangeCallback: (_: any) => void = () => { };
   private onTouchedCallback: () => void = () => { };
