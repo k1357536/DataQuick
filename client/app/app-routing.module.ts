@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'data/:table/:entry/edit', component: EntryEditorComponent },
 
   { path: 'folders', component: FoldersComponent },
+  { path: 'folders/:folder', component: FoldersComponent },
 
   { path: 'setup', component: SetupComponent }
 ];

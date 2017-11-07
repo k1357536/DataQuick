@@ -1,1 +1,36 @@
-<h1>Folders</h1>
+<h1 *ngIf="!current">Folder</h1>
+<h1 *ngIf="current">
+  <small class="text-muted">{{path(current)}}</small>
+  <span *ngIf="current.name">{{current.name}}</span>
+  <span *ngIf="!current.name">(ROOT)</span>
+</h1>
+
+<div *ngIf="errorMsg" class="alert alert-danger">
+  <h4 class="alert-heading">Error:</h4>
+  <hr /> {{errorMsg}}
+</div>
+
+<table class="table" *ngIf="children">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="parent">
+      <td (click)="onSelect(parent)" class="text-primary">
+        ../
+      </td>
+    </tr>
+    <tr *ngFor="let child of children">
+      <td (click)="onSelect(child)">
+        <span *ngIf="child.columns">
+        {{child.name}}
+        </span>
+        <span *ngIf="!child.columns" class="text-primary">
+        {{child.name}}/
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

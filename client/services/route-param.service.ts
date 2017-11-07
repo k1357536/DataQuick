@@ -14,4 +14,10 @@ export class RouteParamService {
       .map(mapF)
       .filter(v => v != null) as Observable<T>;
   }
+
+  observeParamNullable<T>(route: ActivatedRoute, param: string, mapF: (v: string) => T | null): Observable<T | null> {
+    return route.paramMap
+      .switchMap((params: ParamMap) => Observable.of(params.get(param)))
+      .map(v => v != null ? mapF(v) : null);
+  }
 }
