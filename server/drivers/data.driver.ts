@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from 'pg';
 
-import { Table, Row } from '../../shared/metadata.model';
+import { UUID, Table, Row } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 
 import { GenSQLUtils } from './genSQL.utils';
@@ -24,7 +24,7 @@ const CREATE_SCHEMA_STMT = 'CREATE SCHEMA data;';
 export class DataDriver {
   private static readonly idRegEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
-  async count(tableId: string): Promise<number> {
+  async count(tableId: UUID): Promise<number> {
     if (!DataDriver.idRegEx.test(tableId))
       throw 400;
     try {
@@ -60,7 +60,7 @@ export class DataDriver {
     }
   }
 
-  async get(tableId: string, entryId: string): Promise<Row> {
+  async get(tableId: UUID, entryId: string): Promise<Row> {
     let eid = Number(entryId);
     if (!DataDriver.idRegEx.test(tableId) || Number.isNaN(eid))
       throw 400;
@@ -112,7 +112,7 @@ export class DataDriver {
     }
   }
 
-  async delete(tableId: string, entryId: string): Promise<void> {
+  async delete(tableId: UUID, entryId: string): Promise<void> {
     let eid = Number(entryId);
     if (!DataDriver.idRegEx.test(tableId) && eid != NaN)
       throw 400;
@@ -154,7 +154,7 @@ export class DataDriver {
     }
   }
 
-  async drop(id: string): Promise<void> {
+  async drop(id: UUID): Promise<void> {
     if (!DataDriver.idRegEx.test(id))
       throw 400;
 

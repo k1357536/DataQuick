@@ -12,6 +12,7 @@ const DELETE_FOLDER_STMT = 'DELETE FROM metadata.folders WHERE id = $1;';
 const DELETE_ALL_FOLDERS_STMT = 'DELETE FROM metadata.folders WHERE id != $1';
 
 const GETALL_STMT = 'SELECT id, name, parent, columns FROM metadata.lists;';
+const GETCHILDREN_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE parent = $1;';
 const GET_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE id = $1;';
 const SEARCH1_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name LIKE $1;';
 const SEARCH2_STMT = 'SELECT id, name, parent, columns FROM metadata.lists WHERE name = $1 AND parent = $2;';
@@ -84,6 +85,11 @@ export class MetadataDriver {
     return rows;
   }
 
+  async getChildren(parent: UUID): Promise<Table[]> {
+    const { rows } = await pool.query(GETCHILDREN_STMT, [parent]);
+    return rows;
+  }
+
   async get(uuid: string): Promise<Table> {
     const { rows } = await pool.query(GET_STMT, [uuid]);
 
@@ -138,7 +144,7 @@ export class MetadataDriver {
     await pool.query(DELETE_ALL_STMT);
   }
 
-  async delete(uuid: string): Promise<void> {
+  async delete(uuid: UUID): Promise<void> {
     console.log("DELETE TABLE:", [uuid]);
     const { rowCount } = await pool.query(DELETE_STMT, [uuid]);
 

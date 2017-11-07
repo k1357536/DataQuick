@@ -40,32 +40,31 @@ export class FoldersComponent {
   async ngOnInit(): Promise<void> {
     this.routeParam
       .observeParamNullable(this.route, 'folder', UUIDs.check)
-      .subscribe(fid => {
+      .subscribe(async (fid) => {
         if (fid == null)
           this.currentId = Folders.getRoot().id;
         else
           this.currentId = fid;
 
-        Promise.all(
-          [this.getFolders(), this.getTables()]
-        ).then(([folders, tables]) => {
-          this.current = this.folders.find(f => f.id === this.currentId) as Folder;
+        this.folders = await this.getFolders();
 
-          const root = Folders.getRoot();
-          if (!this.current || this.current.id === root.id) {
-            this.current = root;
-            this.parent = null;
-          } else if (this.current.parent === root.id) {
-            this.parent = root;
-          } else {
-            const res = this.folders.find(f => f.id === this.current.parent);
-            this.parent = res ? res : null;
-          }
-          return folders.concat(tables);
-        })
-          .then(children => {
-            this.children = children;
-          });
+        this.current = this.folders.find(f => f.id === this.currentId) as Folder;
+
+        const root = Folders.getRoot();
+        if (!this.current || this.current.id === root.id) {
+          this.current = root;
+          this.parent = null;
+        } else if (this.current.parent === root.id) {
+          this.parent = root;
+        } else {
+          const res = this.folders.find(f => f.id === this.current.parent);
+          this.parent = res ? res : null;
+        }
+
+        const tables = await this.getTables(this.current);
+        const folders = this.folders.filter(f => f.parent === this.current.id);
+
+        this.children = folders.concat(tables);
       }, e => this.handleError(e));
   }
 
@@ -83,10 +82,9 @@ export class FoldersComponent {
       this.router.navigate(['/folders', ch.id]);
   }
 
-  private async getTables(): Promise<Table[]> {
+  private async getTables(folder: Folder): Promise<Table[]> {
     try {
-      return (await this.metadataService.getTables())
-        .filter(tbl => tbl.parent == this.currentId);
+      return await this.metadataService.getTables(folder);
     } catch (e) {
       this.handleError(e);
       return [];
@@ -95,8 +93,7 @@ export class FoldersComponent {
 
   private async getFolders(): Promise<Folder[]> {
     try {
-      this.folders = (await this.metadataService.getFolders())
-      return this.folders.filter(f => f.parent == this.currentId);
+      return await this.metadataService.getFolders();
     } catch (e) {
       this.handleError(e);
       return [];

@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Router, Response } from 'express';
 
 import { TableProposal, FolderProposal, Table, Folder } from '../../shared/metadata.model';
+import { UUIDs } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
 import { MetadataDriver } from '../drivers/metadata.driver';
@@ -75,9 +76,13 @@ export function MetadataApi(): Router {
   });
 
   // === Tables ================================================================
-  metadata.get('/', async (_, res) => {
+  metadata.get('/', async (req, res) => {
     try {
-      res.json(await driver.getAll());
+      const parent = UUIDs.check(req.query.parent);
+      if (parent)
+        res.json(await driver.getChildren(parent));
+      else
+        res.json(await driver.getAll());
     }
     catch (e) {
       handleError(e, res);
@@ -86,7 +91,11 @@ export function MetadataApi(): Router {
 
   metadata.get('/:id', async (req, res) => {
     try {
-      res.json(await driver.get(req.params.id));
+      const id = UUIDs.check(req.params.id);
+      if (!id)
+        res.sendStatus(400);
+      else
+        res.json(await driver.get(id));
     }
     catch (e) {
       handleError(e, res);
@@ -117,15 +126,20 @@ export function MetadataApi(): Router {
 
   metadata.put('/:id', async (req, res) => {
     try {
-      const table = Utils.sanitizeTable(req.body);
-      if (!table || table.id != req.params.id) {
-        console.error("Column JSON: " + JSON.stringify(req.body));
+      const id = UUIDs.check(req.params.id);
+      if (!id)
         res.sendStatus(400);
-      } else {
-        await driver.update(table);
-        await dataDriver.drop(table.id);
-        await dataDriver.create(table);
-        res.sendStatus(200);
+      else {
+        const table = Utils.sanitizeTable(req.body);
+        if (!table || table.id != id) {
+          console.error("Column JSON: " + JSON.stringify(req.body));
+          res.sendStatus(400);
+        } else {
+          await driver.update(table);
+          await dataDriver.drop(table.id);
+          await dataDriver.create(table);
+          res.sendStatus(200);
+        }
       }
     }
     catch (e) {
@@ -150,9 +164,14 @@ export function MetadataApi(): Router {
 
   metadata.delete('/:id', async (req, res) => {
     try {
-      await driver.delete(req.params.id);
-      await dataDriver.drop(req.params.id);
-      res.sendStatus(200);
+      const id = UUIDs.check(req.params.id);
+      if (!id)
+        res.sendStatus(400);
+      else {
+        await driver.delete(id);
+        await dataDriver.drop(id);
+        res.sendStatus(200);
+      }
     }
     catch (e) {
       handleError(e, res);

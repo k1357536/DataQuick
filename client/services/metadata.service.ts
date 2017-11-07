@@ -53,10 +53,16 @@ export class MetadataService extends DataCache<string, Table> implements OnDestr
     return super.getCache(uuid, () => this.httpClient.get<Table>(this.url + uuid).toPromise());
   }
 
-  getTables(): Promise<Table[]> {
-    const p = this.httpClient.get<Table[]>(this.url).toPromise();
-    super.addAllCache(p, t => t.id);
-    return p;
+  getTables(parent?: Folder): Promise<Table[]> {
+    if (parent) {
+      const p = this.httpClient.get<Table[]>(`${this.url}?parent=${parent.id}`).toPromise();
+      super.addAllCache(p, t => t.id);
+      return p;
+    } else {
+      const p = this.httpClient.get<Table[]>(this.url).toPromise();
+      super.addAllCache(p, t => t.id);
+      return p;
+    }
   }
 
   addTable(name: string, parent: Folder): Promise<void> {
