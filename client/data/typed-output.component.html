@@ -1,24 +1,24 @@
 <ng-container *ngIf="col" [ngSwitch]="col.type">
   <span *ngIf="value == null" class="text-muted">Empty</span>
   <ng-container *ngIf="value != null">
-    <ng-container *ngSwitchCase="PK">{{value}}</ng-container>
-    <ng-container *ngSwitchCase="INT">{{value}}</ng-container>
-    <ng-container *ngSwitchCase="STRING">
+    <ng-container *ngSwitchCase="'PK'">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="'INT'">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="'STRING'">
       <span *ngIf="!summarize || col.constraint.maxLength || value.length < 30">{{value}}</span>
       <span *ngIf="summarize && !col.constraint.maxLength && value.length >= 30">&hellip;</span>
     </ng-container>
-    <ng-container *ngSwitchCase="DATE">{{value | date }}</ng-container>
-    <ng-container *ngSwitchCase="BOOL" [ngSwitch]="value">
+    <ng-container *ngSwitchCase="'DATE'">{{value | date }}</ng-container>
+    <ng-container *ngSwitchCase="'BOOL'" [ngSwitch]="value">
       <span *ngSwitchCase="true">true</span>
       <span *ngSwitchCase="false">false</span>
     </ng-container>
-    <ng-container *ngSwitchCase="IMAGE">
+    <ng-container *ngSwitchCase="'IMAGE'">
       <img [src]="value" style="width: 6rem; height: 6rem;" />
     </ng-container>
-    <ng-container *ngSwitchCase="MONEY">{{value | currency}}</ng-container>
-    <ng-container *ngSwitchCase="REAL">{{value}}</ng-container>
-    <ng-container *ngSwitchCase="PERCENT">{{value | percent}}</ng-container>
-    <ng-container *ngSwitchCase="FK">
+    <ng-container *ngSwitchCase="'MONEY'">{{value | currency}}</ng-container>
+    <ng-container *ngSwitchCase="'REAL'">{{value}}</ng-container>
+    <ng-container *ngSwitchCase="'PERCENT'">{{value | percent}}</ng-container>
+    <ng-container *ngSwitchCase="'FK'">
       <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
         <typed-output *ngIf="fkCol && fkModel" [col]="fkCol" [ngModel]="fkModel"></typed-output>
         <span *ngIf="!fkCol || !fkModel">&hellip;</span>

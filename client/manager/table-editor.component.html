@@ -40,7 +40,7 @@
           </select>
         </td>
         <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="INT">
+          <ng-container *ngSwitchCase="'INT'">
             <div class="form-group row">
               <label class="col-sm-3">Min</label>
               <input type="number" class="form-control col-sm-9" />
@@ -51,7 +51,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="STRING">
+          <ng-container *ngSwitchCase="'STRING'">
             <div class="form-group row">
               <label class="col-sm-3">Min Length</label>
               <input type="number" class="form-control col-sm-9" />
@@ -62,7 +62,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="DATE">
+          <ng-container *ngSwitchCase="'DATE'">
             <div class="form-group row">
               <label class="col-sm-3">Min</label>
               <input type="date" class="form-control col-sm-9" value="1970-01-01" />
@@ -73,7 +73,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngSwitchCase="BOOL">
+          <ng-container *ngSwitchCase="'BOOL'">
             <div class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
