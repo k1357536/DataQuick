@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { UUID, Table, Folder } from '../../shared/metadata.model';
 import { Folders, UUIDs } from '../../shared/metadata.utils';
@@ -24,7 +24,6 @@ export class FoldersComponent {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private metadataService: MetadataService,
     private route: ActivatedRoute,
     private routeParam: RouteParamService) { }
@@ -73,13 +72,6 @@ export class FoldersComponent {
       return getPath(tbl, this.folders);
     else
       return '';
-  }
-
-  onSelect(ch: Table | Folder): void {
-    if ((ch as Table).columns)
-      this.router.navigate(['/data', ch.id]);
-    else
-      this.router.navigate(['/folders', ch.id]);
   }
 
   private async getTables(folder: Folder): Promise<Table[]> {

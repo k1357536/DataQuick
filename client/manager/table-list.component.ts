@@ -38,10 +38,6 @@ export class TableListComponent implements OnInit {
     await Promise.all([this.getFolders(), this.getTables()]);
   }
 
-  onSelect(id: string): void {
-    this.router.navigate(['/manager/tables/', id]);
-  }
-
   path(obj: Table | Folder): string {
     if (this.folders)
       return getPath(obj, this.folders);

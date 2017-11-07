@@ -18,18 +18,16 @@
   </thead>
   <tbody>
     <tr *ngIf="parent">
-      <td (click)="onSelect(parent)" class="text-primary">
-        ../
+      <td [routerLink]="['/folders', parent.id]">
+        <a [routerLink]="['/folders', parent.id]">../</a>
       </td>
     </tr>
     <tr *ngFor="let child of children">
-      <td (click)="onSelect(child)">
-        <span *ngIf="child.columns">
-        {{child.name}}
-        </span>
-        <span *ngIf="!child.columns" class="text-primary">
-        {{child.name}}/
-        </span>
+      <td *ngIf="child.columns" [routerLink]="['/data', child.id]">
+        <a [routerLink]="['/data', child.id]" class="text-dark">{{child.name}}</a>
+      </td>
+      <td *ngIf="!child.columns" [routerLink]="['/folders', child.id]" class="text-primary">
+        <a [routerLink]="['/folders', child.id]">{{child.name}}/</a>
       </td>
     </tr>
   </tbody>

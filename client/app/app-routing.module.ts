@@ -22,6 +22,7 @@ const routes: Routes = [
 
   { path: 'manager/tables', component: TableListComponent },
   { path: 'manager/folders', component: FolderListComponent },
+  { path: 'manager/folders/:folder', component: FolderListComponent }, // TODO
   { path: 'manager/tables/:table', component: TableDetailsComponent },
   { path: 'manager/tables/:table/edit', component: TableEditorComponent },
 

@@ -38,7 +38,7 @@
       <tr>
         <th [colSpan]="table.columns.length">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
-          <button class="btn btn-outline-primary" (click)="edit();">Edit</button>
+          <button class="btn btn-outline-primary" [routerLink]="['/data', this.table.id, this.entry.id, 'edit']">Edit</button>
           <button class="btn btn-outline-danger" (click)="delete();">Delete</button>
         </th>
     </tfoot>

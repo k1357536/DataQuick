@@ -42,8 +42,10 @@ export class DataCache<K, V> {
   }
 
   private reportStatus() {
-    if ((this.cachHits + this.cachMisses) % 10 == 0)
-      console.log(this.cachHits / (this.cachHits + this.cachMisses), this);
+    if ((this.cachHits + this.cachMisses) % 10 == 0) {
+      const hitRate = this.cachHits / (this.cachHits + this.cachMisses) * 100;
+      console.log(hitRate + '% hitrate for ' + this.constructor.name);
+    }
   }
 
   protected addAllCache(values: Promise<V[]>, getter: (v: V) => K) {

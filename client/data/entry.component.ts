@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
@@ -25,7 +25,6 @@ export class EntryComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
@@ -62,10 +61,6 @@ export class EntryComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-  }
-
-  edit(): void {
-    this.router.navigate(["/data", this.table.id, this.entry.id, "edit"]);
   }
 
   async delete(): Promise<void> {

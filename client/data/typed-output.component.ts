@@ -1,7 +1,5 @@
 import { Component, Input, forwardRef } from '@angular/core';
 
-import { Router } from '@angular/router';
-
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { Column, FKConstraint } from '../../shared/metadata.model';
@@ -33,7 +31,6 @@ export class TypedOutputComponent implements ControlValueAccessor {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService
   ) {
@@ -78,9 +75,4 @@ export class TypedOutputComponent implements ControlValueAccessor {
 
   registerOnChange() { }
   registerOnTouched() { }
-
-  goTo(tbl: string, entry: number, event: Event) {
-    event.preventDefault();
-    this.router.navigate(['/data', tbl, entry]);
-  }
 }

@@ -19,11 +19,11 @@
     <ng-container *ngSwitchCase="'REAL'">{{value}}</ng-container>
     <ng-container *ngSwitchCase="'PERCENT'">{{value | percent}}</ng-container>
     <ng-container *ngSwitchCase="'FK'">
-      <a [href]="'/data/' + col.constraint.target + '/' + value" (click)="goTo(col.constraint.target, value, $event);">
+      <a [routerLink]="['/data', col.constraint.target, value]">
         <typed-output *ngIf="fkCol && fkModel" [col]="fkCol" [ngModel]="fkModel"></typed-output>
         <span *ngIf="!fkCol || !fkModel">&hellip;</span>
       </a><br />
-      <small class="text-muted">{{tblName}}[ID={{value}}]</small>
+      <small class="text-muted">{{tblName}} #{{value}}</small>
     </ng-container>
     <ng-container *ngSwitchDefault>{{value}}</ng-container>
   </ng-container>

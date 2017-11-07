@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Location } from '@angular/common';
 
@@ -44,7 +44,6 @@ export class TableComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
@@ -63,15 +62,6 @@ export class TableComponent implements OnInit {
     this.routeParam
       .observeParam(this.route, 'table', UUIDs.check)
       .subscribe(tid => this.load(tid), e => this.handleError(e));
-  }
-
-  add(): void {
-    this.router.navigate(['/data', this.table.id, "add"]);
-  }
-
-  onSelect(row: Row, event: any): void {
-    event.stopPropagation();
-    this.router.navigate(['/data', this.table.id, String(row.id)]);
   }
 
   async delete(row: Row, event: any): Promise<void> {

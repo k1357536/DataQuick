@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
-
 import { Folder } from '../../shared/metadata.model';
 import { Folders } from '../../shared/metadata.utils';
 import { MetadataService } from '../services/metadata.service';
@@ -19,7 +17,6 @@ export class FolderListComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private metadataService: MetadataService) { }
 
   private handleError(e: any): void {
@@ -32,11 +29,6 @@ export class FolderListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getFolders();
-  }
-
-  onSelect(id: string): void {
-    this.router.navigate(['/manager/folders/', id]);
-    this.errorMsg = 'Not implemented yet!'; // TODO
   }
 
   path(obj: Folder): string {

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
-
 import { Table, Folder } from '../../shared/metadata.model';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
@@ -19,7 +17,6 @@ export class TablesComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private router: Router,
     private dataService: DataService,
     private metadataService: MetadataService) { }
 
@@ -34,10 +31,6 @@ export class TablesComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.getFolders();
     await this.getTables();
-  }
-
-  onSelect(id: string): void {
-    this.router.navigate(['/data', id]);
   }
 
   path(tbl: Table) {

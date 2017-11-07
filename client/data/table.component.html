@@ -9,7 +9,7 @@
 </div>
 
 <div *ngIf="table">
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr class="d-print-none">
         <td [colSpan]="table.columns.length + 1">
@@ -77,7 +77,7 @@
         </td>
         <td class="d-print-none">
           <button class="btn btn-outline-danger btn-sm" (click)="delete(entry, $event);">X</button>
-          <button class="btn btn-outline-success btn-sm" (click)="onSelect(entry, $event);">&gt;</button>
+          <button class="btn btn-outline-success btn-sm" [routerLink]="['/data', table.id, entry.id]">&gt;</button>
         </td>
       </tr>
     </tbody>
@@ -85,7 +85,7 @@
       <tr class="d-print-none">
         <td [colSpan]="table.columns.length + 1">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
-          <button class="btn btn-outline-success" (click)="add();">Add</button>
+          <button class="btn btn-outline-success" [routerLink]="['/data', this.table.id, 'add']">Add</button>
         </td>
       </tr>
     </tfoot>

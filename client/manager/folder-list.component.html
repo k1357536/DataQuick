@@ -8,7 +8,7 @@
   <hr /> {{errorMsg}}
 </div>
 
-<table class="table" *ngIf="folders">
+<table class="table table-hover" *ngIf="folders">
   <thead>
     <tr class="d-sm-none">
       <th>Name</th>
@@ -21,11 +21,11 @@
   </thead>
   <tbody>
     <ng-container *ngFor="let folder of folders; trackBy: trackById">
-      <tr class="d-sm-none" (click)="onSelect(table.id)">
+      <tr class="d-sm-none" [routerLink]="['/manager/folders/', folder.id]">
         <td>{{folder.name}}</td>
         <td><button class="btn btn-outline-danger btn-sm">x</button></td>
       </tr>
-      <tr (click)="onSelect(folder.id)">
+      <tr [routerLink]="['/manager/folders/', folder.id]">
         <td class="d-none d-lg-table-cell">
           <small>
             <code>{{folder.id}}</code>
