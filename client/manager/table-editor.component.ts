@@ -4,24 +4,27 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Location } from '@angular/common';
 
-import { UUID, Table, Column, ColumnType } from '../../shared/metadata.model';
-import { UUIDs, Columns, ColumnTypes } from '../../shared/metadata.utils';
+import { UUID, Table, Column, Folder } from '../../shared/metadata.model';
+import { UUIDs, Columns, ColumnTypes, Constraints } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
 import { RouteParamService } from '../services/route-param.service';
 
+import { getPath } from '../data/utils';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
 
 @Component({
-  templateUrl: './table-editor.component.html'
+  templateUrl: './table-editor.component.html',
 })
 
 export class TableEditorComponent implements OnInit {
   readonly columnTypes = ColumnTypes.ALL;
 
   @Input() table: Table;
+  folders: Folder[];
+  tables: Table[];
   errorMsg: string | null = null;
 
   constructor(
@@ -44,8 +47,9 @@ export class TableEditorComponent implements OnInit {
   }
 
   async load(id: UUID): Promise<void> {
-    const table = await this.metadataService.getTable(id);
-    this.table = table;
+    this.folders = await this.metadataService.getFolders();
+    this.tables = await this.metadataService.getTables();
+    this.table = await this.metadataService.getTable(id);
   }
 
   add(): void {
@@ -59,8 +63,11 @@ export class TableEditorComponent implements OnInit {
   }
 
   changeType(col: Column, typeId: string): void {
-    if (ColumnTypes.ALL.find(c => c.id === typeId))
-      col.type = typeId as ColumnType;
+    const type = ColumnTypes.ALL.find(c => c.id === typeId);
+    if (type) {
+      col.type = type.id;
+      col.constraint = Constraints.getDefault(type.id);
+    }
   }
 
   async save(): Promise<void> {
@@ -72,5 +79,9 @@ export class TableEditorComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  path(folder: Folder): string {
+    return getPath(folder, this.folders);
   }
 }

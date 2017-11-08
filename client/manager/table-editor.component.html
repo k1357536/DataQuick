@@ -1,4 +1,4 @@
-<h1>Table&nbsp;<small class="text-muted">Edit</small></h1>
+<h1>Edit Table</h1>
 
 <div *ngIf="!table && !errorMsg" class="alert alert-info">
   Loading...
@@ -13,6 +13,14 @@
     <label for="tableName" class="col-md-2 col-form-label">Table Name</label>
     <div class="col-md-10">
       <input type="text" class="form-control" id="tableName" [(ngModel)]="table.name" required>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="tableName" class="col-md-2 col-form-label">Parent</label>
+    <div class="col-md-10">
+      <select class="form-control" id="tableParent" [(ngModel)]="table.parent">
+        <option *ngFor="let f of folders" [value]="f.id">{{path(f)}}{{f.name}}</option>
+      </select>
     </div>
   </div>
 
@@ -39,51 +47,153 @@
             <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t.id == table.columns[i].type">{{t.name}}</option>
           </select>
         </td>
-        <td [ngSwitch]="col.type">
-          <ng-container *ngSwitchCase="'INT'">
-            <div class="form-group row">
-              <label class="col-sm-3">Min</label>
-              <input type="number" class="form-control col-sm-9" />
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-3">Max</label>
-              <input type="number" class="form-control col-sm-9" />
-            </div>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'STRING'">
-            <div class="form-group row">
-              <label class="col-sm-3">Min Length</label>
-              <input type="number" class="form-control col-sm-9" />
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-3">Max Length</label>
-              <input type="number" class="form-control col-sm-9" />
-            </div>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'DATE'">
-            <div class="form-group row">
-              <label class="col-sm-3">Min</label>
-              <input type="date" class="form-control col-sm-9" value="1970-01-01" />
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-3">Max</label>
-              <input type="date" class="form-control col-sm-9" value="2099-12-31" />
-            </div>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'BOOL'">
-            <div class="form-group">
-              <div class="form-check">
-                <label class="form-check-label">
-                <input class="form-check-input" type="checkbox"> Allow undetermined state
-              </label>
+        <td>
+          <div class="form-group row">
+            <label class="col-sm-3">Required</label>
+            <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.notNull" />
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3">Unique</label>
+            <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.unique" />
+          </div>
+          <ng-container [ngSwitch]="col.type">
+            <ng-container *ngSwitchCase="'INT'">
+              <div class="form-group row">
+                <label class="col-sm-3">Min</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.min != null" (change)="table.columns[i].constraint.min = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.min" step="1" />
+                </div>
               </div>
-            </div>
-          </ng-container>
+              <div class="form-group row">
+                <label class="col-sm-3">Max</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.max != null" (change)="table.columns[i].constraint.max = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.max" step="1" />
+                </div>
+              </div>
+            </ng-container>
 
-          <ng-container *ngSwitchDefault>
+            <ng-container *ngSwitchCase="'STRING'">
+              <div class="form-group row">
+                <label class="col-sm-3">Max Length</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.maxLength != null" (change)="table.columns[i].constraint.maxLength = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.maxLength" min="1" step="1" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3">RegExp</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.regExp != null" (change)="table.columns[i].constraint.regExp = null" />
+                  </span>
+                  <input type="text" class="form-control" [(ngModel)]="table.columns[i].constraint.regExp" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'DATE'">
+              <div class="form-group row">
+                <label class="col-sm-3">Min</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.min != null" (change)="table.columns[i].constraint.min = null" />
+                  </span>
+                  <input type="date" class="form-control" [ngModel]="table.columns[i].constraint.min | date: 'y-MM-dd'" (ngModelChange)="table.columns[i].constraint.min=$event" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3">Max</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.max != null" (change)="table.columns[i].constraint.max = null" />
+                  </span>
+                  <input type="date" class="form-control" [ngModel]="table.columns[i].constraint.max | date: 'y-MM-dd'" (ngModelChange)="table.columns[i].constraint.max=$event" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'MONEY'">
+              <div class="form-group row">
+                <label class="col-sm-3">Min</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.min != null" (change)="table.columns[i].constraint.min = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.min" step="0.01" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3">Max</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.max != null" (change)="table.columns[i].constraint.max = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.max" step="0.01" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'REAL'">
+              <div class="form-group row">
+                <label class="col-sm-3">Min</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.min != null" (change)="table.columns[i].constraint.min = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.min" step="any" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3">Max</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.max != null" (change)="table.columns[i].constraint.max = null" />
+                  </span>
+                  <input type="number" class="form-control" [(ngModel)]="table.columns[i].constraint.max" step="any" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'PERCENT'">
+              <div class="form-group row">
+                <label class="col-sm-3">Min</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.min != null" (change)="table.columns[i].constraint.min = null" />
+                  </span>
+                  <input type="number" class="form-control" [ngModel]="table.columns[i].constraint.min * 100" (ngModelChange)="value=$event/100" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3">Max</label>
+                <div class="input-group col-sm-9">
+                  <span class="input-group-addon">
+                    <input type="checkbox" [ngModel]="table.columns[i].constraint.max != null" (change)="table.columns[i].constraint.max = null" />
+                  </span>
+                  <input type="number" class="form-control" [ngModel]="table.columns[i].constraint.max * 100" (ngModelChange)="value=$event/100" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'FK'">
+              <div class="form-group row">
+                <label class="col-sm-3">Target</label>
+                <select class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.target" required>
+                  <option *ngFor="let t of tables" [value]="t.id">{{path(t)}}{{t.name}}</option>
+                </select>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchDefault>
+            </ng-container>
           </ng-container>
         </td>
 
