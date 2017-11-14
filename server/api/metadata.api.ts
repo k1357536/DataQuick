@@ -72,18 +72,18 @@ export function MetadataApi(): Router {
     }
   });
 
-  metadata.delete('/folders/all', async (req, res) => {
-    const sender = req.connection.remoteAddress;
-    if (sender !== '127.0.0.1' && sender !== '::1')
-      res.sendStatus(403);
-    else
-      try {
-        await driver.deleteAllFolders();
-        res.sendStatus(200);
-      }
-      catch (e) {
-        handleError(e, res);
-      }
+  metadata.delete('/folders/all', async (_req, res) => {
+    // const sender = req.connection.remoteAddress;
+    // if (sender !== '127.0.0.1' && sender !== '::1')
+    //   res.sendStatus(403);
+    // else
+    try {
+      await driver.deleteAllFolders();
+      res.sendStatus(200);
+    }
+    catch (e) {
+      handleError(e, res);
+    }
   });
 
   metadata.delete('/folders/:id', async (req, res) => {
@@ -171,19 +171,19 @@ export function MetadataApi(): Router {
     }
   });
 
-  metadata.delete('/all', async (req, res) => {
-    const sender = req.connection.remoteAddress;
-    if (sender !== '127.0.0.1' && sender !== '::1')
-      res.sendStatus(403);
-    else
-      try {
-        await driver.deleteAll();
-        await dataDriver.dropAll();
-        res.sendStatus(200);
-      }
-      catch (e) {
-        handleError(e, res);
-      }
+  metadata.delete('/all', async (_req, res) => {
+    // const sender = req.connection.remoteAddress;
+    // if (sender !== '127.0.0.1' && sender !== '::1')
+    //   res.sendStatus(403);
+    // else
+    try {
+      await driver.deleteAll();
+      await dataDriver.dropAll();
+      res.sendStatus(200);
+    }
+    catch (e) {
+      handleError(e, res);
+    }
   });
 
   metadata.delete('/:id', async (req, res) => {

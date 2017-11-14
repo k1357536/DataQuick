@@ -30,6 +30,7 @@ export function importStructure(metadataService: MetadataService, handleError: (
   input.hidden = true;
 
   input.onchange = () => {
+    handleError('loading...');
     document.body.removeChild(input);
     if (input.files && input.files.length === 1) {
       const file = input.files[0];
