@@ -51,6 +51,27 @@ export function MetadataApi(): Router {
     }
   });
 
+  metadata.put('/folders/:id', async (req, res) => {
+    try {
+      const id = UUIDs.check(req.params.id);
+      if (!id)
+        res.sendStatus(400);
+      else {
+        const folder = Utils.sanitizeFolder(req.body);
+        if (!folder || folder.id != id) {
+          console.error("Column JSON: " + JSON.stringify(req.body));
+          res.sendStatus(400);
+        } else {
+          await driver.updateFolder(folder);
+          res.sendStatus(200);
+        }
+      }
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+  });
+
   metadata.delete('/folders/all', async (req, res) => {
     const sender = req.connection.remoteAddress;
     if (sender !== '127.0.0.1' && sender !== '::1')

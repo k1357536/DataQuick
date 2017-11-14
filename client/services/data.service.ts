@@ -43,6 +43,10 @@ export class DataService extends DataCache<string, Row> implements OnDestroy {
     return super.getCache(key, () => this.httpClient.get<Row>(this.url + tableId + "/" + entryId).toPromise());
   }
 
+  getSummaries(tableId: UUID): Promise<{ id: number, label: string }[]> {
+    return this.httpClient.get<{ id: number, label: string }[]>(this.url + "summaries/" + tableId).toPromise();
+  }
+
   update(tableId: UUID, entry: Row): Promise<void> {
     return this.httpClient.put(this.url + tableId, entry, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }

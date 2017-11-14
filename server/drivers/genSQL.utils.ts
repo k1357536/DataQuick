@@ -111,6 +111,10 @@ export namespace GenSQLUtils {
     return `SELECT * FROM ${toTableName(tableId)} ORDER by ${sortBy} ${sortASC ? 'ASC' : 'DESC'} LIMIT ${num} OFFSET ${start};`;
   }
 
+  export function getSummaries(tableId: string, colName: string): string {
+    return `SELECT id, ${colName} as label FROM ${toTableName(tableId)};`;
+  }
+
   export function count(tableId: string): string {
     return `SELECT COUNT(*) FROM ${toTableName(tableId)};`;
   }

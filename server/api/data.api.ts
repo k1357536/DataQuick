@@ -28,6 +28,20 @@ export function DataApi(): Router {
       handleError(e, res);
     }
   });
+  data.get('/summaries/:id', async (req, res) => {
+    try {
+      const table = await metadataDriver.get(req.params.id);
+      const sumCol = table.columns.find(c => c.inSummary == true);
+      if (!sumCol)
+        res.sendStatus(500);
+      else
+        res.json(await driver.getSummaries(table, sumCol));
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+    res.json([{ id: -1, label: 'M' }, { id: -2, label: 'N' }]);
+  });
   data.get('/:id', async (req, res) => {
     try {
       let table = await metadataDriver.get(req.params.id);

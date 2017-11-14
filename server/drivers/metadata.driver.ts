@@ -4,10 +4,11 @@ import { UUID, Table, TableProposal, FolderProposal, Folder } from '../../shared
 import { Columns, Folders } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
-const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != parent ORDER BY parent, name;';
+const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != \'00000000-0000-0000-0000-000000000000\' ORDER BY parent, name;';
 const SEARCH_FOLDER1_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;';
 const SEARCH_FOLDER2_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;';
 const INSERT_FOLDER_STMT = 'INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);';
+const UPDATE_FOLDER_STMT = 'UPDATE metadata.folders SET name = $2, parent = $3 WHERE id = $1;';
 const DELETE_FOLDER_STMT = 'DELETE FROM metadata.folders WHERE id = $1;';
 const DELETE_ALL_FOLDERS_STMT = 'DELETE FROM metadata.folders WHERE id != $1';
 
@@ -66,6 +67,14 @@ export class MetadataDriver {
 
     if (rowCount < 1)
       throw 400;
+  }
+
+  async updateFolder(folder: Folder): Promise<void> {
+    console.log("UPDATE FOLDER:", folder);
+    const { rowCount } = await pool.query(UPDATE_FOLDER_STMT, [folder.id, folder.name, folder.parent]);
+
+    if (rowCount < 1)
+      throw 404;
   }
 
   async deleteAllFolders(): Promise<void> {

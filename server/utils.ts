@@ -1,4 +1,4 @@
-import { UUID, Table, Column, ColumnType, Constraint } from '../shared/metadata.model';
+import { UUID, Table, Column, ColumnType, Constraint, Row, Folder } from '../shared/metadata.model';
 import { Columns, ColumnTypes } from '../shared/metadata.utils';
 
 export class Utils {
@@ -90,5 +90,16 @@ export class Utils {
   // TODO
   private static sanitizeConstraint(_type: ColumnType, constraint: Constraint): Constraint {
     return constraint;
+  }
+
+
+  // TODO
+  public static sanitizeEntry(_type: Table, data: Row): Row {
+    return data;
+  }
+
+  // TODO
+  public static sanitizeFolder(folder: Folder): Folder {
+    return folder;
   }
 }

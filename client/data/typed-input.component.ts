@@ -1,6 +1,10 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
+import { DataService } from '../services/data.service'
+
+import { FKConstraint } from '../../shared/metadata.model';
+
 import { ColumnEx } from './utils';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
@@ -21,6 +25,12 @@ export class TypedInputComponent implements ControlValueAccessor {
   private onChangeCallback: (_: any) => void = () => { };
   private onTouchedCallback: () => void = () => { };
 
+  options: Promise<{ id: number, label: string }[]>;
+
+  constructor(
+    private dataService: DataService
+  ) { }
+
   get value(): any {
     return this.innerValue;
   }
@@ -37,6 +47,9 @@ export class TypedInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any) {
+    if (this.col.type === 'FK') {
+      this.options = this.dataService.getSummaries((this.col.constraint as FKConstraint).target);
+    }
     if (value !== this.innerValue)
       this.innerValue = value;
   }

@@ -12,6 +12,9 @@
   <input class="form-control" (blur)="onBlur()" *ngSwitchCase="'MONEY'" type="number" step="0.01" [(ngModel)]="value" [required]="col.constraint.notNull" />
   <input class="form-control" (blur)="onBlur()" *ngSwitchCase="'REAL'" type="number" [(ngModel)]="value" step="any" [required]="col.constraint.notNull" />
   <input class="form-control" (blur)="onBlur()" *ngSwitchCase="'PERCENT'" type="number" step="any" [ngModel]="value * 100" (ngModelChange)="value=$event/100" [required]="col.constraint.notNull" />
-  <input class="form-control" (blur)="onBlur()" *ngSwitchCase="'FK'" type="number" [(ngModel)]="value" [required]="col.constraint.notNull" />
+  <select class="form-control" (blur)="onBlur()" *ngSwitchCase="'FK'" [(ngModel)]="value">
+    <option [value]="null" *ngIf="!col.constraint.notNull">&lt;Empty&gt;</option>
+    <option *ngFor="let o of options | async" [value]="o.id">{{o.label}}</option>
+  </select>
   <input class="form-control" (blur)="onBlur()" *ngSwitchDefault type="text" [(ngModel)]="value" [required]="col.constraint.notNull" />
 </ng-container>

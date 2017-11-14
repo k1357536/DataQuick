@@ -35,8 +35,12 @@ export class MetadataService extends DataCache<string, Table> implements OnDestr
     return this.httpClient.post(this.folderUrl, p, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
-  importFolder(p: Folder): Promise<void> {
-    return this.httpClient.post(this.folderUrl, p, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
+  importFolder(f: Folder): Promise<void> {
+    return this.httpClient.post(this.folderUrl, f, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
+  }
+
+  updateFolder(f: Folder): Promise<void> {
+    return this.httpClient.put(this.folderUrl + f.id, f, { responseType: 'text' }).toPromise().then(_ => super.clearCaches());
   }
 
   deleteAllFolders(): Promise<void> {
