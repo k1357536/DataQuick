@@ -9,10 +9,7 @@ import { UUIDs } from '../../shared/metadata.utils';
 
 import { MetadataService } from '../services/metadata.service';
 import { RouteParamService } from '../services/route-param.service';
-
-import { getPath } from '../data/utils';
-
-import { ErrorHandling } from '../utils';
+import { ErrorHandling, getPath } from '../services/utils';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';

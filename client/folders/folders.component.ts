@@ -4,13 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 
 import { UUID, Table, Folder } from '../../shared/metadata.model';
 import { Folders, UUIDs } from '../../shared/metadata.utils';
-import { RouteParamService } from '../services/route-param.service';
 
 import { MetadataService } from '../services/metadata.service';
-
-import { getPath } from '../data/utils';
-
-import { ErrorHandling } from '../utils';
+import { RouteParamService } from '../services/route-param.service';
+import { ErrorHandling, getPath } from '../services/utils';
 
 @Component({
   templateUrl: './folders.component.html',

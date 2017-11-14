@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
+import { ErrorHandling } from '../services/utils';
 
 import { exportStructure, importStructure } from './importExport';
 import { create, insert } from './testData';
-
-import { ErrorHandling } from '../utils';
 
 @Component({
   templateUrl: './setup.component.html',

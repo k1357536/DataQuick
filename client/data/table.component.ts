@@ -7,13 +7,12 @@ import { Location } from '@angular/common';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 import { RouteParamService } from '../services/route-param.service';
+import { ErrorHandling } from '../services/utils';
 
 import { UUID, Column, Row } from '../../shared/metadata.model';
 import { UUIDs, Columns } from '../../shared/metadata.utils';
 
 import { TableEx, exTable } from './utils';
-
-import { ErrorHandling } from '../utils';
 
 const ENTRIES_PER_PAGE = 15;
 const NAV_PAGES_VISIBLE = 5;

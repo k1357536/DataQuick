@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { Table, Folder } from '../../shared/metadata.model';
 import { Folders } from '../../shared/metadata.utils';
+
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
-
-import { getPath } from '../data/utils';
-
-import { ErrorHandling } from '../utils';
+import { ErrorHandling, getPath } from '../services/utils';
 
 @Component({
   templateUrl: './table-list.component.html'

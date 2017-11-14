@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
 import { RouteParamService } from '../services/route-param.service';
+import { ErrorHandling } from '../services/utils';
 
 import { UUID, Row } from '../../shared/metadata.model';
 import { UUIDs } from '../../shared/metadata.utils';
@@ -15,8 +16,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/zip';
 
 import { TableEx, exTable } from './utils';
-
-import { ErrorHandling } from '../utils';
 
 @Component({
   templateUrl: './entry-editor.component.html'

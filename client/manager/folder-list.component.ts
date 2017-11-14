@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Folder } from '../../shared/metadata.model';
 import { Folders } from '../../shared/metadata.utils';
+
 import { MetadataService } from '../services/metadata.service';
-
-import { getPath } from '../data/utils';
-
-import { ErrorHandling } from '../utils';
+import { ErrorHandling, getPath } from '../services/utils';
 
 @Component({
   templateUrl: './folder-list.component.html'

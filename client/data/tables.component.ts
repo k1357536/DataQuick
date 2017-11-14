@@ -3,10 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Table, Folder } from '../../shared/metadata.model';
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
-
-import { getPath } from './utils';
-
-import { ErrorHandling } from '../utils';
+import { ErrorHandling, getPath } from '../services/utils';
 
 @Component({
   templateUrl: './tables.component.html'
