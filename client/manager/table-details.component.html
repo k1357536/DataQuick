@@ -99,12 +99,16 @@
     <thead>
       <tr>
         <th style="width: 25%">Name</th>
+        <th>Columns</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let dep of dependents" [routerLink]="['/manager/tables/', dep.id]">
         <td>
           {{dep.name}}
+        </td>
+        <td>
+          <span *ngFor="let col of dep.columns" class="pr-4">{{col.name}}</span>
         </td>
       </tr>
     </tbody>

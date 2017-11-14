@@ -1,10 +1,10 @@
 import { Pool } from 'pg';
 
-import { UUID, Table, TableProposal, FolderProposal, Folder } from '../../shared/metadata.model';
+import { UUID, Table, TableProposal, FolderProposal, Folder, FKConstraint } from '../../shared/metadata.model';
 import { Columns, Folders } from '../../shared/metadata.utils';
 import { Utils } from '../utils';
 
-const GETALL_FOLDER_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE id != \'00000000-0000-0000-0000-000000000000\' ORDER BY parent, name;';
+const GETALL_FOLDER_STMT = `SELECT id, name, parent FROM metadata.folders WHERE id != '${Folders.getRoot().id}' ORDER BY parent, name;`;
 const SEARCH_FOLDER1_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name LIKE $1;';
 const SEARCH_FOLDER2_STMT = 'SELECT id, name, parent FROM metadata.folders WHERE name = $1 AND parent = $2;';
 const INSERT_FOLDER_STMT = 'INSERT INTO metadata.folders (id, name, parent) VALUES ($1, $2, $3);';
@@ -113,6 +113,7 @@ export class MetadataDriver {
   async getDependents(dependency: UUID): Promise<Table[]> {
     const dep = [{ "constraint": { "target": dependency } }];
     const { rows } = await pool.query(GETDEPENDENTS_STMT, [JSON.stringify(dep)]);
+    rows.forEach((t: Table) => t.columns = t.columns.filter(c => c.type === 'FK' && (c.constraint as FKConstraint).target === dependency));
     return rows;
   }
 
