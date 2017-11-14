@@ -16,15 +16,16 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="tableName" class="col-md-2 col-form-label">Parent</label>
+    <label for="tableParent" class="col-md-2 col-form-label">Parent</label>
     <div class="col-md-10">
       <select class="form-control" id="tableParent" [(ngModel)]="table.parent">
+        <option value="00000000-0000-0000-0000-000000000000">/</option>
         <option *ngFor="let f of folders" [value]="f.id">{{path(f)}}{{f.name}}</option>
       </select>
     </div>
   </div>
 
-  <table class="table table-hover">
+  <table class="table table-hover table-sm">
     <thead>
       <tr>
         <th style="width: 25%">Name</th>
@@ -43,19 +44,21 @@
           <input type="text" *ngIf="col.type !== 'PK'" [(ngModel)]="table.columns[i].name" class="form-control" required>
         </td>
         <td>
-          <select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required>
+          <select class="form-control" (change)="changeType(table.columns[i], $event.target.value)" required [disabled]="table.columns[i].type == 'PK'">
             <option *ngFor="let t of columnTypes" [value]="t.id" [selected]="t.id == table.columns[i].type">{{t.name}}</option>
           </select>
         </td>
         <td>
-          <div class="form-group row">
-            <label class="col-sm-3">Required</label>
-            <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.notNull" />
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-3">Unique</label>
-            <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.unique" />
-          </div>
+          <ng-container *ngIf="table.columns[i].type != 'PK'">
+            <div class="form-group row">
+              <label class="col-sm-3">Required</label>
+              <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.notNull" />
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3">Unique</label>
+              <input type="checkbox" class="form-control col-sm-9" [(ngModel)]="table.columns[i].constraint.unique" />
+            </div>
+          </ng-container>
           <ng-container [ngSwitch]="col.type">
             <ng-container *ngSwitchCase="'INT'">
               <div class="form-group row">
@@ -198,7 +201,7 @@
         </td>
 
         <td>
-          <button class="btn btn-outline-danger" (click)="delete(table.columns[i]);">X</button>
+          <button class="btn btn-outline-danger" (click)="delete(table.columns[i]);" *ngIf="table.columns[i].type != 'PK'">X</button>
         </td>
       </tr>
     </tbody>

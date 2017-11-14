@@ -4,6 +4,8 @@ import { Router, Response } from 'express';
 import { MetadataDriver } from '../drivers/metadata.driver';
 import { DataDriver } from '../drivers/data.driver';
 
+import { Utils } from '../utils';
+
 export function DataApi(): Router {
   const data = express.Router();
   const driver = new DataDriver();
@@ -14,6 +16,8 @@ export function DataApi(): Router {
     try {
       if (Number.isInteger(e))
         res.sendStatus(Number(e));
+      else if (e.message)
+        res.status(500).send(e.message);
       else
         res.status(500).send(e);
     } catch {
@@ -23,6 +27,30 @@ export function DataApi(): Router {
   data.get('/count/:id', async (req, res) => {
     try {
       res.json(await driver.count(req.params.id));
+    }
+    catch (e) {
+      handleError(e, res);
+    }
+  });
+  data.get('/export/', async (_req, res) => {
+    try {
+      res.setHeader('Content-type', "application/json");
+      res.setHeader('Content-disposition', 'attachment; filename=data.json');
+
+      res.write('[');
+
+      const tables = await metadataDriver.getAll();
+      let first = true;
+      for (const t of tables) {
+        if (!first)
+          res.write(',');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const data = await driver.getAll(t);
+        res.write(JSON.stringify({ id: t.id, data }));
+        first = false;
+      }
+      res.write(']');
+      res.end();
     }
     catch (e) {
       handleError(e, res);
@@ -44,7 +72,7 @@ export function DataApi(): Router {
   });
   data.get('/:id', async (req, res) => {
     try {
-      let table = await metadataDriver.get(req.params.id);
+      const table = await metadataDriver.get(req.params.id);
       res.json(await driver.getAll(table, req.query.sortby, req.query.sortASC != 'false', req.query.page, req.query.pageSize));
     }
     catch (e) {
@@ -62,9 +90,9 @@ export function DataApi(): Router {
 
   data.put('/:tableId', async (req, res) => {
     try {
-      let table = await metadataDriver.get(req.params.tableId);
+      const table = await metadataDriver.get(req.params.tableId);
 
-      const entry = req.body; // TODO Utils.sanitizeEntry(req.body);
+      const entry = Utils.sanitizeEntry(table, req.body);
       if (!entry) {
         console.error("Entry JSON: " + JSON.stringify(req.body));
         res.sendStatus(400);
@@ -80,7 +108,7 @@ export function DataApi(): Router {
 
   data.post('/:tableId', async (req, res) => {
     try {
-      let table = await metadataDriver.get(req.params.tableId);
+      const table = await metadataDriver.get(req.params.tableId);
 
       const entry = req.body; // TODO Utils.sanitizeEntry(req.body);
       if (!entry) {

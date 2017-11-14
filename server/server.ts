@@ -8,7 +8,7 @@ import { DataApi } from './api/data.api';
 
 const app = express();
 app.use(morgan('dev', { skip: (_, res) => res.statusCode == 304 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: 32 * 1024 * 1024 }));
 
 app.use('/shared/', express.static(path.join(__dirname, '../shared/')));
 app.use('/node_modules/', express.static('./node_modules'));

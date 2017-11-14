@@ -1,4 +1,4 @@
-import { Table, ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
+import { Table, Row, ColumnType, Column, Constraint, NumberConstraint, StringConstraint, DateConstraint, FKConstraint } from '../../shared/metadata.model';
 import { Columns, Constraints } from '../../shared/metadata.utils';
 
 export namespace GenSQLUtils {
@@ -119,7 +119,7 @@ export namespace GenSQLUtils {
     return `SELECT COUNT(*) FROM ${toTableName(tableId)};`;
   }
 
-  export function insert(table: Table, entry: any): [string, any[]] {
+  export function insert(table: Table, entry: Row): [string, any[]] {
     const cols = table.columns.filter(col => col.type !== 'PK');
 
     const data = cols.map((col) => entry[Columns.apiName(col)]);
@@ -129,7 +129,7 @@ export namespace GenSQLUtils {
     return [`INSERT INTO ${toTableName(table.id)} (${colList}) VALUES (${valList});`, data];
   }
 
-  export function update(table: Table, entry: any): [string, any[]] {
+  export function update(table: Table, entry: Row): [string, any[]] {
     const cols = table.columns.filter(col => col.type !== 'PK');
     const id = table.columns.find(col => col.type == 'PK');
 

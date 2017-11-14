@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { MetadataService } from '../services/metadata.service';
 import { DataService } from '../services/data.service';
@@ -10,15 +10,12 @@ import { create, insert } from './testData';
   templateUrl: './setup.component.html',
 })
 
-export class SetupComponent implements OnInit {
+export class SetupComponent {
   msg = '';
 
   constructor(
     private dataService: DataService,
     private metadataService: MetadataService) { }
-
-  ngOnInit(): void {
-  }
 
   private handleError(e: any) {
     console.error(e);
@@ -73,16 +70,22 @@ export class SetupComponent implements OnInit {
   importStructure(): void {
     this.msg = '';
     try {
-      importStructure(this.metadataService, (e: any) => this.handleError(e), () => this.ngOnInit());
+      importStructure(this.metadataService, (e: any) => this.handleError(e));
     } catch (e) {
       this.handleError(e);
     }
   }
 
-  async exportData(): Promise<void> {
+  exportData(): void {
     this.msg = '';
     try {
-      this.msg = await Promise.resolve('Not implemented yet!'); // TODO
+      const a = document.createElement('a');
+      a.href = '/api/data/export/';
+      a.download = 'data.json';
+
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (e) {
       this.handleError(e);
     }

@@ -19,7 +19,8 @@ export function getPath(target: Table | Folder, folders: Folder[]): string {
   let current = target.parent;
   const root = Folders.getRoot();
 
-  for (let i = 0; i < 1024; i++) {
+  let i;
+  for (i = 0; i < 16; i++) {
     const result = folders.find(f => f.id === current);
     if (result && result.id != root.id) {
       path = '/' + result.name + path;
@@ -28,5 +29,7 @@ export function getPath(target: Table | Folder, folders: Folder[]): string {
     else
       break;
   }
+  if (i === 16)
+    path = '∞' + path;
   return path;
 }

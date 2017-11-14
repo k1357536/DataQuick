@@ -15,7 +15,7 @@ export async function exportStructure(metadataService: MetadataService): Promise
 
   const a = window.document.createElement('a');
   a.href = window.URL.createObjectURL(blob);
-  a.download = 'export.json';
+  a.download = 'structure.json';
 
   document.body.appendChild(a);
   a.click();

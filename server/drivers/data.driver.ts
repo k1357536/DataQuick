@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from 'pg';
 
-import { UUID, Table, Row } from '../../shared/metadata.model';
+import { UUID, Column, Table, Row } from '../../shared/metadata.model';
 import { Columns } from '../../shared/metadata.utils';
 
 import { GenSQLUtils } from './genSQL.utils';
@@ -40,7 +40,7 @@ export class DataDriver {
     }
   }
 
-  async getAll(table: Table, sortBy: string, sortASC: boolean, page?: number, pageSize?: number): Promise<Row[]> {
+  async getAll(table: Table, sortBy: string = 'id', sortASC: boolean = true, page?: number, pageSize?: number): Promise<Row[]> {
     let sortCol = table.columns.find(c => Columns.apiName(c) === sortBy);
     if (!sortCol)
       sortCol = table.columns.find(c => c.type === 'PK');
@@ -72,6 +72,17 @@ export class DataDriver {
         throw 400;
 
       return rows[0];
+    }
+    catch (e) {
+      throw e.detail ? e.detail : e;
+    }
+  }
+
+  async getSummaries(table: Table, col: Column): Promise<Row[]> {
+    const stmt = GenSQLUtils.getSummaries(table.id, Columns.apiName(col));
+    try {
+      const { rows } = await pool.query(stmt);
+      return rows;
     }
     catch (e) {
       throw e.detail ? e.detail : e;
