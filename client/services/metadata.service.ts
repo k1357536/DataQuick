@@ -69,9 +69,8 @@ export class MetadataService extends DataCache<string, Table> implements OnDestr
     }
   }
 
-  getDependents(dependency: Folder): Promise<Table[]> {
-    const p = this.httpClient.get<Table[]>(`${this.url}?dependents=${dependency.id}`).toPromise();
-    super.addAllCache(p, t => t.id);
+  getDependents(dependencyId: UUID): Promise<Table[]> {
+    const p = this.httpClient.get<Table[]>(`${this.url}?dependents=${dependencyId}`).toPromise();
     return p;
   }
 

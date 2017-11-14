@@ -15,45 +15,7 @@
         <td [colSpan]="table.columns.length + 1">
           <button class="btn btn-outline-dark" (click)="goBack();">Back</button>
           <button class="btn btn-outline-success" (click)="add();">Add</button>
-
-          <nav *ngIf="nav.numPages >= 2">
-            <ul class="pagination justify-content-center">
-              <li class="page-item" [class.disabled]="0 === nav.currentPage">
-                <a class="page-link" (click)="setPage(0);" aria-label="First">
-                    <span aria-hidden="true">0 <b>&laquo;</b></span>
-                  <span class="sr-only">First</span>
-                </a>
-              </li>
-
-              <li class="page-item" [class.disabled]="0 === nav.currentPage">
-                <a class="page-link" (click)="lastPage();" aria-label="Previous">
-                  <b aria-hidden="true">&lsaquo;</b>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-
-              <ng-container *ngFor="let i of nav.pages">
-                <li class="page-item" [class.active]="i === nav.currentPage">
-                  <a class="page-link" (click)="setPage(i);">{{i + 1}}</a>
-                </li>
-              </ng-container>
-
-              <li class="page-item" [class.disabled]="nav.numPages-1 <= nav.currentPage">
-                <a class="page-link" (click)="nextPage();" aria-label="Next">
-                    <b aria-hidden="true">&rsaquo;</b>
-                    <span class="sr-only">Next</span>
-                </a>
-              </li>
-
-              <li class="page-item" [class.disabled]="nav.numPages-1 <= nav.currentPage">
-                <a class="page-link" (click)="setPage(nav.numPages-1);" aria-label="Last">
-                    <span aria-hidden="true"><b>&raquo;</b> {{nav.numPages}}</span>
-                    <span class="sr-only">Last</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-
+          <paging [numEntries]="numEntries" (currentPage)="loadData($event)"></paging>
         </td>
       </tr>
       <tr>

@@ -46,7 +46,7 @@ export class TableDetailsComponent extends ErrorHandling implements OnInit {
           .then(t => t.name);
       });
 
-    this.dependents = await this.metadataService.getDependents(table);
+    this.dependents = await this.metadataService.getDependents(table.id);
   }
 
   goBack(): void {

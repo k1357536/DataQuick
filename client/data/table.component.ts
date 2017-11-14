@@ -15,14 +15,6 @@ import { UUIDs, Columns } from '../../shared/metadata.utils';
 import { TableEx, exTable } from './utils';
 
 const ENTRIES_PER_PAGE = 15;
-const NAV_PAGES_VISIBLE = 5;
-
-interface NavData {
-  numEntries: number,
-  numPages: number,
-  currentPage: number,
-  pages: number[]
-};
 
 @Component({
   templateUrl: './table.component.html'
@@ -34,12 +26,7 @@ export class TableComponent extends ErrorHandling implements OnInit {
   sortCol: Column | null;
   sortASC = true;
 
-  readonly nav: NavData = {
-    numEntries: 0,
-    numPages: 0,
-    currentPage: 0,
-    pages: []
-  };
+  numEntries = 0;
 
   newName: string;
 
@@ -59,21 +46,22 @@ export class TableComponent extends ErrorHandling implements OnInit {
   async delete(row: Row, event: any): Promise<void> {
     event.stopPropagation();
     await this.dataService.delete(this.table.id, row)
-      .then(() => this.loadData())
+      .then(() => this.loadData(0))
       .catch(e => this.handleError(e));
   }
 
   async load(id: UUID): Promise<void> {
     await this.metadataService.getTable(id)
       .then(t => this.table = exTable(t))
-      .then(() => this.loadData());
+      .then(() => this.loadData(0));
   }
 
-  async loadData(): Promise<void> {
+  async loadData(page: number): Promise<void> {
+
     const sortCol = this.sortCol ? Columns.apiName(this.sortCol) : null;
     this.dataService.countRows(this.table.id)
-      .then(cnt => this.updateNav(cnt))
-      .then(() => this.dataService.getAll(this.table.id, sortCol, this.sortASC, this.nav.currentPage, ENTRIES_PER_PAGE))
+      .then(cnt => { this.numEntries = cnt; })
+      .then(() => this.dataService.getAll(this.table.id, sortCol, this.sortASC, page, ENTRIES_PER_PAGE))
       .then(d => this.data = d)
       .catch(e => this.handleError(e));
   }
@@ -88,43 +76,10 @@ export class TableComponent extends ErrorHandling implements OnInit {
       this.sortCol = col;
       this.sortASC = true;
     }
-    await this.loadData();
-  }
-
-  private updateNav(cnt: number): void {
-    const nav = this.nav;
-
-    nav.numEntries = cnt;
-    nav.numPages = Math.floor(((nav.numEntries + ENTRIES_PER_PAGE - 1) / ENTRIES_PER_PAGE));
-
-    const navStart = Math.max(0, nav.currentPage - NAV_PAGES_VISIBLE);
-    const navEnd = Math.min(nav.numPages, nav.currentPage + NAV_PAGES_VISIBLE);
-
-    nav.pages = Array.from({ length: navEnd - navStart }, (_, i) => i + navStart);
-
-    if (nav.currentPage > nav.numPages - 1)
-      nav.currentPage = Math.max(nav.numPages - 1, 0);
+    await this.loadData(0);
   }
 
   goBack(): void {
     this.location.back();
-  }
-
-  async setPage(num: number) {
-    if (num >= 0 && num < this.nav.numPages)
-      this.nav.currentPage = num;
-    await this.loadData();
-  }
-
-  async lastPage() {
-    if (this.nav.currentPage > 0)
-      this.nav.currentPage--;
-    await this.loadData();
-  }
-
-  async nextPage() {
-    if (this.nav.currentPage + 1 < this.nav.numPages)
-      this.nav.currentPage++;
-    await this.loadData();
   }
 }

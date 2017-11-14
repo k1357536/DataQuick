@@ -26,11 +26,11 @@ export class DataService extends DataCache<string, Row> implements OnDestroy {
       .then(result => Number(result));
   }
 
-  getAll(tableId: UUID, sortby: string | null, sortASC: boolean, page: number, pageSize: number): Promise<Row[]> {
+  getAll(tableId: UUID, sortby?: string | null, sortASC?: boolean, page?: number, pageSize?: number): Promise<Row[]> {
     let url = this.url + tableId;
     if (sortby)
       url += `?sortby=${sortby}&sortASC=${sortASC}`;
-    if (!Number.isNaN(page) && !Number.isNaN(pageSize))
+    if (page !== undefined && pageSize !== undefined && !Number.isNaN(page) && !Number.isNaN(pageSize))
       url += (sortby ? '&' : '?') + `page=${page}&pageSize=${pageSize}`;
 
     const p = this.httpClient.get<Row[]>(url).toPromise();

@@ -14,6 +14,7 @@ import { EntryComponent } from './entry.component';
 import { EntryEditorComponent } from './entry-editor.component';
 import { TypedInputComponent } from './typed-input.component';
 import { TypedOutputComponent } from './typed-output.component';
+import { PagingComponent } from './paging.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { TypedOutputComponent } from './typed-output.component';
     EntryComponent,
     EntryEditorComponent,
     TypedInputComponent,
-    TypedOutputComponent
+    TypedOutputComponent,
+    PagingComponent
   ],
 })
 export class DataModule { }

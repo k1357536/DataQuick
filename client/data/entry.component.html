@@ -44,3 +44,41 @@
     </tfoot>
   </table>
 </div>
+
+<ng-container *ngIf="dependents && dependents.length > 0">
+  <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="ngb-panel-0">
+
+    <ng-container *ngFor="let dep of dependents; let i = index">
+      <ngb-panel *ngIf="dep.data.length > 0" [title]="dep.col + ' @ ' + dep.tbl.name" id="config-panel-{{i}}">
+
+        <ng-template ngbPanelContent>
+          <paging [numEntries]="dep.data.length" (currentPage)="showPage(dep, $event)" [entriesPerPage]="entriesPerPage"></paging>
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <ng-container *ngFor="let col of dep.tbl.columns">
+                  <th *ngIf="col.type !== 'FK' || col.constraint.target !== table.id">
+                    {{col.name}}
+                  </th>
+                </ng-container>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of dep.displayData">
+                <ng-container *ngFor="let col of dep.tbl.columns">
+                  <td *ngIf="col.type !== 'FK' || col.constraint.target !== table.id">
+                    <typed-output [col]="col" summarize="true" [(ngModel)]="entry[col.apiName]"></typed-output>
+                  </td>
+                </ng-container>
+                <td class="d-print-none">
+                  <button class="btn btn-outline-success btn-sm" [routerLink]="['/data', dep.tbl.id, entry.id]">&gt;</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </ngb-panel>
+    </ng-container>
+  </ngb-accordion>
+</ng-container>
