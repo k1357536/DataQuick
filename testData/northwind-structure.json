@@ -214,16 +214,6 @@
             "unique": false,
             "notNull": false
           }
-        },
-        {
-          "name": "Photo Path",
-          "type": "STRING",
-          "inSummary": false,
-          "constraint": {
-            "unique": false,
-            "notNull": false,
-            "maxLength": 255
-          }
         }
       ]
     },
