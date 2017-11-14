@@ -10,6 +10,7 @@ import { ServicesModule } from '../services/services.module';
 
 import { TableListComponent } from './table-list.component';
 import { FolderListComponent } from '../manager/folder-list.component';
+import { FolderEditorComponent } from './folder-editor.component';
 import { TableDetailsComponent } from './table-details.component';
 import { TableEditorComponent } from './table-editor.component';
 
@@ -25,6 +26,7 @@ import { TableEditorComponent } from './table-editor.component';
   declarations: [
     TableListComponent,
     FolderListComponent,
+    FolderEditorComponent,
     TableDetailsComponent,
     TableEditorComponent
   ]

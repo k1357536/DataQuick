@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 
 import { TableListComponent } from '../manager/table-list.component';
 import { FolderListComponent } from '../manager/folder-list.component';
+import { FolderEditorComponent } from '../manager/folder-editor.component';
 import { TableDetailsComponent } from '../manager/table-details.component';
 import { TableEditorComponent } from '../manager/table-editor.component';
 
@@ -22,7 +23,7 @@ const routes: Routes = [
 
   { path: 'manager/tables', component: TableListComponent },
   { path: 'manager/folders', component: FolderListComponent },
-  { path: 'manager/folders/:folder', component: FolderListComponent }, // TODO
+  { path: 'manager/folders/:folder', component: FolderEditorComponent },
   { path: 'manager/tables/:table', component: TableDetailsComponent },
   { path: 'manager/tables/:table/edit', component: TableEditorComponent },
 
