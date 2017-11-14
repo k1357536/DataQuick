@@ -12,6 +12,8 @@ import { RouteParamService } from '../services/route-param.service';
 
 import { getPath } from '../data/utils';
 
+import { ErrorHandling } from '../utils';
+
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
 
@@ -19,25 +21,16 @@ import 'rxjs/add/observable/of';
   templateUrl: './table-details.component.html'
 })
 
-export class TableDetailsComponent implements OnInit {
+export class TableDetailsComponent extends ErrorHandling implements OnInit {
   @Input() table: Table;
   path: string;
   dependents: Table[];
-  errorMsg: string | null = null;
 
   constructor(
     private metadataService: MetadataService,
     private location: Location,
     private route: ActivatedRoute,
-    private routeParam: RouteParamService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private routeParam: RouteParamService) { super(); }
 
   ngOnInit(): void {
     const tID = this.routeParam.observeParam(this.route, 'table', UUIDs.check);

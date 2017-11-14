@@ -16,28 +16,21 @@ import 'rxjs/add/observable/zip';
 
 import { TableEx, exTable } from './utils';
 
+import { ErrorHandling } from '../utils';
+
 @Component({
   templateUrl: './entry-editor.component.html'
 })
-export class EntryEditorComponent implements OnInit {
+export class EntryEditorComponent extends ErrorHandling implements OnInit {
   @Input() table: TableEx;
   @Input() entry: Row;
-  errorMsg: string | null = null;
 
   constructor(
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
     private route: ActivatedRoute,
-    private routeParam: RouteParamService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private routeParam: RouteParamService) { super(); }
 
   ngOnInit(): void {
     const tID = this.routeParam.observeParam(this.route, 'table', UUIDs.check);

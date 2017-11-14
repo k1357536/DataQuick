@@ -6,26 +6,18 @@ import { MetadataService } from '../services/metadata.service';
 
 import { getPath } from '../data/utils';
 
+import { ErrorHandling } from '../utils';
+
 @Component({
   templateUrl: './folder-list.component.html'
 })
 
-export class FolderListComponent implements OnInit {
+export class FolderListComponent extends ErrorHandling implements OnInit {
   folders: Folder[];
   newName: string = "";
 
-  errorMsg: string | null = null;
-
   constructor(
-    private metadataService: MetadataService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private metadataService: MetadataService) { super(); }
 
   async ngOnInit(): Promise<void> {
     await this.getFolders();

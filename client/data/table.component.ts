@@ -13,6 +13,8 @@ import { UUIDs, Columns } from '../../shared/metadata.utils';
 
 import { TableEx, exTable } from './utils';
 
+import { ErrorHandling } from '../utils';
+
 const ENTRIES_PER_PAGE = 15;
 const NAV_PAGES_VISIBLE = 5;
 
@@ -26,7 +28,7 @@ interface NavData {
 @Component({
   templateUrl: './table.component.html'
 })
-export class TableComponent implements OnInit {
+export class TableComponent extends ErrorHandling implements OnInit {
   @Input() table: TableEx;
   data: Row[];
 
@@ -41,22 +43,13 @@ export class TableComponent implements OnInit {
   };
 
   newName: string;
-  errorMsg: string | null = null;
 
   constructor(
     private dataService: DataService,
     private metadataService: MetadataService,
     private location: Location,
     private route: ActivatedRoute,
-    private routeParam: RouteParamService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private routeParam: RouteParamService) { super(); }
 
   ngOnInit(): void {
     this.routeParam

@@ -6,27 +6,19 @@ import { DataService } from '../services/data.service';
 import { exportStructure, importStructure } from './importExport';
 import { create, insert } from './testData';
 
+import { ErrorHandling } from '../utils';
+
 @Component({
   templateUrl: './setup.component.html',
 })
 
-export class SetupComponent {
-  msg = '';
-
+export class SetupComponent extends ErrorHandling {
   constructor(
     private dataService: DataService,
-    private metadataService: MetadataService) { }
-
-  private handleError(e: any) {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.msg += e.message;
-    else
-      this.msg = JSON.stringify(e);
-  }
+    private metadataService: MetadataService) { super(); }
 
   async clear() {
-    this.msg = '';
+    this.errorMsg = '';
     try {
       const tables = await this.metadataService.getTables();
       await this.metadataService.deleteAllTables();
@@ -34,41 +26,41 @@ export class SetupComponent {
       const folders = await this.metadataService.getFolders();
       await this.metadataService.deleteAllFolders();
 
-      this.msg = `Deleted ${folders.length} folders and ${tables.length} tables!`;
+      this.handleError(`Deleted ${folders.length} folders and ${tables.length} tables!`);
     } catch (e) {
       this.handleError(e);
     }
   }
 
   async create() {
-    this.msg = '';
+    this.errorMsg = '';
     try {
-      this.msg = await create(this.metadataService);
+      this.handleError(await create(this.metadataService));
     } catch (e) {
       this.handleError(e);
     }
   }
 
   async insert() {
-    this.msg = '';
+    this.errorMsg = '';
     try {
-      this.msg = await insert(this.metadataService, this.dataService);
+      this.handleError(await insert(this.metadataService, this.dataService));
     } catch (e) {
       this.handleError(e);
     }
   }
 
   async exportStructure(): Promise<void> {
-    this.msg = '';
+    this.errorMsg = '';
     try {
-      this.msg = await exportStructure(this.metadataService);
+      this.handleError(await exportStructure(this.metadataService));
     } catch (e) {
       this.handleError(e);
     }
   }
 
   importStructure(): void {
-    this.msg = '';
+    this.errorMsg = '';
     try {
       importStructure(this.metadataService, (e: any) => this.handleError(e));
     } catch (e) {
@@ -77,7 +69,7 @@ export class SetupComponent {
   }
 
   exportData(): void {
-    this.msg = '';
+    this.errorMsg = '';
     try {
       const a = document.createElement('a');
       a.href = '/api/data/export/';
@@ -92,9 +84,9 @@ export class SetupComponent {
   }
 
   importData(): void {
-    this.msg = '';
+    this.errorMsg = '';
     try {
-      this.msg = 'Not implemented yet!'; // TODO
+      this.handleError('Not implemented yet!'); // TODO
     } catch (e) {
       this.handleError(e);
     }

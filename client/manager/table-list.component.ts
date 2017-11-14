@@ -7,29 +7,21 @@ import { DataService } from '../services/data.service';
 
 import { getPath } from '../data/utils';
 
+import { ErrorHandling } from '../utils';
+
 @Component({
   templateUrl: './table-list.component.html'
 })
 
-export class TableListComponent implements OnInit {
+export class TableListComponent extends ErrorHandling implements OnInit {
   folders: Folder[];
 
   tables: (Table & { rows: number })[];
   newName: string = "";
 
-  errorMsg: string | null = null;
-
   constructor(
     private dataService: DataService,
-    private metadataService: MetadataService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private metadataService: MetadataService) { super(); }
 
   async ngOnInit(): Promise<void> {
     await Promise.all([this.getFolders(), this.getTables()]);

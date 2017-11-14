@@ -10,31 +10,24 @@ import { MetadataService } from '../services/metadata.service';
 
 import { getPath } from '../data/utils';
 
+import { ErrorHandling } from '../utils';
+
 @Component({
   templateUrl: './folders.component.html',
 })
 
-export class FoldersComponent {
+export class FoldersComponent extends ErrorHandling {
   @Input() currentId: UUID;
   @Input() current: Folder;
   parent: Folder | null;
 
   children: (Folder | Table)[];
   folders: Folder[];
-  errorMsg: string | null = null;
 
   constructor(
     private metadataService: MetadataService,
     private route: ActivatedRoute,
-    private routeParam: RouteParamService) { }
-
-  private handleError(e: any): void {
-    console.error(e);
-    if (e.message && typeof e.message === 'string')
-      this.errorMsg = e.message;
-    else
-      this.errorMsg = JSON.stringify(e);
-  }
+    private routeParam: RouteParamService) { super(); }
 
   async ngOnInit(): Promise<void> {
     this.routeParam
