@@ -32,7 +32,7 @@
           </small>
         </td>
         <td class="d-none d-sm-table-cell"><span class="text-muted">{{path(folder)}}</span>{{folder.name}}</td>
-        <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(folder);">x</button></td>
+        <td class="d-none d-sm-table-cell"><button class="btn btn-outline-danger btn-sm" (click)="delete(folder, $event);">x</button></td>
       </tr>
     </ng-container>
   </tbody>

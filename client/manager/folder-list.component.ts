@@ -52,11 +52,16 @@ export class FolderListComponent implements OnInit {
     }
   }
 
-  async delete(_folder: Folder): Promise<void> {
-    // await this.metadataService.deleteTable(tbl)
-    //   .catch(e => this.handleError(e));
-    // await this.getTables();
-    this.errorMsg = 'Not implemented yet!'; // TODO
+  async delete(folder: Folder, event: Event): Promise<void> {
+    event.stopPropagation();
+    try {
+      await this.metadataService.deleteFolder(folder)
+        .catch(e => this.handleError(e));
+      await this.getFolders();
+    }
+    catch (e) {
+      this.handleError(e);
+    }
   }
 
   private async getFolders(): Promise<void> {
