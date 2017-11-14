@@ -69,56 +69,6 @@ export class TableListComponent implements OnInit {
     return index; // TODO
   }
 
-  async export(): Promise<void> {
-    const data = await Promise.all([
-      this.metadataService.getFolders(),
-      this.metadataService.getTables()])
-      .then(data => [data[0], data[1]])
-      .then(data => JSON.stringify(data, null, '\t'))
-      .then(data => new Blob([data], { type: 'application/json' }));
-
-    const a = window.document.createElement('a');
-    a.href = window.URL.createObjectURL(data);
-    a.download = 'export.json';
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
-  import(): void {
-    const input = window.document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.hidden = true;
-
-    input.onchange = () => {
-      document.body.removeChild(input);
-      if (input.files && input.files.length === 1) {
-        const file = input.files[0];
-        const fr = new FileReader();
-
-        fr.onload = async () => {
-          try {
-            const result = JSON.parse(fr.result) as [Folder[], Table[]];
-            for (let f of result[0])
-              await this.metadataService.importFolder(f);
-            for (let t of result[1])
-              await this.metadataService.importTable(t);
-          } catch (e) {
-            this.handleError(e);
-          }
-          await this.ngOnInit();
-        }
-
-        fr.readAsText(file);
-      }
-    };
-
-    document.body.appendChild(input);
-    input.click();
-  }
-
   private async getFolders(): Promise<void> {
     try {
       this.folders = await this.metadataService.getFolders();
